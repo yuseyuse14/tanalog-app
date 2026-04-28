@@ -1,0 +1,24 @@
+# MacOS
+.DS_Store
+
+# ビルド関連
+build/
+DerivedData/
+
+# ユーザ設定
+*.xcuserstate
+xcuserdata/
+
+# ログ
+*.log
+*.swp
+
+# Swift Package Manager
+.build/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
