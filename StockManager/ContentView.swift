@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 enum TabItem: Hashable {
     case home
@@ -40,4 +41,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(.preview)
 }
