@@ -4,8 +4,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StocksView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Stock.name) private var stocks: [Stock]
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {

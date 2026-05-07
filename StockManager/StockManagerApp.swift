@@ -19,6 +19,7 @@ struct StockManagerApp: App {
 extension ModelContainer {
     // 共通スキーマ
     static let schema = Schema([
+        Stock.self,
     ])
 
     // 公開用コンテナ
@@ -38,21 +39,10 @@ extension ModelContainer {
 
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
-            return setupPreviewData(for: container)
+            setupPreviewData(for: container)
+            return container
         } catch {
             fatalError("Could not create PreviewContainer: \(error)")
         }
     }()
-
-    @MainActor
-    static func setupPreviewData(for container: ModelContainer) -> ModelContainer {
-        let context = container.mainContext
-        // TODO: プレビュー用データを追加
-        do {
-            try context.save()
-        } catch {
-            print("Failed to save preview data: \(error)")
-        }
-        return container
-    }
 }
