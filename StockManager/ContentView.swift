@@ -15,7 +15,7 @@ enum TabItem: Hashable {
 }
 
 struct ContentView: View {
-    @State private var selectedTab: TabItem? = .home
+    @State private var selectedTab: TabItem? = .stocks
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -23,7 +23,7 @@ struct ContentView: View {
                 Text("ホーム")
             }
             Tab("在庫", systemImage: "shippingbox", value: TabItem.stocks) {
-                Text("在庫一覧")
+                StocksView()
             }
             Tab("メニュー", systemImage: "fork.knife", value: TabItem.dishes) {
                 Text("メニュー一覧")

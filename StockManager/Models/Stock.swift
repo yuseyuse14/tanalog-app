@@ -1,0 +1,43 @@
+//
+//  Stock.swift
+//  StockManager
+//
+
+import Foundation
+import SwiftData
+
+@Model
+final class Stock {
+    #Unique<Stock>([\.name])
+
+    var name: String
+    var num: Int
+    var minNum: Int
+    var unit: String
+
+    init(name: String, num: Int, minNum: Int, unit: String) {
+        self.name = name
+        self.num = num
+        self.minNum = minNum
+        self.unit = unit
+    }
+}
+
+import SwiftUI
+// MARK: - ここからロジック
+extension Stock {
+    func decrement() {
+        if self.num > 0 {
+            self.num -= 1
+        }
+    }
+    func increment() {
+        self.num += 1
+    }
+
+    var statusColor: Color {
+        if num == 0 { return .red }
+        if num <= minNum { return .yellow }
+        return .green
+    }
+}
