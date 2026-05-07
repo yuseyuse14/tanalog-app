@@ -67,11 +67,14 @@ struct StocksView: View {
                     LazyVStack(spacing: 8) {
                         ForEach(stocks) { stock in
                             HStack(spacing: 0) {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(stock.statusColor)
+                                    .frame(width: 8, height: 30)
                                 Text(stock.name)
                                     .font(.title)
                                     .frame(maxWidth: .infinity)
                                 Button {
-                                    stock.num -= 1
+                                    stock.decrement()
                                 } label: {
                                     Image(systemName: "minus.square")
                                         .resizable()
@@ -82,7 +85,7 @@ struct StocksView: View {
                                     .monospacedDigit()
                                     .frame(width: 55)
                                 Button {
-                                    stock.num += 1
+                                    stock.increment()
                                 } label: {
                                     Image(systemName: "plus.square")
                                         .resizable()
