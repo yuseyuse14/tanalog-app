@@ -65,28 +65,31 @@ struct StocksView: View {
                 // 在庫一覧表示(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(0..<200) { i in
+                        ForEach(stocks) { stock in
                             HStack(spacing: 0) {
-                                Text("在庫\(i)")
+                                Text(stock.name)
                                     .font(.title)
                                     .frame(maxWidth: .infinity)
                                 Button {
+                                    stock.num -= 1
                                 } label: {
                                     Image(systemName: "minus.square")
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                 }
-                                Text("\(i)")
+                                Text("\(stock.num)")
                                     .font(.title)
                                     .monospacedDigit()
                                     .frame(width: 55)
                                 Button {
+                                    stock.num += 1
                                 } label: {
                                     Image(systemName: "plus.square")
                                         .resizable()
                                         .frame(width: 24, height: 24)
                                 }
                             }
+                            Divider()
                         }
                     }
                 }
@@ -120,4 +123,5 @@ struct StocksView: View {
 
 #Preview {
     StocksView()
+        .modelContainer(.preview)
 }
