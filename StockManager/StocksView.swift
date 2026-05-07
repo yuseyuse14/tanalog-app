@@ -45,12 +45,16 @@ struct StocksView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 8) {
                         ForEach(0..<10) { i in
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(.cyan)
+                            Text("タグ\(i)")
                                 .frame(width: 80, height: 30)
-                                .overlay{
-                                    Text("タグ\(i)")
-                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(.cyan.opacity(0.2))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.cyan, lineWidth: 1)
+                                    )
+                                )
                         }
                     }
                     .frame(height: 30)
