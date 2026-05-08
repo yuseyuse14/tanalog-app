@@ -20,10 +20,10 @@ struct StockEditView: View {
     var body: some View {
         // 詳細情報(右側)
         ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .center, spacing: 12) {
                 // ヘッダー
-                HStack {
-                    Button {
+                HStack(spacing: 0) {
+                    Button(role: .cancel) {
                         dismiss()
                     } label: {
                         Text("キャンセル")
@@ -35,8 +35,8 @@ struct StockEditView: View {
                     Text("在庫編集")
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .center)
-                    Button {
-                        saveStock()
+                    Button(role: .confirm) {
+                        updateStock()
                     } label: {
                         Text("保存")
                             .font(.subheadline)
@@ -46,6 +46,7 @@ struct StockEditView: View {
                     }
                 }
                 Divider()
+
                 // 在庫詳細
                 HStack(spacing: 0) {
                     Text("在庫名：")
@@ -69,11 +70,34 @@ struct StockEditView: View {
                         .frame(maxWidth: .infinity)
                 }
                 Divider()
+
                 Label("タグ", systemImage: "tag")
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 // TODO: タグ編集機能
                 Divider()
+
                 Label("仕入れ先", systemImage: "building.2")
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 // TODO: 仕入れ先編集機能
+                Divider()
+
+                Spacer()
+                    .frame(minHeight: 40)
+                Button(role: .destructive) {
+                    deleteStock()
+                } label: {
+                    Label("削除する", systemImage: "trash")
+                        .font(.headline)
+                        .padding(8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.gray.opacity(0.1))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.red, lineWidth: 1)
+                                )
+                        )
+                }
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
@@ -87,11 +111,17 @@ struct StockEditView: View {
     }
 
     // FIXME: 同一の名前がある場合上書きしてしまうので修正
-    private func saveStock() {
+    private func updateStock() {
         stock.name = name
         stock.num = num
         stock.minNum = minNum
         stock.unit = unit
+        try? context.save()
+        dismiss()
+    }
+
+    private func deleteStock() {
+        context.delete(stock)
         try? context.save()
         dismiss()
     }
