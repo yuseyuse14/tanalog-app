@@ -129,6 +129,17 @@ struct StocksView: View {
                             Text(stock.name)
                                 .fontWeight(.medium)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(stock.status.name)
+                                .padding(.horizontal, 8)
+                                .frame(height: 24)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(stock.status.color.opacity(0.2))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .stroke(stock.status.color, lineWidth: 1)
+                                        )
+                                )
                         }
                         Divider()
                         HStack(spacing: 0) {
