@@ -10,6 +10,8 @@ struct StocksView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Stock.name) private var stocks: [Stock]
 
+    @State private var selectedStock: Stock? = nil
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
@@ -65,7 +67,6 @@ struct StocksView: View {
             Divider()
 
             HStack(spacing: 0) {
-                // TODO: 在庫一覧機能
                 // 在庫一覧表示(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
@@ -96,6 +97,10 @@ struct StocksView: View {
                                         .frame(width: 24, height: 24)
                                 }
                             }
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                selectedStock = stock
+                            }
                             Divider()
                         }
                     }
@@ -118,7 +123,40 @@ struct StocksView: View {
                     }
                     Divider()
                     // TODO: 在庫詳細機能
-                    Text("ここに各在庫の情報を表示")
+                    if let stock = selectedStock {
+                        HStack(spacing: 0) {
+                            Text("在庫名：")
+                            Text(stock.name)
+                                .fontWeight(.medium)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        Divider()
+                        HStack(spacing: 0) {
+                            Text("個数：")
+                            Text("\(stock.num)")
+                                .fontWeight(.medium)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("基準個数：")
+                            Text("\(stock.minNum)")
+                                .fontWeight(.medium)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("単位：")
+                            Text(stock.unit)
+                                .fontWeight(.medium)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        Divider()
+                        Label("タグ", systemImage: "tag")
+                        // TODO: 在庫別のタグ一覧
+                        Divider()
+                        Label("仕入れ先", systemImage: "building.2")
+                        // TODO: 在庫別の仕入れ先一覧
+                        Divider()
+                        Label("発注履歴", systemImage: "cart")
+                    } else {
+//                        Text("在庫が選択されていません")
+                        ContentUnavailableView("在庫を選択してください", systemImage: "hand.tap")
+                    }
                     Spacer()
                 }
                 .padding(16)
