@@ -60,10 +60,4 @@ extension Stock {
         if num <= minNum { return .low }
         return .sufficient
     }
-
-    var statusColor: Color {
-        if num == 0 { return .red }
-        if num <= minNum { return .yellow }
-        return .green
-    }
 }

@@ -73,7 +73,7 @@ struct StocksView: View {
                         ForEach(stocks) { stock in
                             HStack(spacing: 0) {
                                 RoundedRectangle(cornerRadius: 4)
-                                    .fill(stock.statusColor)
+                                    .fill(stock.status.color)
                                     .frame(width: 8, height: 30)
                                 Text(stock.name)
                                     .font(.title)
@@ -111,6 +111,7 @@ struct StocksView: View {
 
                 // 詳細情報(右側)
                 VStack(alignment: .leading, spacing: 8) {
+                    // ヘッダー
                     HStack(spacing: 0) {
                         Text("詳細情報")
                             .font(.headline)
@@ -122,7 +123,7 @@ struct StocksView: View {
                             .padding(.horizontal, 16)
                     }
                     Divider()
-                    // TODO: 在庫詳細機能
+                    // 在庫詳細
                     if let stock = selectedStock {
                         HStack(spacing: 0) {
                             Text("在庫名：")
@@ -165,13 +166,11 @@ struct StocksView: View {
                         Divider()
                         Label("発注履歴", systemImage: "cart")
                     } else {
-//                        Text("在庫が選択されていません")
                         ContentUnavailableView("在庫を選択してください", systemImage: "hand.tap")
                     }
-                    Spacer()
                 }
                 .padding(16)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
         }
     }
