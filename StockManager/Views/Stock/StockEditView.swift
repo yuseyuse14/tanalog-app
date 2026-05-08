@@ -17,6 +17,8 @@ struct StockEditView: View {
     @State private var minNum: Int = 0
     @State private var unit: String = ""
 
+    @State private var isDeleteAlert: Bool = false
+
     var body: some View {
         // 詳細情報(右側)
         ScrollView {
@@ -83,8 +85,10 @@ struct StockEditView: View {
 
                 Spacer()
                     .frame(minHeight: 40)
+                // 削除ボタン
                 Button(role: .destructive) {
-                    deleteStock()
+//                    deleteStock()
+                    isDeleteAlert.toggle()
                 } label: {
                     Label("削除する", systemImage: "trash")
                         .font(.headline)
@@ -97,6 +101,14 @@ struct StockEditView: View {
                                         .stroke(.red, lineWidth: 1)
                                 )
                         )
+                }
+                .alert("在庫の削除", isPresented: $isDeleteAlert) {
+                    Button("削除", role: .destructive) {
+                        deleteStock()
+                    }
+                    Button("キャンセル", role: .cancel) { }
+                } message: {
+                    Text("この在庫を削除してもよろしいですか？この操作は取り消せません。")
                 }
             }
             .padding(.vertical, 16)
