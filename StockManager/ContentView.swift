@@ -23,7 +23,7 @@ struct ContentView: View {
                 Text("ホーム")
             }
             Tab("在庫", systemImage: "shippingbox", value: TabItem.stocks) {
-                StocksView()
+                StockView()
             }
             Tab("メニュー", systemImage: "fork.knife", value: TabItem.dishes) {
                 Text("メニュー一覧")

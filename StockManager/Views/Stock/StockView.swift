@@ -1,16 +1,17 @@
 //
-//  StocksView.swift
+//  StockView.swift
 //  StockManager
 //
 
 import SwiftUI
 import SwiftData
 
-struct StocksView: View {
+struct StockView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Stock.name) private var stocks: [Stock]
 
     @State private var selectedStock: Stock? = nil
+    @State private var isEdit: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -117,10 +118,16 @@ struct StocksView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         // TODO: 在庫編集機能
-                        Image(systemName: "pencil")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .padding(.horizontal, 16)
+                        Button {
+                            if selectedStock != nil {
+                                isEdit.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "pencil")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .padding(.horizontal, 16)
+                        }
                     }
                     Divider()
                     // 在庫詳細
@@ -173,10 +180,15 @@ struct StocksView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
         }
+        .sheet(isPresented: $isEdit) {
+            if let stock = selectedStock {
+                StockEditView(stock: stock)
+            }
+        }
     }
 }
 
 #Preview {
-    StocksView()
+    StockView()
         .modelContainer(.preview)
 }
