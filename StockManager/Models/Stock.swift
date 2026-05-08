@@ -35,9 +35,29 @@ extension Stock {
         self.num += 1
     }
 
-    var statusColor: Color {
-        if num == 0 { return .red }
-        if num <= minNum { return .yellow }
-        return .green
+    enum Status {
+        case empty, low, sufficient
+
+        var name: String {
+            switch self {
+            case .empty: return "品切れ"
+            case .low: return "残りわずか"
+            case .sufficient: return "在庫あり"
+            }
+        }
+
+        var color: Color {
+            switch self {
+            case .empty: return .red
+            case .low: return .yellow
+            case .sufficient: return .green
+            }
+        }
+    }
+
+    var status: Status {
+        if num == 0 { return .empty }
+        if num <= minNum { return .low }
+        return .sufficient
     }
 }
