@@ -117,7 +117,7 @@ struct StockView: View {
                         Text("詳細情報")
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        // TODO: 在庫編集機能
+                        // 在庫編集ボタン
                         Button {
                             if selectedStock != nil {
                                 isEdit.toggle()
@@ -127,6 +127,7 @@ struct StockView: View {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                                 .padding(.horizontal, 16)
+                                .foregroundStyle(.foreground)
                         }
                     }
                     Divider()
