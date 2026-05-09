@@ -12,6 +12,7 @@ struct StockView: View {
 
     @State private var selectedStock: Stock? = nil
     @State private var isEdit: Bool = false
+    @State private var isCreate: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,10 +32,15 @@ struct StockView: View {
                     .frame(width: 28, height: 28)
                     .padding(.horizontal, 16)
                 // TODO: 新規追加機能
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
+                Button {
+                    isCreate.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                        .padding(.horizontal, 16)
+                        .foregroundStyle(.foreground)
+                }
             }
             .padding(.horizontal, 16)
             Divider()
@@ -180,6 +186,9 @@ struct StockView: View {
                 .padding(16)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
+        }
+        .sheet(isPresented: $isCreate) {
+            StockCreateView()
         }
         .sheet(isPresented: $isEdit) {
             if let stock = selectedStock {
