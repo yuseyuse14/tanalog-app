@@ -10,7 +10,6 @@ import Flow
 struct StockEditView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Bindable var stock: Stock
 
@@ -27,95 +26,21 @@ struct StockEditView: View {
         ScrollView {
             VStack(alignment: .center, spacing: 12) {
                 // ヘッダー
-                HStack(spacing: 0) {
-                    Button(role: .cancel) {
-                        dismiss()
-                    } label: {
-                        Text("キャンセル")
-                            .font(.subheadline)
-                            .padding(.horizontal, 8)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundStyle(.foreground)
-                    }
-                    Text("在庫編集")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    Button(role: .confirm) {
-                        updateStock()
-                    } label: {
-                        Text("保存")
-                            .font(.subheadline)
-                            .padding(.horizontal, 8)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .foregroundStyle(.foreground)
-                    }
-                }
-                Divider()
+                SheetHeaderView(
+                    titleLabel: "在庫編集",
+                    leftLabel: "キャンセル",
+                    rightLabel: "保存",
+                    leftAction: { dismiss() },
+                    rightAction: { updateStock() }
+                )
 
                 // 在庫詳細
-                HStack(spacing: 0) {
-                    Text("在庫名：")
-                    TextField(stock.name, text: $name)
-                        .fontWeight(.medium)
-                        .frame(maxWidth: .infinity)
-                }
-                Divider()
-                HStack(spacing: 0) {
-                    Text("個数：")
-                    TextField("\(stock.num)", value: $num, format: .number)
-                        .fontWeight(.medium)
-                        .frame(maxWidth: .infinity)
-                    Text("基準個数：")
-                    TextField("\(stock.minNum)", value: $minNum, format: .number)
-                        .fontWeight(.medium)
-                        .frame(maxWidth: .infinity)
-                    Text("単位：")
-                    TextField(stock.unit, text: $unit)
-                        .fontWeight(.medium)
-                        .frame(maxWidth: .infinity)
-                }
-                Divider()
-
-                // タグ編集
-                Label("タグ", systemImage: "tag")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                HFlow(alignment: .center, spacing: 16) {
-                    ForEach(tags) { tag in
-                        Text(tag.name)
-                            .font(.title3)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 4)
-                            .background(
-                                selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
-                                    .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
-                                    .fill(.blue.opacity(0.05))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(.blue.opacity(0.4))
-                            )
-                            .onTapGesture {
-                                if selectedTags.contains(tag) {
-                                    selectedTags.remove(tag)
-                                } else {
-                                    selectedTags.insert(tag)
-                                }
-                            }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Divider()
-
-                Label("仕入れ先", systemImage: "building.2")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                // TODO: 仕入れ先編集機能
-                Divider()
+                StockFormView(stock: stock, name: $name, num: $num, minNum: $minNum, unit: $unit, selectedTags: $selectedTags)
 
                 Spacer()
                     .frame(minHeight: 40)
                 // 削除ボタン
                 Button(role: .destructive) {
-//                    deleteStock()
                     isDeleteAlert.toggle()
                 } label: {
                     Label("削除する", systemImage: "trash")
@@ -166,6 +91,117 @@ struct StockEditView: View {
         context.delete(stock)
         try? context.save()
         dismiss()
+    }
+}
+
+struct StockFormView: View {
+    @Environment(\.modelContext) private var context
+    @Query(sort: \Tag.name) private var tags: [Tag]
+
+    let stock: Stock?
+    @Binding var name: String
+    @Binding var num: Int
+    @Binding var minNum: Int
+    @Binding var unit: String
+    @Binding var selectedTags: Set<Tag>
+
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 0) {
+                Text("在庫名：")
+                TextField(stock?.name ?? "チーズケーキ", text: $name)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity)
+            }
+            Divider()
+            HStack(spacing: 0) {
+                Text("個数：")
+                TextField("\(stock?.num ?? 8)", value: $num, format: .number)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity)
+                Text("基準個数：")
+                TextField("\(stock?.minNum ?? 4)", value: $minNum, format: .number)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity)
+                Text("単位：")
+                TextField(stock?.unit ?? "個", text: $unit)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity)
+            }
+            Divider()
+
+            // タグ編集
+            Label("タグ", systemImage: "tag")
+                .frame(maxWidth: .infinity, alignment: .leading)
+            HFlow(alignment: .center, spacing: 16) {
+                ForEach(tags) { tag in
+                    Text(tag.name)
+                        .font(.title3)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .background(
+                            selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
+                                .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
+                                .fill(.blue.opacity(0.05))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.blue.opacity(0.4))
+                        )
+                        .onTapGesture {
+                            if selectedTags.contains(tag) {
+                                selectedTags.remove(tag)
+                            } else {
+                                selectedTags.insert(tag)
+                            }
+                        }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            Divider()
+
+            Label("仕入れ先", systemImage: "building.2")
+                .frame(maxWidth: .infinity, alignment: .leading)
+            // TODO: 仕入れ先編集機能
+            Divider()
+        }
+    }
+}
+
+struct SheetHeaderView: View {
+    let titleLabel: String
+    let leftLabel: String
+    let rightLabel: String
+    let leftAction: () -> Void
+    let rightAction: () -> Void
+
+    var body: some View {
+        VStack(spacing: 12) {
+            ZStack {
+                Text(titleLabel)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                HStack(spacing: 0) {
+                    Button(role: .cancel) {
+                        leftAction()
+                    } label: {
+                        Text(leftLabel)
+                            .font(.subheadline)
+                            .padding(.horizontal, 8)
+                    }
+                    Spacer()
+                    Button {
+                        rightAction()
+                    } label: {
+                        Text(rightLabel)
+                            .font(.subheadline)
+                            .bold()
+                            .padding(.horizontal, 8)
+                    }
+                }
+            }
+            Divider()
+        }
     }
 }
 
