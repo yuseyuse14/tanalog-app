@@ -9,6 +9,7 @@ import SwiftData
 struct StockView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Stock.name) private var stocks: [Stock]
+    @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State private var selectedStock: Stock? = nil
     @State private var isEdit: Bool = false
@@ -16,6 +17,7 @@ struct StockView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // ヘッダー
             HStack(spacing: 0) {
                 Text("在庫一覧")
                     .font(.system(size: 36, weight: .semibold))
@@ -31,7 +33,7 @@ struct StockView: View {
                     .resizable()
                     .frame(width: 28, height: 28)
                     .padding(.horizontal, 16)
-                // TODO: 新規追加機能
+                // 新規追加
                 Button {
                     isCreate.toggle()
                 } label: {
@@ -53,28 +55,30 @@ struct StockView: View {
                     .padding(.horizontal, 16)
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 8) {
-                        ForEach(0..<10) { i in
-                            Text("タグ\(i)")
-                                .frame(width: 80, height: 30)
+                        ForEach(tags) { tag in
+                            Text(tag.name)
+                                .padding(8)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(.cyan.opacity(0.2))
+                                        .fill(.blue.opacity(0.1))
+                                )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.cyan, lineWidth: 1)
-                                    )
+                                        .stroke(.blue.opacity(0.4))
                                 )
                         }
                     }
-                    .frame(height: 30)
+                    .frame(height: 50)
+                    .padding(.horizontal, 4)
                 }
             }
             .padding(.vertical, 4)
             .padding(.horizontal, 16)
             Divider()
 
+            // メイン画面
             HStack(spacing: 0) {
-                // 在庫一覧表示(左側)
+                // 在庫一覧(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(stocks) { stock in

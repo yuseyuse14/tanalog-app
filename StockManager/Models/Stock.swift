@@ -15,11 +15,16 @@ final class Stock {
     var minNum: Int
     var unit: String
 
+    // 対応Tagが存在しても削除可能, 多対多
+    @Relationship(deleteRule: .nullify, inverse: \Tag.stocks)
+    var tags: [Tag]
+
     init(name: String, num: Int, minNum: Int, unit: String) {
         self.name = name
         self.num = num
         self.minNum = minNum
         self.unit = unit
+        self.tags = []
     }
 }
 
