@@ -146,6 +146,7 @@ struct StockEditView: View {
                 num = stock.num
                 minNum = stock.minNum
                 unit = stock.unit
+                selectedTags = Set(stock.tags)
             }
         }
     }
@@ -156,6 +157,7 @@ struct StockEditView: View {
         stock.num = num
         stock.minNum = minNum
         stock.unit = unit
+        stock.tags = Array(selectedTags)
         try? context.save()
         dismiss()
     }
