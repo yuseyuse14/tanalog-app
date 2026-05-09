@@ -23,29 +23,13 @@ struct StockCreateView: View {
         ScrollView {
             VStack(alignment: .center, spacing: 12) {
                 // ヘッダー
-                HStack(spacing: 0) {
-                    Button(role: .cancel) {
-                        dismiss()
-                    } label: {
-                        Text("キャンセル")
-                            .font(.subheadline)
-                            .padding(.horizontal, 8)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundStyle(.foreground)
-                    }
-                    Text("在庫編集")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    Button(role: .confirm) {
-                        updateStock()
-                    } label: {
-                        Text("保存")
-                            .font(.subheadline)
-                            .padding(.horizontal, 8)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .foregroundStyle(.foreground)
-                    }
-                }
+                SheetHeaderView(
+                    titleLabel: "在庫編集",
+                    leftLabel: "キャンセル",
+                    rightLabel: "保存",
+                    leftAction: { dismiss() },
+                    rightAction: { updateStock() }
+                )
                 Divider()
 
                 // 在庫詳細
