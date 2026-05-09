@@ -12,9 +12,23 @@ extension ModelContainer {
         let context = container.mainContext
         // TODO: プレビュー用データを追加
         let stocks = Stock.samples
-        stocks.forEach { context.insert($0) }
         let tags = Tag.samples
+        stocks.forEach { context.insert($0) }
         tags.forEach { context.insert($0) }
+
+        // StockのRelation
+        let stockRelationDict = Dictionary(uniqueKeysWithValues: Stock.relations.map { ($0.stockName, $0) } )
+        let tagDict = Dictionary(uniqueKeysWithValues: Tag.samples.map { ($0.name, $0) } )
+        stocks.forEach { stock in
+            // Tag
+            if let tagNames = stockRelationDict[stock.name]?.tagNames {
+                tagNames.forEach { tagName in
+                    if let tag = tagDict[tagName] {
+                        stock.tags.append(tag)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -28,6 +42,25 @@ extension Stock {
         Stock(name: "玉ねぎ", num: 4, minNum: 2, unit: "個"),
         Stock(name: "卵", num: 12, minNum: 6, unit: "個"),
         Stock(name: "ラップ", num: 10, minNum: 3, unit: "本"),
+    ]
+
+    struct Relation {
+        let stockName: String
+        let tagNames: [String]
+        init(_ stockName: String, tagNames: [String]) {
+            self.stockName = stockName
+            self.tagNames = tagNames
+        }
+    }
+
+    static let relations: [Relation]  = [
+        Relation("ウイスキー", tagNames: ["飲み物", "ウイスキー"]),
+        Relation("ガトーショコラ", tagNames: ["食べ物", "デザート"]),
+        Relation("鰹", tagNames: ["食べ物"]),
+        Relation("ローストビーフ", tagNames: ["食べ物", "肉"]),
+        Relation("玉ねぎ", tagNames: ["食べ物"]),
+        Relation("卵", tagNames: ["食べ物"]),
+        Relation("ラップ", tagNames: ["消耗品"])
     ]
 }
 

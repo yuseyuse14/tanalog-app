@@ -5,10 +5,12 @@
 
 import SwiftUI
 import SwiftData
+import Flow
 
 struct StockEditView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Bindable var stock: Stock
 
@@ -16,6 +18,7 @@ struct StockEditView: View {
     @State private var num: Int = 0
     @State private var minNum: Int = 0
     @State private var unit: String = ""
+    @State private var selectedTags: Set<Tag> = []
 
     @State private var isDeleteAlert: Bool = false
 
@@ -73,9 +76,34 @@ struct StockEditView: View {
                 }
                 Divider()
 
+                // タグ編集
                 Label("タグ", systemImage: "tag")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                // TODO: タグ編集機能
+                HFlow(alignment: .center, spacing: 16) {
+                    ForEach(tags) { tag in
+                        Text(tag.name)
+                            .font(.title3)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(
+                                selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
+                                    .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
+                                    .fill(.blue.opacity(0.05))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(.blue.opacity(0.4))
+                            )
+                            .onTapGesture {
+                                if selectedTags.contains(tag) {
+                                    selectedTags.remove(tag)
+                                } else {
+                                    selectedTags.insert(tag)
+                                }
+                            }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Divider()
 
                 Label("仕入れ先", systemImage: "building.2")
@@ -118,6 +146,7 @@ struct StockEditView: View {
                 num = stock.num
                 minNum = stock.minNum
                 unit = stock.unit
+                selectedTags = Set(stock.tags)
             }
         }
     }
@@ -128,6 +157,7 @@ struct StockEditView: View {
         stock.num = num
         stock.minNum = minNum
         stock.unit = unit
+        stock.tags = Array(selectedTags)
         try? context.save()
         dismiss()
     }
