@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D01F638C2FAF538F00B2DB81 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = D01F638B2FAF538F00B2DB81 /* Flow */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D0EFF36B2FA0E426007C4236 /* StockManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01F638C2FAF538F00B2DB81 /* Flow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = StockManager;
 			packageProductDependencies = (
+				D01F638B2FAF538F00B2DB81 /* Flow */,
 			);
 			productName = StockManager;
 			productReference = D0EFF36B2FA0E426007C4236 /* StockManager.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = D0EFF3622FA0E426007C4236;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D01F638A2FAF538F00B2DB81 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D0EFF36C2FA0E426007C4236 /* Products */;
 			projectDirPath = "";
@@ -332,6 +341,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D01F638A2FAF538F00B2DB81 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tevelee/SwiftUI-Flow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D01F638B2FAF538F00B2DB81 /* Flow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D01F638A2FAF538F00B2DB81 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
+			productName = Flow;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D0EFF3632FA0E426007C4236 /* Project object */;
 }

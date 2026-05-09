@@ -16,6 +16,7 @@ struct StockView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // ヘッダー
             HStack(spacing: 0) {
                 Text("在庫一覧")
                     .font(.system(size: 36, weight: .semibold))
@@ -73,8 +74,9 @@ struct StockView: View {
             .padding(.horizontal, 16)
             Divider()
 
+            // メイン画面
             HStack(spacing: 0) {
-                // 在庫一覧表示(左側)
+                // 在庫一覧(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(stocks) { stock in
