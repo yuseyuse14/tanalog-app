@@ -23,7 +23,7 @@ struct TagView: View {
                     ForEach(tags) { tag in
                         Text(tag.name)
                             .font(.title)
-                            .padding(.horizontal, 10)
+                            .padding(.horizontal, 12)
                             .padding(.vertical, 5)
                             .background(Color.blue.opacity(0.1))
                             .cornerRadius(15)

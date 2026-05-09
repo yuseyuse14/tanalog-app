@@ -9,6 +9,7 @@ import SwiftData
 struct StockView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Stock.name) private var stocks: [Stock]
+    @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State private var selectedStock: Stock? = nil
     @State private var isEdit: Bool = false
@@ -54,20 +55,21 @@ struct StockView: View {
                     .padding(.horizontal, 16)
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 8) {
-                        ForEach(0..<10) { i in
-                            Text("タグ\(i)")
-                                .frame(width: 80, height: 30)
+                        ForEach(tags) { tag in
+                            Text(tag.name)
+                                .padding(8)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(.cyan.opacity(0.2))
+                                        .fill(.blue.opacity(0.1))
+                                )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.cyan, lineWidth: 1)
-                                    )
+                                        .stroke(.blue.opacity(0.4))
                                 )
                         }
                     }
-                    .frame(height: 30)
+                    .frame(height: 50)
+                    .padding(.horizontal, 4)
                 }
             }
             .padding(.vertical, 4)
