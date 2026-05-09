@@ -12,6 +12,7 @@ enum TabItem: Hashable {
     case dishes
     case orders
     case shops
+    case tags
 }
 
 struct ContentView: View {
@@ -31,8 +32,13 @@ struct ContentView: View {
             Tab("発注履歴", systemImage: "cart", value: TabItem.orders) {
                 Text("発注履歴")
             }
-            Tab("仕入れ先", systemImage: "building.2", value: TabItem.shops) {
-                Text("仕入れ先一覧")
+            TabSection("その他") {
+                Tab("仕入れ先", systemImage: "building.2", value: TabItem.shops) {
+                    Text("仕入れ先一覧")
+                }
+                Tab("タグ", systemImage: "tag", value: TabItem.tags) {
+                    TagView()
+                }
             }
         }
         .tabViewStyle(.sidebarAdaptable)
