@@ -31,7 +31,7 @@ struct StockView: View {
                     .resizable()
                     .frame(width: 28, height: 28)
                     .padding(.horizontal, 16)
-                // TODO: 新規追加機能
+                // 新規追加
                 Button {
                     isCreate.toggle()
                 } label: {
