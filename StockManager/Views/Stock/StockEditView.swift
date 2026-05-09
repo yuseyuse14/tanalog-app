@@ -76,9 +76,9 @@ struct StockEditView: View {
                 }
                 Divider()
 
+                // タグ編集
                 Label("タグ", systemImage: "tag")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                // TODO: タグ編集機能
                 HFlow(alignment: .center, spacing: 16) {
                     ForEach(tags) { tag in
                         Text(tag.name)

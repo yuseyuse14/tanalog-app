@@ -5,6 +5,7 @@
 
 import SwiftUI
 import SwiftData
+import Flow
 
 struct StockView: View {
     @Environment(\.modelContext) private var modelContext
@@ -178,6 +179,25 @@ struct StockView: View {
                         Divider()
                         Label("タグ", systemImage: "tag")
                         // TODO: 在庫別のタグ一覧
+                        if !stock.tags.isEmpty {
+                            HFlow(alignment: .center, spacing: 16) {
+                                ForEach(stock.tags) { tag in
+                                    Text(tag.name)
+                                        .font(.title3)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 4)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .fill(.blue.opacity(0.05))
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .stroke(.blue.opacity(0.4))
+                                        )
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
                         Divider()
                         Label("仕入れ先", systemImage: "building.2")
                         // TODO: 在庫別の仕入れ先一覧
