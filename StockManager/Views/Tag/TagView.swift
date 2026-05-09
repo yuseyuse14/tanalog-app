@@ -4,11 +4,12 @@
 //
 
 import SwiftUI
+import SwiftData
 import Flow
 
 struct TagView: View {
-    let tags = ["食べ物", "スピード", "揚げ物", "肉", "ご飯もの", "パスタ", "デザート",
-                "飲み物", "ビール", "ハイボール", "ウイスキー", "日本酒", "ワイン", "ソフトドリンク"]
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Tag.name) private var tags: [Tag]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,8 +20,8 @@ struct TagView: View {
             Divider()
             ScrollView {
                 HFlow(alignment: .center, spacing: 16) {
-                    ForEach(tags, id: \.self) { tag in
-                        Text(tag)
+                    ForEach(tags) { tag in
+                        Text(tag.name)
                             .font(.title)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
@@ -37,4 +38,5 @@ struct TagView: View {
 
 #Preview {
     TagView()
+        .modelContainer(.preview)
 }
