@@ -5,15 +5,18 @@
 
 import SwiftUI
 import SwiftData
+import Flow
 
 struct StockCreateView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State private var name: String = ""
     @State private var num: Int = 0
     @State private var minNum: Int = 0
     @State private var unit: String = ""
+    @State private var selectedTags: Set<Tag> = []
 
     var body: some View {
         // 詳細情報(右側)
@@ -72,6 +75,31 @@ struct StockCreateView: View {
                 Label("タグ", systemImage: "tag")
                     .frame(maxWidth: .infinity, alignment: .leading)
                 // TODO: タグ編集機能
+                HFlow(alignment: .center, spacing: 16) {
+                    ForEach(tags) { tag in
+                        Text(tag.name)
+                            .font(.title3)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(
+                                selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
+                                    .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
+                                    .fill(.blue.opacity(0.05))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(.blue.opacity(0.4))
+                            )
+                            .onTapGesture {
+                                if selectedTags.contains(tag) {
+                                    selectedTags.remove(tag)
+                                } else {
+                                    selectedTags.insert(tag)
+                                }
+                            }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Divider()
 
                 Label("仕入れ先", systemImage: "building.2")
@@ -90,6 +118,7 @@ struct StockCreateView: View {
     // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func updateStock() {
         let newStock = Stock(name: name, num: num, minNum: minNum, unit: unit)
+        newStock.tags = Array(selectedTags)
         context.insert(newStock)
         try? context.save()
         dismiss()
@@ -98,4 +127,5 @@ struct StockCreateView: View {
 
 #Preview {
     StockCreateView()
+        .modelContainer(.preview)
 }
