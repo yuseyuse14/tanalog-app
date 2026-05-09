@@ -47,7 +47,7 @@ struct StockView: View {
             .padding(.horizontal, 16)
             Divider()
 
-            // TODO: タグ一覧機能
+            // タグ一覧
             HStack(spacing: 0) {
                 Image(systemName: "tag")
                     .resizable()

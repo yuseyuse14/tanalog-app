@@ -5,10 +5,12 @@
 
 import SwiftUI
 import SwiftData
+import Flow
 
 struct StockEditView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Bindable var stock: Stock
 
@@ -76,6 +78,17 @@ struct StockEditView: View {
                 Label("タグ", systemImage: "tag")
                     .frame(maxWidth: .infinity, alignment: .leading)
                 // TODO: タグ編集機能
+                HFlow(alignment: .center, spacing: 16) {
+                    ForEach(tags) { tag in
+                        Text(tag.name)
+                            .font(.title3)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 5)
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(15)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Divider()
 
                 Label("仕入れ先", systemImage: "building.2")
