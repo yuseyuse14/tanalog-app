@@ -18,6 +18,7 @@ struct StockEditView: View {
     @State private var num: Int = 0
     @State private var minNum: Int = 0
     @State private var unit: String = ""
+    @State private var selectedTags: Set<Tag> = []
 
     @State private var isDeleteAlert: Bool = false
 
@@ -83,9 +84,23 @@ struct StockEditView: View {
                         Text(tag.name)
                             .font(.title3)
                             .padding(.horizontal, 12)
-                            .padding(.vertical, 5)
-                            .background(Color.blue.opacity(0.1))
-                            .cornerRadius(15)
+                            .padding(.vertical, 4)
+                            .background(
+                                selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
+                                    .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
+                                    .fill(.blue.opacity(0.05))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(.blue.opacity(0.4))
+                            )
+                            .onTapGesture {
+                                if selectedTags.contains(tag) {
+                                    selectedTags.remove(tag)
+                                } else {
+                                    selectedTags.insert(tag)
+                                }
+                            }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
