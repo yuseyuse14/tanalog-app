@@ -13,8 +13,6 @@ struct StockFormView: View {
 
     @Binding var form: StockForm
 
-    @FocusState private var focusedField: StockForm.Field?
-
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 0) {
@@ -22,7 +20,6 @@ struct StockFormView: View {
                 TextField(form.placeholder.name, text: $form.name)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
-                    .focused($focusedField, equals: .name)
             }
             Divider()
             HStack(spacing: 0) {
@@ -30,17 +27,14 @@ struct StockFormView: View {
                 TextField(form.placeholder.num, value: $form.num, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
-                    .focused($focusedField, equals: .num)
                 Text("基準個数：")
                 TextField(form.placeholder.minNum, value: $form.minNum, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
-                    .focused($focusedField, equals: .minNum)
                 Text("単位：")
                 TextField(form.placeholder.unit, text: $form.unit)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
-                    .focused($focusedField, equals: .unit)
             }
             Divider()
 
@@ -78,11 +72,6 @@ struct StockFormView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             // TODO: 仕入れ先編集機能
             Divider()
-        }
-        .onChange(of: focusedField) { oldValue, newValue in
-            if let oldValue {
-                form.restore(field: oldValue)
-            }
         }
     }
 }

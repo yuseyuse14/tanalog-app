@@ -25,7 +25,7 @@ struct StockEditView: View {
                     leftLabel: "キャンセル",
                     rightLabel: "保存",
                     leftAction: { dismiss() },
-                    rightAction: { updateStock() }
+                    rightAction: { validateSave() }
                 )
 
                 // 在庫詳細
@@ -63,6 +63,14 @@ struct StockEditView: View {
             .onAppear {
                 form.apply(from: stock)
             }
+        }
+    }
+
+    private func validateSave() {
+        if form.isValid {
+            updateStock()
+        } else {
+            // TODO: 空欄をわかりやすくするUI表示を実装
         }
     }
 

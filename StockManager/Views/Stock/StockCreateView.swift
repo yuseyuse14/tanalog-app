@@ -23,7 +23,7 @@ struct StockCreateView: View {
                     leftLabel: "キャンセル",
                     rightLabel: "追加",
                     leftAction: { dismiss() },
-                    rightAction: { createStock() }
+                    rightAction: { validateSave() }
                 )
 
                 // 在庫詳細
@@ -31,6 +31,14 @@ struct StockCreateView: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
+        }
+    }
+
+    private func validateSave() {
+        if form.isValid {
+            createStock()
+        } else {
+            // TODO: 空欄をわかりやすくするUI表示を実装
         }
     }
 

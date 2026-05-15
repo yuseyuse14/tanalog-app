@@ -14,28 +14,20 @@ struct StockForm {
 
     private var preStock: Stock? = nil
 
+    var isNameValid: Bool { !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    var isNumValid: Bool { num != nil }
+    var isMinNumValid: Bool { minNum != nil }
+    var isUnitValid: Bool { !unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    var isValid: Bool { isNameValid && isNumValid && isMinNumValid && isUnitValid }
+
+    // Stockで初期化
     mutating func apply(from stock: Stock) {
-        self.name = stock.name
-        self.num = stock.num
-        self.minNum = stock.minNum
-        self.unit = stock.unit
-        self.tags = Set(stock.tags)
-        self.preStock = stock
-    }
-
-    mutating func restore(field: Field) {
-        guard let preStock else { return }
-
-        switch field {
-        case .name:
-            if self.name.isEmpty { self.name = preStock.name }
-        case .num:
-            if self.num == nil { self.num = preStock.num }
-        case .minNum:
-            if self.minNum == nil { self.minNum = preStock.minNum }
-        case .unit:
-            if self.unit.isEmpty { self.unit = preStock.unit }
-        }
+        name = stock.name
+        num = stock.num
+        minNum = stock.minNum
+        unit = stock.unit
+        tags = Set(stock.tags)
+        preStock = stock
     }
 }
 
@@ -52,12 +44,5 @@ extension StockForm {
 
     var placeholder: Placeholder {
         Placeholder(preStock: preStock)
-    }
-}
-
-// MARK: ここからフィールド
-extension StockForm {
-    enum Field {
-        case name, num, minNum, unit
     }
 }
