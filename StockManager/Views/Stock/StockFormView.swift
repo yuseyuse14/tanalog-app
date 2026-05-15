@@ -18,22 +18,22 @@ struct StockFormView: View {
         VStack(spacing: 12) {
             HStack(spacing: 0) {
                 Text("在庫名：")
-                TextField(stock?.name ?? "チーズケーキ", text: $form.name)
+                TextField("在庫名を入力", text: $form.name)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
             }
             Divider()
             HStack(spacing: 0) {
                 Text("個数：")
-                TextField("\(stock?.num ?? 8)", value: $form.num, format: .number)
+                TextField("個数を入力", value: $form.num, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
                 Text("基準個数：")
-                TextField("\(stock?.minNum ?? 4)", value: $form.minNum, format: .number)
+                TextField("基準個数を入力", value: $form.minNum, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
                 Text("単位：")
-                TextField(stock?.unit ?? "個", text: $form.unit)
+                TextField("単位を入力", text: $form.unit)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
             }
@@ -78,6 +78,6 @@ struct StockFormView: View {
 }
 
 #Preview {
-    @Previewable @State var previewForm = StockForm(name: "チーズケーキ", num: 8, minNum: 2, unit: "個", tags: [])
+    @Previewable @State var previewForm = StockForm()
     StockFormView(stock: nil, form: $previewForm)
 }

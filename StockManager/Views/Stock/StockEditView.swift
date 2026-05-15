@@ -12,7 +12,7 @@ struct StockEditView: View {
 
     @Bindable var stock: Stock
 
-    @State private var form: StockForm = StockForm(name: "", num: 8, minNum: 2, unit: "個", tags: [])
+    @State private var form: StockForm = StockForm()
     @State private var isDeleteAlert: Bool = false
 
     var body: some View {
@@ -73,8 +73,8 @@ struct StockEditView: View {
     // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func updateStock() {
         stock.name = form.name
-        stock.num = form.num
-        stock.minNum = form.minNum
+        stock.num = form.num!
+        stock.minNum = form.minNum!
         stock.unit = form.unit
         stock.tags = Array(form.tags)
         try? context.save()

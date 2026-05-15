@@ -11,7 +11,7 @@ struct StockCreateView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Tag.name) private var tags: [Tag]
 
-    @State private var form: StockForm = StockForm(name: "", num: 8, minNum: 2, unit: "個", tags: [])
+    @State private var form: StockForm = StockForm()
 
     var body: some View {
         // 詳細情報(右側)
@@ -36,7 +36,7 @@ struct StockCreateView: View {
 
     // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func createStock() {
-        let newStock = Stock(name: form.name, num: form.num, minNum: form.minNum, unit: form.unit)
+        let newStock = Stock(name: form.name, num: form.num!, minNum: form.minNum!, unit: form.unit)
         newStock.tags = Array(form.tags)
         context.insert(newStock)
         try? context.save()
