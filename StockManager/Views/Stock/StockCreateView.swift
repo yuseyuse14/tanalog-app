@@ -5,18 +5,13 @@
 
 import SwiftUI
 import SwiftData
-import Flow
 
 struct StockCreateView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Tag.name) private var tags: [Tag]
 
-    @State private var name: String = ""
-    @State private var num: Int = 8
-    @State private var minNum: Int = 4
-    @State private var unit: String = ""
-    @State private var selectedTags: Set<Tag> = []
+    @State private var form: StockForm = StockForm(name: "", num: 8, minNum: 2, unit: "個", tags: [])
 
     var body: some View {
         // 詳細情報(右側)
@@ -32,7 +27,7 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(stock: nil, name: $name, num: $num, minNum: $minNum, unit: $unit, selectedTags: $selectedTags)
+                StockFormView(stock: nil, form: $form)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
@@ -41,8 +36,8 @@ struct StockCreateView: View {
 
     // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func createStock() {
-        let newStock = Stock(name: name, num: num, minNum: minNum, unit: unit)
-        newStock.tags = Array(selectedTags)
+        let newStock = Stock(name: form.name, num: form.num, minNum: form.minNum, unit: form.unit)
+        newStock.tags = Array(form.tags)
         context.insert(newStock)
         try? context.save()
         dismiss()

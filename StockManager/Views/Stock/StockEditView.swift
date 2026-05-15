@@ -5,7 +5,6 @@
 
 import SwiftUI
 import SwiftData
-import Flow
 
 struct StockEditView: View {
     @Environment(\.modelContext) private var context
@@ -13,12 +12,7 @@ struct StockEditView: View {
 
     @Bindable var stock: Stock
 
-    @State private var name: String = ""
-    @State private var num: Int = 0
-    @State private var minNum: Int = 0
-    @State private var unit: String = ""
-    @State private var selectedTags: Set<Tag> = []
-
+    @State private var form: StockForm = StockForm(name: "", num: 8, minNum: 2, unit: "個", tags: [])
     @State private var isDeleteAlert: Bool = false
 
     var body: some View {
@@ -35,7 +29,7 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(stock: stock, name: $name, num: $num, minNum: $minNum, unit: $unit, selectedTags: $selectedTags)
+                StockFormView(stock: stock, form: $form)
 
                 Spacer()
                     .frame(minHeight: 40)
@@ -67,22 +61,22 @@ struct StockEditView: View {
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
             .onAppear {
-                name = stock.name
-                num = stock.num
-                minNum = stock.minNum
-                unit = stock.unit
-                selectedTags = Set(stock.tags)
+                form.name = stock.name
+                form.num = stock.num
+                form.minNum = stock.minNum
+                form.unit = stock.unit
+                form.tags = Set(stock.tags)
             }
         }
     }
 
     // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func updateStock() {
-        stock.name = name
-        stock.num = num
-        stock.minNum = minNum
-        stock.unit = unit
-        stock.tags = Array(selectedTags)
+        stock.name = form.name
+        stock.num = form.num
+        stock.minNum = form.minNum
+        stock.unit = form.unit
+        stock.tags = Array(form.tags)
         try? context.save()
         dismiss()
     }

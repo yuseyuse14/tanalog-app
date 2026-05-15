@@ -12,32 +12,28 @@ struct StockFormView: View {
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     let stock: Stock?
-    @Binding var name: String
-    @Binding var num: Int
-    @Binding var minNum: Int
-    @Binding var unit: String
-    @Binding var selectedTags: Set<Tag>
+    @Binding var form: StockForm
 
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 0) {
                 Text("在庫名：")
-                TextField(stock?.name ?? "チーズケーキ", text: $name)
+                TextField(stock?.name ?? "チーズケーキ", text: $form.name)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
             }
             Divider()
             HStack(spacing: 0) {
                 Text("個数：")
-                TextField("\(stock?.num ?? 8)", value: $num, format: .number)
+                TextField("\(stock?.num ?? 8)", value: $form.num, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
                 Text("基準個数：")
-                TextField("\(stock?.minNum ?? 4)", value: $minNum, format: .number)
+                TextField("\(stock?.minNum ?? 4)", value: $form.minNum, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
                 Text("単位：")
-                TextField(stock?.unit ?? "個", text: $unit)
+                TextField(stock?.unit ?? "個", text: $form.unit)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
             }
@@ -53,7 +49,7 @@ struct StockFormView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 4)
                         .background(
-                            selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
+                            form.tags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
                                 .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
                                 .fill(.blue.opacity(0.05))
                         )
@@ -62,10 +58,10 @@ struct StockFormView: View {
                                 .stroke(.blue.opacity(0.4))
                         )
                         .onTapGesture {
-                            if selectedTags.contains(tag) {
-                                selectedTags.remove(tag)
+                            if form.tags.contains(tag) {
+                                form.tags.remove(tag)
                             } else {
-                                selectedTags.insert(tag)
+                                form.tags.insert(tag)
                             }
                         }
                 }
@@ -82,10 +78,6 @@ struct StockFormView: View {
 }
 
 #Preview {
-    @Previewable @State var name = "チーズケーキ"
-    @Previewable @State var num = 8
-    @Previewable @State var minNum = 2
-    @Previewable @State var unit = "個"
-    @Previewable @State var selectedTags: Set<Tag> = []
-    StockFormView(stock: nil, name: $name, num: $num, minNum: $minNum, unit: $unit, selectedTags: $selectedTags)
+    @Previewable @State var previewForm = StockForm(name: "チーズケーキ", num: 8, minNum: 2, unit: "個", tags: [])
+    StockFormView(stock: nil, form: $previewForm)
 }
