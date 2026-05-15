@@ -14,13 +14,6 @@ struct StockForm {
 
     private var preStock: Stock? = nil
 
-    struct Placeholder {
-        static let name: String = "例：チーズケーキ"
-        static let num: String = "例：10"
-        static let minNum: String = "例：4"
-        static let unit: String = "例：個"
-    }
-
     mutating func apply(from stock: Stock) {
         self.name = stock.name
         self.num = stock.num
@@ -28,5 +21,21 @@ struct StockForm {
         self.unit = stock.unit
         self.tags = Set(stock.tags)
         self.preStock = stock
+    }
+}
+
+// MARK: ここからプレースホルダー
+extension StockForm {
+    var placeholder: Placeholder {
+        Placeholder(preStock: preStock)
+    }
+
+    struct Placeholder {
+        let preStock: Stock?
+
+        var name: String { preStock?.name ?? "例：チーズケーキ" }
+        var num: String { preStock?.num.description ?? "例：10" }
+        var minNum: String { preStock?.minNum.description ?? "例：4" }
+        var unit: String { preStock?.unit ?? "例：個" }
     }
 }

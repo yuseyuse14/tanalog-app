@@ -17,22 +17,22 @@ struct StockFormView: View {
         VStack(spacing: 12) {
             HStack(spacing: 0) {
                 Text("在庫名：")
-                TextField(StockForm.Placeholder.name, text: $form.name)
+                TextField(form.placeholder.name, text: $form.name)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
             }
             Divider()
             HStack(spacing: 0) {
                 Text("個数：")
-                TextField(StockForm.Placeholder.num, value: $form.num, format: .number)
+                TextField(form.placeholder.num, value: $form.num, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
                 Text("基準個数：")
-                TextField(StockForm.Placeholder.minNum, value: $form.minNum, format: .number)
+                TextField(form.placeholder.minNum, value: $form.minNum, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
                 Text("単位：")
-                TextField(StockForm.Placeholder.unit, text: $form.unit)
+                TextField(form.placeholder.unit, text: $form.unit)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
             }
