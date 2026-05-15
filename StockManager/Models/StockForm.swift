@@ -22,14 +22,25 @@ struct StockForm {
         self.tags = Set(stock.tags)
         self.preStock = stock
     }
+
+    mutating func restore(field: Field) {
+        guard let preStock else { return }
+
+        switch field {
+        case .name:
+            if self.name.isEmpty { self.name = preStock.name }
+        case .num:
+            if self.num == nil { self.num = preStock.num }
+        case .minNum:
+            if self.minNum == nil { self.minNum = preStock.minNum }
+        case .unit:
+            if self.unit.isEmpty { self.unit = preStock.unit }
+        }
+    }
 }
 
 // MARK: ここからプレースホルダー
 extension StockForm {
-    var placeholder: Placeholder {
-        Placeholder(preStock: preStock)
-    }
-
     struct Placeholder {
         let preStock: Stock?
 
@@ -37,5 +48,16 @@ extension StockForm {
         var num: String { preStock?.num.description ?? "例：10" }
         var minNum: String { preStock?.minNum.description ?? "例：4" }
         var unit: String { preStock?.unit ?? "例：個" }
+    }
+
+    var placeholder: Placeholder {
+        Placeholder(preStock: preStock)
+    }
+}
+
+// MARK: ここからフィールド
+extension StockForm {
+    enum Field {
+        case name, num, minNum, unit
     }
 }
