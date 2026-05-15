@@ -11,7 +11,6 @@ struct StockFormView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Tag.name) private var tags: [Tag]
 
-    let stock: Stock?
     @Binding var form: StockForm
 
     var body: some View {
@@ -79,5 +78,5 @@ struct StockFormView: View {
 
 #Preview {
     @Previewable @State var previewForm = StockForm()
-    StockFormView(stock: nil, form: $previewForm)
+    StockFormView(form: $previewForm)
 }

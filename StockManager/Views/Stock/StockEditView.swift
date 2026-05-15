@@ -29,7 +29,7 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(stock: stock, form: $form)
+                StockFormView(form: $form)
 
                 Spacer()
                     .frame(minHeight: 40)

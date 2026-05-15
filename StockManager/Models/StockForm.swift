@@ -12,6 +12,8 @@ struct StockForm {
     var unit: String = ""
     var tags: Set<Tag> = []
 
+    private var preStock: Stock? = nil
+
     struct Placeholder {
         static let name: String = "例：チーズケーキ"
         static let num: String = "例：10"
@@ -25,5 +27,6 @@ struct StockForm {
         self.minNum = stock.minNum
         self.unit = stock.unit
         self.tags = Set(stock.tags)
+        self.preStock = stock
     }
 }

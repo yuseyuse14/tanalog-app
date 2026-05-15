@@ -27,7 +27,7 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(stock: nil, form: $form)
+                StockFormView(form: $form)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
