@@ -61,11 +61,7 @@ struct StockEditView: View {
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
             .onAppear {
-                form.name = stock.name
-                form.num = stock.num
-                form.minNum = stock.minNum
-                form.unit = stock.unit
-                form.tags = Set(stock.tags)
+                form.apply(from: stock)
             }
         }
     }
