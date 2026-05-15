@@ -12,6 +12,7 @@ struct StockFormView: View {
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Binding var form: StockForm
+    let isValidationError: Bool
 
     var body: some View {
         VStack(spacing: 12) {
@@ -20,6 +21,10 @@ struct StockFormView: View {
                 TextField(form.placeholder.name, text: $form.name)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(.red, lineWidth: (isValidationError && !form.isNameValid) ? 1 : 0)
+                    )
             }
             Divider()
             HStack(spacing: 0) {
@@ -27,14 +32,26 @@ struct StockFormView: View {
                 TextField(form.placeholder.num, value: $form.num, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(.red, lineWidth: (isValidationError && !form.isNumValid) ? 1 : 0)
+                    )
                 Text("基準個数：")
                 TextField(form.placeholder.minNum, value: $form.minNum, format: .number)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(.red, lineWidth: (isValidationError && !form.isMinNumValid) ? 1 : 0)
+                    )
                 Text("単位：")
                 TextField(form.placeholder.unit, text: $form.unit)
                     .fontWeight(.medium)
                     .frame(maxWidth: .infinity)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(.red, lineWidth: (isValidationError && !form.isUnitValid) ? 1 : 0)
+                    )
             }
             Divider()
 
@@ -73,10 +90,11 @@ struct StockFormView: View {
             // TODO: 仕入れ先編集機能
             Divider()
         }
+        .textFieldStyle(.roundedBorder)
     }
 }
 
 #Preview {
     @Previewable @State var previewForm = StockForm()
-    StockFormView(form: $previewForm)
+    StockFormView(form: $previewForm, isValidationError: true)
 }

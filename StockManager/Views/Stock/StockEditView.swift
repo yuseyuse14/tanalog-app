@@ -14,6 +14,7 @@ struct StockEditView: View {
 
     @State private var form: StockForm = StockForm()
     @State private var isDeleteAlert: Bool = false
+    @State private var isValidationError: Bool = false
 
     var body: some View {
         // 詳細情報(右側)
@@ -29,13 +30,13 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form)
+                StockFormView(form: $form, isValidationError: isValidationError)
 
                 Spacer()
                     .frame(minHeight: 40)
                 // 削除ボタン
                 Button(role: .destructive) {
-                    isDeleteAlert.toggle()
+                    isDeleteAlert = true
                 } label: {
                     Label("削除する", systemImage: "trash")
                         .font(.headline)
@@ -70,7 +71,7 @@ struct StockEditView: View {
         if form.isValid {
             updateStock()
         } else {
-            // TODO: 空欄をわかりやすくするUI表示を実装
+            isValidationError.toggle()
         }
     }
 

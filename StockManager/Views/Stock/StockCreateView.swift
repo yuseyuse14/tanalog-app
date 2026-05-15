@@ -12,6 +12,7 @@ struct StockCreateView: View {
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State private var form: StockForm = StockForm()
+    @State private var isValidationError: Bool = false
 
     var body: some View {
         // 詳細情報(右側)
@@ -27,7 +28,7 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form)
+                StockFormView(form: $form, isValidationError: isValidationError)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
@@ -38,7 +39,7 @@ struct StockCreateView: View {
         if form.isValid {
             createStock()
         } else {
-            // TODO: 空欄をわかりやすくするUI表示を実装
+            isValidationError = true
         }
     }
 
