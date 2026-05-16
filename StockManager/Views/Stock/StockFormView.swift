@@ -13,6 +13,7 @@ struct StockFormView: View {
 
     @Binding var form: StockForm
     let isValidationError: Bool
+    let isUniqueError: Bool
 
     var body: some View {
         VStack(spacing: 12) {
@@ -23,7 +24,7 @@ struct StockFormView: View {
                     .frame(maxWidth: .infinity)
                     .overlay(
                         RoundedRectangle(cornerRadius: 4)
-                            .stroke(.red, lineWidth: (isValidationError && !form.isNameValid) ? 1 : 0)
+                            .stroke(!form.isNameValid ? .red : isUniqueError ? .yellow : .gray, lineWidth:( (isValidationError && !form.isNameValid) || isUniqueError) ? 1 : 0)
                     )
             }
             Divider()
@@ -96,5 +97,5 @@ struct StockFormView: View {
 
 #Preview {
     @Previewable @State var previewForm = StockForm()
-    StockFormView(form: $previewForm, isValidationError: true)
+    StockFormView(form: $previewForm, isValidationError: true, isUniqueError: true)
 }

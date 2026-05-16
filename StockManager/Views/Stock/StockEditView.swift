@@ -9,6 +9,7 @@ import SwiftData
 struct StockEditView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query private var stocks: [Stock]
 
     @Bindable var stock: Stock
 
@@ -30,7 +31,7 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isValidationError: isValidationError)
+                StockFormView(form: $form, isValidationError: isValidationError, isUniqueError: !form.isNameUnique(in: stocks))
 
                 Spacer()
                     .frame(minHeight: 40)
@@ -68,10 +69,10 @@ struct StockEditView: View {
     }
 
     private func validateSave() {
-        if form.isValid {
+        if form.canSave(in: stocks) {
             updateStock()
         } else {
-            isValidationError.toggle()
+            isValidationError = true
         }
     }
 

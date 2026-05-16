@@ -9,7 +9,7 @@ import SwiftData
 struct StockCreateView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    @Query(sort: \Tag.name) private var tags: [Tag]
+    @Query private var stocks: [Stock]
 
     @State private var form: StockForm = StockForm()
     @State private var isValidationError: Bool = false
@@ -28,7 +28,7 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isValidationError: isValidationError)
+                StockFormView(form: $form, isValidationError: isValidationError, isUniqueError: !form.isNameUnique(in: stocks))
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
@@ -36,7 +36,7 @@ struct StockCreateView: View {
     }
 
     private func validateSave() {
-        if form.isValid {
+        if form.canSave(in: stocks) {
             createStock()
         } else {
             isValidationError = true
