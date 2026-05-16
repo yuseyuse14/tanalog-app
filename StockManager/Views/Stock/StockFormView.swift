@@ -17,16 +17,13 @@ struct StockFormView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            HStack(spacing: 0) {
-                Text("在庫名：")
-                TextField(form.placeholder.name, text: $form.name)
-                    .fontWeight(.medium)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(!form.isNameValid ? .red : isUniqueError ? .yellow : .gray, lineWidth:( (isValidationError && !form.isNameValid) || isUniqueError) ? 1 : 0)
-                    )
-            }
+            FormTextView(
+                label: "在庫名",
+                placeholder: form.placeholder.name,
+                text: $form.name,
+                isError: (isValidationError && !form.isNameValid) || isUniqueError,
+                errorColor: isUniqueError ? .yellow : .red
+            )
             Divider()
             HStack(spacing: 0) {
                 Text("個数：")
@@ -45,14 +42,12 @@ struct StockFormView: View {
                         RoundedRectangle(cornerRadius: 4)
                             .stroke(.red, lineWidth: (isValidationError && !form.isMinNumValid) ? 1 : 0)
                     )
-                Text("単位：")
-                TextField(form.placeholder.unit, text: $form.unit)
-                    .fontWeight(.medium)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(.red, lineWidth: (isValidationError && !form.isUnitValid) ? 1 : 0)
-                    )
+                FormTextView(
+                    label: "単位",
+                    placeholder: form.placeholder.unit,
+                    text: $form.unit,
+                    isError: isValidationError && !form.isUnitValid
+                )
             }
             Divider()
 
