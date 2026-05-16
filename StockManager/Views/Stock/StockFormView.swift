@@ -26,22 +26,18 @@ struct StockFormView: View {
             )
             Divider()
             HStack(spacing: 0) {
-                Text("個数：")
-                TextField(form.placeholder.num, value: $form.num, format: .number)
-                    .fontWeight(.medium)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(.red, lineWidth: (isValidationError && !form.isNumValid) ? 1 : 0)
-                    )
-                Text("基準個数：")
-                TextField(form.placeholder.minNum, value: $form.minNum, format: .number)
-                    .fontWeight(.medium)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(.red, lineWidth: (isValidationError && !form.isMinNumValid) ? 1 : 0)
-                    )
+                FormNumberView(
+                    label: "個数",
+                    placeholder: form.placeholder.num,
+                    num: $form.num,
+                    isError: isValidationError && !form.isNumValid
+                )
+                FormNumberView(
+                    label: "基準個数",
+                    placeholder: form.placeholder.minNum,
+                    num: $form.minNum,
+                    isError: isValidationError && !form.isMinNumValid
+                )
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
