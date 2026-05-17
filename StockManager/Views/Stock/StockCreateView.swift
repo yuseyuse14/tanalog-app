@@ -12,7 +12,6 @@ struct StockCreateView: View {
     @Query private var stocks: [Stock]
 
     @State private var form: StockForm = StockForm()
-    @State private var isValidationError: Bool = false
 
     var body: some View {
         // 詳細情報(右側)
@@ -28,7 +27,7 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isValidationError: isValidationError, isUniqueError: !form.validation.nameUnique(in: stocks))
+                StockFormView(form: $form, isUniqueError: !form.validation.nameUnique(in: stocks))
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
@@ -39,7 +38,7 @@ struct StockCreateView: View {
         if form.canSave(in: stocks) {
             createStock()
         } else {
-            isValidationError = true
+            form.showError = true
         }
     }
 

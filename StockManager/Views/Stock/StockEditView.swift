@@ -15,7 +15,6 @@ struct StockEditView: View {
 
     @State private var form: StockForm = StockForm()
     @State private var isDeleteAlert: Bool = false
-    @State private var isValidationError: Bool = false
 
     var body: some View {
         // 詳細情報(右側)
@@ -31,7 +30,7 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isValidationError: isValidationError, isUniqueError: !form.validation.nameUnique(in: stocks))
+                StockFormView(form: $form, isUniqueError: !form.validation.nameUnique(in: stocks))
 
                 Spacer()
                     .frame(minHeight: 40)
@@ -72,7 +71,7 @@ struct StockEditView: View {
         if form.canSave(in: stocks) {
             updateStock()
         } else {
-            isValidationError = true
+            form.showError = true
         }
     }
 

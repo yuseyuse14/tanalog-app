@@ -13,6 +13,7 @@ struct StockForm {
     var tags: Set<Tag> = []
 
     private var preStock: Stock? = nil
+    var showError: Bool = false
 
     // Stockで初期化
     mutating func apply(from stock: Stock) {

@@ -12,7 +12,6 @@ struct StockFormView: View {
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Binding var form: StockForm
-    let isValidationError: Bool
     let isUniqueError: Bool
 
     var body: some View {
@@ -21,7 +20,7 @@ struct StockFormView: View {
                 label: "在庫名",
                 placeholder: form.placeholder.name,
                 text: $form.name,
-                isError: (isValidationError && !form.validation.nameFilled) || isUniqueError,
+                isError: (form.showError && !form.validation.nameFilled) || isUniqueError,
                 errorColor: isUniqueError ? .yellow : .red
             )
             Divider()
@@ -30,19 +29,19 @@ struct StockFormView: View {
                     label: "個数",
                     placeholder: form.placeholder.num,
                     num: $form.num,
-                    isError: isValidationError && !form.validation.numFilled
+                    isError: form.showError && !form.validation.numFilled
                 )
                 FormNumberView(
                     label: "基準個数",
                     placeholder: form.placeholder.minNum,
                     num: $form.minNum,
-                    isError: isValidationError && !form.validation.minNumFilled
+                    isError: form.showError && !form.validation.minNumFilled
                 )
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
                     text: $form.unit,
-                    isError: isValidationError && !form.validation.unitFilled
+                    isError: form.showError && !form.validation.unitFilled
                 )
             }
             Divider()
@@ -88,5 +87,5 @@ struct StockFormView: View {
 
 #Preview {
     @Previewable @State var previewForm = StockForm()
-    StockFormView(form: $previewForm, isValidationError: true, isUniqueError: true)
+    StockFormView(form: $previewForm, isUniqueError: true)
 }
