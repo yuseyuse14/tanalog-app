@@ -30,7 +30,7 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isUniqueError: !form.validation.nameUnique(in: stocks))
+                StockFormView(form: $form)
 
                 Spacer()
                     .frame(minHeight: 40)

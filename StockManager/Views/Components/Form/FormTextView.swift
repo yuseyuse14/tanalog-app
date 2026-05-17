@@ -9,8 +9,7 @@ struct FormTextView: View {
     let label: String
     let placeholder: String
     @Binding var text: String
-    let isError: Bool
-    var errorColor: Color = .red
+    var borderColor: Color
 
     var body: some View {
         HStack(spacing: 0) {
@@ -20,7 +19,7 @@ struct FormTextView: View {
                 .formInputFieldStyle()
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(isError ? errorColor : .clear, lineWidth: 1)
+                        .stroke(borderColor, lineWidth: 1)
                 )
         }
     }
@@ -28,5 +27,5 @@ struct FormTextView: View {
 
 #Preview {
     @Previewable @State var previewText: String = "初期値"
-    FormTextView(label: "ラベル", placeholder: "プレースホルダー", text: $previewText, isError: true)
+    FormTextView(label: "ラベル", placeholder: "プレースホルダー", text: $previewText, borderColor: .red)
 }

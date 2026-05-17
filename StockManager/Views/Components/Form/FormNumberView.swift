@@ -9,7 +9,7 @@ struct FormNumberView: View {
     let label: String
     let placeholder: String
     @Binding var num: Int?
-    let isError: Bool
+    let borderColor: Color
 
     var body: some View {
         HStack(spacing: 0) {
@@ -19,7 +19,7 @@ struct FormNumberView: View {
                 .formInputFieldStyle()
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(isError ? .red : .clear, lineWidth: 1)
+                        .stroke(borderColor, lineWidth: 1)
                 )
         }
     }
@@ -27,5 +27,5 @@ struct FormNumberView: View {
 
 #Preview {
     @Previewable @State var num: Int? = 0
-    FormNumberView(label: "ラベル", placeholder: "プレースホルダー", num: $num, isError: true)
+    FormNumberView(label: "ラベル", placeholder: "プレースホルダー", num: $num, borderColor: .red)
 }

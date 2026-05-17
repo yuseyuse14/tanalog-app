@@ -27,7 +27,7 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isUniqueError: !form.validation.nameUnique(in: stocks))
+                StockFormView(form: $form)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)

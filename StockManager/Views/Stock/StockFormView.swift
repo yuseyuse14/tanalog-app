@@ -9,10 +9,10 @@ import Flow
 
 struct StockFormView: View {
     @Environment(\.modelContext) private var context
+    @Query private var stocks: [Stock]
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Binding var form: StockForm
-    let isUniqueError: Bool
 
     var body: some View {
         VStack(spacing: 12) {
@@ -20,8 +20,7 @@ struct StockFormView: View {
                 label: "在庫名",
                 placeholder: form.placeholder.name,
                 text: $form.name,
-                isError: (form.showError && !form.validation.nameFilled) || isUniqueError,
-                errorColor: isUniqueError ? .yellow : .red
+                borderColor: (form.showError && !form.validation.nameFilled) ? .red : !form.validation.nameUnique(in: stocks) ? .yellow : .clear
             )
             Divider()
             HStack(spacing: 0) {
@@ -29,19 +28,19 @@ struct StockFormView: View {
                     label: "個数",
                     placeholder: form.placeholder.num,
                     num: $form.num,
-                    isError: form.showError && !form.validation.numFilled
+                    borderColor: (form.showError && !form.validation.numFilled) ? .red : .clear,
                 )
                 FormNumberView(
                     label: "基準個数",
                     placeholder: form.placeholder.minNum,
                     num: $form.minNum,
-                    isError: form.showError && !form.validation.minNumFilled
+                    borderColor: (form.showError && !form.validation.minNumFilled) ? .red : .clear,
                 )
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
                     text: $form.unit,
-                    isError: form.showError && !form.validation.unitFilled
+                    borderColor: (form.showError && !form.validation.unitFilled) ? .red : .clear,
                 )
             }
             Divider()
@@ -87,5 +86,5 @@ struct StockFormView: View {
 
 #Preview {
     @Previewable @State var previewForm = StockForm()
-    StockFormView(form: $previewForm, isUniqueError: true)
+    StockFormView(form: $previewForm)
 }
