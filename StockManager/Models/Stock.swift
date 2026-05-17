@@ -3,7 +3,6 @@
 //  StockManager
 //
 
-import Foundation
 import SwiftData
 
 @Model

@@ -20,7 +20,7 @@ struct StockFormView: View {
                 label: "在庫名",
                 placeholder: form.placeholder.name,
                 text: $form.name,
-                borderColor: (form.showError && !form.validation.nameFilled) ? .red : !form.validation.nameUnique(in: stocks) ? .yellow : .clear
+                borderColor: form.error.name(in: stocks).color
             )
             Divider()
             HStack(spacing: 0) {
@@ -28,19 +28,19 @@ struct StockFormView: View {
                     label: "個数",
                     placeholder: form.placeholder.num,
                     num: $form.num,
-                    borderColor: (form.showError && !form.validation.numFilled) ? .red : .clear,
+                    borderColor: form.error.num.color
                 )
                 FormNumberView(
                     label: "基準個数",
                     placeholder: form.placeholder.minNum,
                     num: $form.minNum,
-                    borderColor: (form.showError && !form.validation.minNumFilled) ? .red : .clear,
+                    borderColor: form.error.minNum.color
                 )
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
                     text: $form.unit,
-                    borderColor: (form.showError && !form.validation.unitFilled) ? .red : .clear,
+                    borderColor: form.error.unit.color
                 )
             }
             Divider()
@@ -87,4 +87,5 @@ struct StockFormView: View {
 #Preview {
     @Previewable @State var previewForm = StockForm()
     StockFormView(form: $previewForm)
+        .modelContainer(.preview)
 }

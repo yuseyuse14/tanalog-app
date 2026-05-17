@@ -57,6 +57,51 @@ extension StockForm {
     }
 }
 
+// MARK: ここからエラー
+extension StockForm {
+    struct FormError {
+        let form: StockForm
+
+        enum ErrorType {
+            case emptyString, emptyInt
+            case notUnique
+            case none
+
+            var color: Color {
+                switch self {
+                case .emptyString, .emptyInt:
+                    return .red
+                case .notUnique:
+                    return .yellow
+                default: return .clear
+                }
+            }
+        }
+
+        func name(in allStocks: [Stock]) -> ErrorType {
+            if form.showError && !form.validation.nameFilled { return .emptyString }
+            else if form.showError && !form.validation.nameUnique(in: allStocks) { return .notUnique }
+            else { return .none }
+        }
+        var num: ErrorType {
+            if form.showError && !form.validation.numFilled { return .emptyInt }
+            else { return .none }
+        }
+        var minNum: ErrorType {
+            if form.showError && !form.validation.minNumFilled { return .emptyInt }
+            else { return .none }
+        }
+        var unit: ErrorType {
+            if form.showError && !form.validation.unitFilled { return .emptyString }
+            else { return .none }
+        }
+    }
+
+    var error: FormError {
+        FormError(form: self)
+    }
+}
+
 // MARK: ここからプレースホルダー
 extension StockForm {
     struct Placeholder {
