@@ -11,7 +11,6 @@ struct FormLabelStyle: ViewModifier {
         content
             .font(.subheadline)
             .padding(4)
-            .frame(maxWidth: .infinity)
     }
 }
 

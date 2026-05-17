@@ -21,7 +21,7 @@ struct StockFormView: View {
                 label: "在庫名",
                 placeholder: form.placeholder.name,
                 text: $form.name,
-                isError: (isValidationError && !form.isNameValid) || isUniqueError,
+                isError: (isValidationError && !form.validation.nameFilled) || isUniqueError,
                 errorColor: isUniqueError ? .yellow : .red
             )
             Divider()
@@ -30,19 +30,19 @@ struct StockFormView: View {
                     label: "個数",
                     placeholder: form.placeholder.num,
                     num: $form.num,
-                    isError: isValidationError && !form.isNumValid
+                    isError: isValidationError && !form.validation.numFilled
                 )
                 FormNumberView(
                     label: "基準個数",
                     placeholder: form.placeholder.minNum,
                     num: $form.minNum,
-                    isError: isValidationError && !form.isMinNumValid
+                    isError: isValidationError && !form.validation.minNumFilled
                 )
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
                     text: $form.unit,
-                    isError: isValidationError && !form.isUnitValid
+                    isError: isValidationError && !form.validation.unitFilled
                 )
             }
             Divider()

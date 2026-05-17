@@ -3,7 +3,7 @@
 //  StockManager
 //
 
-import Foundation
+import SwiftUI
 
 struct StockForm {
     var name: String = ""
@@ -23,29 +23,36 @@ struct StockForm {
         tags = Set(stock.tags)
         preStock = stock
     }
-}
-
-// MARK: ここから入力チェック
-extension StockForm {
-    // 空白チェック
-    var isNameValid: Bool { !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    var isNumValid: Bool { num != nil }
-    var isMinNumValid: Bool { minNum != nil }
-    var isUnitValid: Bool { !unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    var isValid: Bool { isNameValid && isNumValid && isMinNumValid && isUnitValid }
-
-    // ユニークチェック
-    func isNameUnique(in allStocks: [Stock]) -> Bool {
-        guard isNameValid else { return true }
-
-        if let preStock, preStock.name == name {
-            return true
-        }
-        return !allStocks.contains { $0.name == name }
-    }
 
     func canSave(in allStocks: [Stock]) -> Bool {
-        isValid && isNameUnique(in: allStocks)
+        validation.allFilled && validation.nameUnique(in: allStocks)
+    }
+}
+
+// MARK: ここから入力検証ロジック
+extension StockForm {
+    struct Validation {
+        let form: StockForm
+        let preStock: Stock?
+
+        var nameFilled: Bool { !form.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var numFilled: Bool { form.num != nil }
+        var minNumFilled: Bool { form.minNum != nil }
+        var unitFilled: Bool { !form.unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var allFilled: Bool { nameFilled && numFilled && minNumFilled && unitFilled }
+
+        func nameUnique(in allStocks: [Stock]) -> Bool {
+            guard nameFilled else { return true }
+
+            if let preStock, preStock.name == form.name {
+                return true
+            }
+            return !allStocks.contains { $0.name == form.name }
+        }
+    }
+
+    var validation: Validation {
+        Validation(form: self, preStock: preStock)
     }
 }
 
