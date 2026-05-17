@@ -15,9 +15,9 @@ struct FormTextView: View {
     var body: some View {
         HStack(spacing: 0) {
             Text(label)
+                .formLabelStyle()
             TextField(placeholder, text: $text)
-                .fontWeight(.medium)
-                .frame(maxWidth: .infinity)
+                .formInputFieldStyle()
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(isError ? errorColor : .clear, lineWidth: 1)

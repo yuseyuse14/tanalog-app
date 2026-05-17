@@ -14,9 +14,9 @@ struct FormNumberView: View {
     var body: some View {
         HStack(spacing: 0) {
             Text(label)
+                .formLabelStyle()
             TextField(placeholder, value: $num, format: .number)
-                .fontWeight(.medium)
-                .frame(maxWidth: .infinity)
+                .formInputFieldStyle()
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(isError ? .red : .clear, lineWidth: 1)
