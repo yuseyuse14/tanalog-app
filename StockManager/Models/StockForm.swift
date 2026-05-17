@@ -14,19 +14,26 @@ struct StockForm {
 
     private var preStock: Stock? = nil
     var showError: Bool = false
+    private var stockNames: Set<String> = []
 
     // Stockで初期化
-    mutating func apply(from stock: Stock) {
+    mutating func apply(from stock: Stock, allStocks: [Stock]) {
         name = stock.name
         num = stock.num
         minNum = stock.minNum
         unit = stock.unit
         tags = Set(stock.tags)
         preStock = stock
+        setStockNames(from: allStocks)
+    }
+
+    // 全在庫の在庫名Setを作成
+    mutating func setStockNames(from allStocks: [Stock]) {
+        stockNames = Set(allStocks.map(\.name))
     }
 
     func canSave(in allStocks: [Stock]) -> Bool {
-        validation.allFilled && validation.nameUnique(in: allStocks)
+        validation.allFilled && validation.nameUnique
     }
 }
 
@@ -42,13 +49,13 @@ extension StockForm {
         var unitFilled: Bool { !form.unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
         var allFilled: Bool { nameFilled && numFilled && minNumFilled && unitFilled }
 
-        func nameUnique(in allStocks: [Stock]) -> Bool {
+        var nameUnique: Bool {
             guard nameFilled else { return true }
 
             if let preStock, preStock.name == form.name {
                 return true
             }
-            return !allStocks.contains { $0.name == form.name }
+            return !form.stockNames.contains(form.name)
         }
     }
 
@@ -78,9 +85,9 @@ extension StockForm {
             }
         }
 
-        func name(in allStocks: [Stock]) -> ErrorType {
+        var name: ErrorType {
             if form.showError && !form.validation.nameFilled { return .emptyString }
-            else if form.showError && !form.validation.nameUnique(in: allStocks) { return .notUnique }
+            else if form.showError && !form.validation.nameUnique { return .notUnique }
             else { return .none }
         }
         var num: ErrorType {

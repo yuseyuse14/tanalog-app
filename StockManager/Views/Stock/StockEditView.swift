@@ -61,9 +61,10 @@ struct StockEditView: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
-            .onAppear {
-                form.apply(from: stock)
-            }
+
+        }
+        .onAppear {
+            form.apply(from: stock, allStocks: stocks)
         }
     }
 

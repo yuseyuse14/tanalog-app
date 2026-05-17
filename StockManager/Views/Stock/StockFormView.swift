@@ -9,7 +9,6 @@ import Flow
 
 struct StockFormView: View {
     @Environment(\.modelContext) private var context
-    @Query private var stocks: [Stock]
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @Binding var form: StockForm
@@ -20,7 +19,7 @@ struct StockFormView: View {
                 label: "在庫名",
                 placeholder: form.placeholder.name,
                 text: $form.name,
-                borderColor: form.error.name(in: stocks).color
+                borderColor: form.error.name.color
             )
             Divider()
             HStack(spacing: 0) {

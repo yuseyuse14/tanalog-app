@@ -32,6 +32,9 @@ struct StockCreateView: View {
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
         }
+        .onAppear {
+            form.setStockNames(from: stocks)
+        }
     }
 
     private func validateSave() {
