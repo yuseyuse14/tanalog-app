@@ -16,11 +16,7 @@ struct FormNumberView: View {
             Text(label)
                 .formLabelStyle()
             TextField(placeholder, value: $num, format: .number)
-                .formInputFieldStyle()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(borderColor, lineWidth: 1)
-                )
+                .formInputFieldStyle(borderColor: borderColor)
         }
     }
 }

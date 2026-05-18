@@ -16,11 +16,7 @@ struct FormTextView: View {
             Text(label)
                 .formLabelStyle()
             TextField(placeholder, text: $text)
-                .formInputFieldStyle()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(borderColor, lineWidth: 1)
-                )
+                .formInputFieldStyle(borderColor: borderColor)
         }
     }
 }
