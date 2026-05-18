@@ -49,7 +49,7 @@ struct StockFormView: View {
             Divider()
 
             Label("仕入れ先", systemImage: "building.2")
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .formHeadlineStyle()
             // TODO: 仕入れ先編集機能
             Divider()
         }

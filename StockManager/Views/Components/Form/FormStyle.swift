@@ -31,11 +31,24 @@ struct FormInputFieldStyle: ViewModifier {
     }
 }
 
+// MARK: 見出し用
+struct FormHeadlineStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .fontWeight(.medium)
+            .padding(.horizontal, 4)
+    }
+}
+
 extension View {
     func formLabelStyle() -> some View {
         self.modifier(FormLabelStyle())
     }
     func formInputFieldStyle(borderColor: Color = .clear) -> some View {
         self.modifier(FormInputFieldStyle(borderColor: borderColor))
+    }
+    func formHeadlineStyle() -> some View {
+        self.modifier(FormHeadlineStyle())
     }
 }
