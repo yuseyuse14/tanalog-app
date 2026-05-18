@@ -15,12 +15,10 @@ struct FormTagView: View {
     @Binding var selectedTags: Set<Tag>
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 0) {
-                Label(label, systemImage: icon ?? "")
-                    .formHeadlineStyle()
-            }
-            HFlow(alignment: .center, spacing: 16) {
+        VStack(alignment: .leading, spacing: 4) {
+            Label(label, systemImage: icon ?? "")
+                .formHeadlineStyle()
+            HFlow(alignment: .center, spacing: 12) {
                 ForEach(tags) { tag in
                     Text(tag.name)
                         .font(.title3)
@@ -44,7 +42,7 @@ struct FormTagView: View {
                         }
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .formContentStyle()
         }
     }
 }

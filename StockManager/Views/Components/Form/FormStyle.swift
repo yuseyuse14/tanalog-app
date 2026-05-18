@@ -5,13 +5,34 @@
 
 import SwiftUI
 
+// MARK: 見出し用
+struct FormHeadlineStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .fontWeight(.medium)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 4)
+    }
+}
+
 // MARK: ラベル用
 struct FormLabelStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.subheadline)
             .padding(.vertical, 2)
+            .padding(.horizontal, 12)
+    }
+}
+
+// MARK: コンテンツ用
+struct FormContentStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .padding(.vertical, 2)
             .padding(.horizontal, 4)
+            .frame(maxWidth: .infinity)
     }
 }
 
@@ -25,19 +46,7 @@ struct FormInputFieldStyle: ViewModifier {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(borderColor, lineWidth: 1)
             )
-            .padding(.vertical, 2)
-            .padding(.horizontal, 4)
-            .frame(maxWidth: .infinity)
-    }
-}
-
-// MARK: 見出し用
-struct FormHeadlineStyle: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .font(.headline)
-            .fontWeight(.medium)
-            .padding(.horizontal, 4)
+            .formContentStyle()
     }
 }
 
@@ -50,5 +59,8 @@ extension View {
     }
     func formHeadlineStyle() -> some View {
         self.modifier(FormHeadlineStyle())
+    }
+    func formContentStyle() -> some View {
+        self.modifier(FormContentStyle())
     }
 }

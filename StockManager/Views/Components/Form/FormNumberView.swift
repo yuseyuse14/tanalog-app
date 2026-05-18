@@ -12,7 +12,7 @@ struct FormNumberView: View {
     let borderColor: Color
 
     var body: some View {
-        HStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             Text(label)
                 .formLabelStyle()
             TextField(placeholder, value: $num, format: .number)

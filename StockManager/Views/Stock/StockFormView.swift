@@ -8,33 +8,33 @@ import SwiftData
 import Flow
 
 struct StockFormView: View {
-    @Environment(\.modelContext) private var context
-    @Query(sort: \Tag.name) private var tags: [Tag]
-
     @Binding var form: StockForm
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            FormTextView(
-                label: "在庫名",
-                placeholder: form.placeholder.name,
-                text: $form.name,
-                borderColor: form.error.name.color
-            )
-            Divider()
-            HStack(spacing: 0) {
-                FormNumberView(
-                    label: "個数",
-                    placeholder: form.placeholder.num,
-                    num: $form.num,
-                    borderColor: form.error.num.color
+            VStack(alignment: .leading, spacing: 4){
+                Label("基本情報", systemImage: "list.bullet.clipboard")
+                    .formHeadlineStyle()
+                FormTextView(
+                    label: "在庫名",
+                    placeholder: form.placeholder.name,
+                    text: $form.name,
+                    borderColor: form.error.name.color
                 )
-                FormNumberView(
-                    label: "基準個数",
-                    placeholder: form.placeholder.minNum,
-                    num: $form.minNum,
-                    borderColor: form.error.minNum.color
-                )
+                HStack(spacing: 0) {
+                    FormNumberView(
+                        label: "個数",
+                        placeholder: form.placeholder.num,
+                        num: $form.num,
+                        borderColor: form.error.num.color
+                    )
+                    FormNumberView(
+                        label: "基準個数",
+                        placeholder: form.placeholder.minNum,
+                        num: $form.minNum,
+                        borderColor: form.error.minNum.color
+                    )
+                }
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
