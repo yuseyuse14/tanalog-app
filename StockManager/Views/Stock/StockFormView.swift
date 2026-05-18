@@ -14,7 +14,7 @@ struct StockFormView: View {
     @Binding var form: StockForm
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             FormTextView(
                 label: "在庫名",
                 placeholder: form.placeholder.name,
@@ -45,33 +45,7 @@ struct StockFormView: View {
             Divider()
 
             // タグ編集
-            Label("タグ", systemImage: "tag")
-                .frame(maxWidth: .infinity, alignment: .leading)
-            HFlow(alignment: .center, spacing: 16) {
-                ForEach(tags) { tag in
-                    Text(tag.name)
-                        .font(.title3)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 4)
-                        .background(
-                            form.tags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
-                                .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
-                                .fill(.blue.opacity(0.05))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(.blue.opacity(0.4))
-                        )
-                        .onTapGesture {
-                            if form.tags.contains(tag) {
-                                form.tags.remove(tag)
-                            } else {
-                                form.tags.insert(tag)
-                            }
-                        }
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            FormTagView(label: "タグ", icon: "tag", selectedTags: $form.tags)
             Divider()
 
             Label("仕入れ先", systemImage: "building.2")

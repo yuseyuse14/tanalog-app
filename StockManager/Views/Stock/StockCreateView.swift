@@ -45,7 +45,6 @@ struct StockCreateView: View {
         }
     }
 
-    // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func createStock() {
         let newStock = Stock(name: form.name, num: form.num!, minNum: form.minNum!, unit: form.unit)
         newStock.tags = Array(form.tags)

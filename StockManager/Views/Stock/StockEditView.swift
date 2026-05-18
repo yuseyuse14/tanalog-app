@@ -76,7 +76,6 @@ struct StockEditView: View {
         }
     }
 
-    // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func updateStock() {
         stock.name = form.name
         stock.num = form.num!
