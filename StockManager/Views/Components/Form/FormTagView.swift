@@ -10,14 +10,10 @@ import Flow
 struct FormTagView: View {
     @Query(sort: \Tag.name) private var tags: [Tag]
 
-    let label: String
-    let icon: String?
     @Binding var selectedTags: Set<Tag>
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Label(label, systemImage: icon ?? "")
-                .formHeadlineStyle()
+        VStack(alignment: .leading, spacing: 0) {
             HFlow(alignment: .center, spacing: 12) {
                 ForEach(tags) { tag in
                     Text(tag.name)
@@ -49,6 +45,6 @@ struct FormTagView: View {
 
 #Preview {
     @Previewable @State var previewTags: Set<Tag> = []
-    FormTagView(label: "ラベル", icon: "tag", selectedTags: $previewTags)
+    FormTagView(selectedTags: $previewTags)
         .modelContainer(.preview)
 }

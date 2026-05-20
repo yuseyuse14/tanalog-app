@@ -45,12 +45,19 @@ struct StockFormView: View {
             Divider()
 
             // タグ編集
-            FormTagView(label: "タグ", icon: "tag", selectedTags: $form.tags)
+            VStack(alignment: .leading, spacing: 4) {
+                Label("タグ", systemImage: "tag")
+                    .formHeadlineStyle()
+                FormTagView(selectedTags: $form.tags)
+            }
             Divider()
 
-            Label("仕入れ先", systemImage: "building.2")
-                .formHeadlineStyle()
-            // TODO: 仕入れ先編集機能
+            // 仕入れ先編集
+            VStack(alignment: .leading, spacing: 4) {
+                Label("仕入れ先", systemImage: "building.2")
+                    .formHeadlineStyle()
+                // TODO: 仕入れ先編集機能
+            }
             Divider()
         }
         .textFieldStyle(.roundedBorder)
