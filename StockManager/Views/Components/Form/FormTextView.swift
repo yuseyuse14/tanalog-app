@@ -16,6 +16,10 @@ struct FormTextView: View {
             HStack(spacing: 0) {
                 Text(label)
                     .formLabelStyle()
+                if let message = errorType.message {
+                    Text(message)
+                        .formLabelStyle()
+                }
             }
             TextField(placeholder, text: $text)
                 .formInputFieldStyle(borderColor: errorType.color)

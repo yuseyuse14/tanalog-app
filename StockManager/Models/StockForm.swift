@@ -83,6 +83,16 @@ extension StockForm {
                 default: return .clear
                 }
             }
+
+            var message: String? {
+                switch self {
+                case .emptyString, .emptyInt:
+                    return "必須入力です"
+                case .notUnique:
+                    return "既に使われています"
+                default: return nil
+                }
+            }
         }
 
         var name: ErrorType {

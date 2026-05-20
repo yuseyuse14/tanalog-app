@@ -13,8 +13,14 @@ struct FormNumberView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(label)
-                .formLabelStyle()
+            HStack(spacing: 0) {
+                Text(label)
+                    .formLabelStyle()
+                if let message = errorType.message {
+                    Text(message)
+                        .formLabelStyle()
+                }
+            }
             TextField(placeholder, value: $num, format: .number)
                 .formInputFieldStyle(borderColor: errorType.color)
         }
