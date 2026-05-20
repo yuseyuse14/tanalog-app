@@ -12,7 +12,6 @@ struct StockCreateView: View {
     @Query private var stocks: [Stock]
 
     @State private var form: StockForm = StockForm()
-    @State private var isValidationError: Bool = false
 
     var body: some View {
         // 詳細情報(右側)
@@ -28,10 +27,13 @@ struct StockCreateView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isValidationError: isValidationError, isUniqueError: !form.isNameUnique(in: stocks))
+                StockFormView(form: $form)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
+        }
+        .onAppear {
+            form.setStockNames(from: stocks)
         }
     }
 
@@ -39,11 +41,10 @@ struct StockCreateView: View {
         if form.canSave(in: stocks) {
             createStock()
         } else {
-            isValidationError = true
+            form.showError = true
         }
     }
 
-    // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func createStock() {
         let newStock = Stock(name: form.name, num: form.num!, minNum: form.minNum!, unit: form.unit)
         newStock.tags = Array(form.tags)

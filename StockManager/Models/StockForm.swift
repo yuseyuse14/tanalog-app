@@ -3,7 +3,7 @@
 //  StockManager
 //
 
-import Foundation
+import SwiftUI
 
 struct StockForm {
     var name: String = ""
@@ -13,39 +13,99 @@ struct StockForm {
     var tags: Set<Tag> = []
 
     private var preStock: Stock? = nil
+    var showError: Bool = false
+    private var stockNames: Set<String> = []
 
     // Stockで初期化
-    mutating func apply(from stock: Stock) {
+    mutating func apply(from stock: Stock, allStocks: [Stock]) {
         name = stock.name
         num = stock.num
         minNum = stock.minNum
         unit = stock.unit
         tags = Set(stock.tags)
         preStock = stock
+        setStockNames(from: allStocks)
     }
-}
 
-// MARK: ここから入力チェック
-extension StockForm {
-    // 空白チェック
-    var isNameValid: Bool { !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    var isNumValid: Bool { num != nil }
-    var isMinNumValid: Bool { minNum != nil }
-    var isUnitValid: Bool { !unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    var isValid: Bool { isNameValid && isNumValid && isMinNumValid && isUnitValid }
-
-    // ユニークチェック
-    func isNameUnique(in allStocks: [Stock]) -> Bool {
-        guard isNameValid else { return true }
-
-        if let preStock, preStock.name == name {
-            return true
-        }
-        return !allStocks.contains { $0.name == name }
+    // 全在庫の在庫名Setを作成
+    mutating func setStockNames(from allStocks: [Stock]) {
+        stockNames = Set(allStocks.map(\.name))
     }
 
     func canSave(in allStocks: [Stock]) -> Bool {
-        isValid && isNameUnique(in: allStocks)
+        validation.allFilled && validation.nameUnique
+    }
+}
+
+// MARK: ここから入力検証ロジック
+extension StockForm {
+    struct Validation {
+        let form: StockForm
+        let preStock: Stock?
+
+        var nameFilled: Bool { !form.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var numFilled: Bool { form.num != nil }
+        var minNumFilled: Bool { form.minNum != nil }
+        var unitFilled: Bool { !form.unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var allFilled: Bool { nameFilled && numFilled && minNumFilled && unitFilled }
+
+        var nameUnique: Bool {
+            guard nameFilled else { return true }
+
+            if let preStock, preStock.name == form.name {
+                return true
+            }
+            return !form.stockNames.contains(form.name)
+        }
+    }
+
+    var validation: Validation {
+        Validation(form: self, preStock: preStock)
+    }
+}
+
+// MARK: ここからエラー
+extension StockForm {
+    struct FormError {
+        let form: StockForm
+
+        enum ErrorType {
+            case emptyString, emptyInt
+            case notUnique
+            case none
+
+            var color: Color {
+                switch self {
+                case .emptyString, .emptyInt:
+                    return .red
+                case .notUnique:
+                    return .yellow
+                default: return .clear
+                }
+            }
+        }
+
+        var name: ErrorType {
+            if form.showError && !form.validation.nameFilled { return .emptyString }
+            else if form.showError && !form.validation.nameUnique { return .notUnique }
+            else { return .none }
+        }
+        var num: ErrorType {
+            if form.showError && !form.validation.numFilled { return .emptyInt }
+            else { return .none }
+        }
+        var minNum: ErrorType {
+            if form.showError && !form.validation.minNumFilled { return .emptyInt }
+            else { return .none }
+        }
+        var unit: ErrorType {
+            if form.showError && !form.validation.unitFilled { return .emptyString }
+            else { return .none }
+        }
+    }
+
+    var error: FormError {
+        FormError(form: self)
     }
 }
 

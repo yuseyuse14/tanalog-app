@@ -15,7 +15,6 @@ struct StockEditView: View {
 
     @State private var form: StockForm = StockForm()
     @State private var isDeleteAlert: Bool = false
-    @State private var isValidationError: Bool = false
 
     var body: some View {
         // 詳細情報(右側)
@@ -31,7 +30,7 @@ struct StockEditView: View {
                 )
 
                 // 在庫詳細
-                StockFormView(form: $form, isValidationError: isValidationError, isUniqueError: !form.isNameUnique(in: stocks))
+                StockFormView(form: $form)
 
                 Spacer()
                     .frame(minHeight: 40)
@@ -62,9 +61,10 @@ struct StockEditView: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
-            .onAppear {
-                form.apply(from: stock)
-            }
+
+        }
+        .onAppear {
+            form.apply(from: stock, allStocks: stocks)
         }
     }
 
@@ -72,11 +72,10 @@ struct StockEditView: View {
         if form.canSave(in: stocks) {
             updateStock()
         } else {
-            isValidationError = true
+            form.showError = true
         }
     }
 
-    // FIXME: 同一の名前がある場合上書きしてしまうので修正
     private func updateStock() {
         stock.name = form.name
         stock.num = form.num!
