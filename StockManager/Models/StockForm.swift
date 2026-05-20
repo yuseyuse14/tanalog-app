@@ -12,6 +12,8 @@ struct StockForm {
     var unit: String = ""
     var tags: Set<Tag> = []
 
+    let numMin: Int = 0
+
     private var preStock: Stock? = nil
     var showError: Bool = false
     private var stockNames: Set<String> = []
@@ -33,7 +35,7 @@ struct StockForm {
     }
 
     func canSave(in allStocks: [Stock]) -> Bool {
-        validation.allFilled && validation.nameUnique
+        validation.allFilled && validation.nameUnique && validation.numValid
     }
 }
 
@@ -57,6 +59,11 @@ extension StockForm {
             }
             return !form.stockNames.contains(form.name)
         }
+
+        var numValid: Bool {
+            guard numFilled else { return true }
+            return form.num! >= form.numMin
+        }
     }
 
     var validation: Validation {
@@ -72,11 +79,12 @@ extension StockForm {
         enum ErrorType {
             case emptyString, emptyInt
             case notUnique(String)
+            case outOfRange(Int)
             case none
 
             var color: Color {
                 switch self {
-                case .emptyString, .emptyInt:
+                case .emptyString, .emptyInt, .outOfRange:
                     return .red
                 case .notUnique:
                     return .yellow
@@ -90,6 +98,8 @@ extension StockForm {
                     return "必須項目です"
                 case .notUnique(let str):
                     return "「\(str)」は既に使われています"
+                case .outOfRange(let int):
+                    return "\(int)以上の数値を入力してください"
                 default: return nil
                 }
             }
@@ -102,6 +112,7 @@ extension StockForm {
         }
         var num: ErrorType {
             if form.showError && !form.validation.numFilled { return .emptyInt }
+            else if form.showError && !form.validation.numValid { return .outOfRange(form.numMin) }
             else { return .none }
         }
         var minNum: ErrorType {
