@@ -9,19 +9,19 @@ struct FormNumberView: View {
     let label: String
     let placeholder: String
     @Binding var num: Int?
-    let borderColor: Color
+    let errorType: StockForm.FormError.ErrorType
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(label)
                 .formLabelStyle()
             TextField(placeholder, value: $num, format: .number)
-                .formInputFieldStyle(borderColor: borderColor)
+                .formInputFieldStyle(borderColor: errorType.color)
         }
     }
 }
 
 #Preview {
     @Previewable @State var num: Int? = 0
-    FormNumberView(label: "ラベル", placeholder: "プレースホルダー", num: $num, borderColor: .red)
+    FormNumberView(label: "ラベル", placeholder: "プレースホルダー", num: $num, errorType: .none)
 }

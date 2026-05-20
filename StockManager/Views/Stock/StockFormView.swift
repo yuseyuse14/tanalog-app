@@ -19,27 +19,27 @@ struct StockFormView: View {
                     label: "在庫名",
                     placeholder: form.placeholder.name,
                     text: $form.name,
-                    borderColor: form.error.name.color
+                    errorType: form.error.name
                 )
                 HStack(spacing: 0) {
                     FormNumberView(
                         label: "個数",
                         placeholder: form.placeholder.num,
                         num: $form.num,
-                        borderColor: form.error.num.color
+                        errorType: form.error.num
                     )
                     FormNumberView(
                         label: "基準個数",
                         placeholder: form.placeholder.minNum,
                         num: $form.minNum,
-                        borderColor: form.error.minNum.color
+                        errorType: form.error.minNum
                     )
                 }
                 FormTextView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
                     text: $form.unit,
-                    borderColor: form.error.unit.color
+                    errorType: form.error.unit
                 )
             }
             Divider()
