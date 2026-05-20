@@ -13,6 +13,7 @@ struct StockForm {
     var tags: Set<Tag> = []
 
     let numMin: Int = 0
+    let minNumMin: Int = 1
 
     private var preStock: Stock? = nil
     var showError: Bool = false
@@ -35,7 +36,7 @@ struct StockForm {
     }
 
     func canSave(in allStocks: [Stock]) -> Bool {
-        validation.allFilled && validation.nameUnique && validation.numValid
+        validation.allFilled && validation.nameUnique && validation.allNumValid
     }
 }
 
@@ -64,6 +65,11 @@ extension StockForm {
             guard numFilled else { return true }
             return form.num! >= form.numMin
         }
+        var minNumValid: Bool {
+            guard minNumFilled else { return true }
+            return form.minNum! >= form.minNumMin
+        }
+        var allNumValid: Bool { numValid && minNumValid }
     }
 
     var validation: Validation {
@@ -117,6 +123,7 @@ extension StockForm {
         }
         var minNum: ErrorType {
             if form.showError && !form.validation.minNumFilled { return .emptyInt }
+            else if form.showError && !form.validation.minNumValid { return .outOfRange(form.minNumMin) }
             else { return .none }
         }
         var unit: ErrorType {
