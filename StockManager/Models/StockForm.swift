@@ -71,7 +71,7 @@ extension StockForm {
 
         enum ErrorType {
             case emptyString, emptyInt
-            case notUnique
+            case notUnique(String)
             case none
 
             var color: Color {
@@ -87,9 +87,9 @@ extension StockForm {
             var message: String? {
                 switch self {
                 case .emptyString, .emptyInt:
-                    return "必須入力です"
-                case .notUnique:
-                    return "既に使われています"
+                    return "必須項目です"
+                case .notUnique(let str):
+                    return "「\(str)」は既に使われています"
                 default: return nil
                 }
             }
@@ -97,7 +97,7 @@ extension StockForm {
 
         var name: ErrorType {
             if form.showError && !form.validation.nameFilled { return .emptyString }
-            else if form.showError && !form.validation.nameUnique { return .notUnique }
+            else if form.showError && !form.validation.nameUnique { return .notUnique(form.name) }
             else { return .none }
         }
         var num: ErrorType {
