@@ -26,6 +26,17 @@ struct FormLabelStyle: ViewModifier {
     }
 }
 
+// MARK: エラー用
+struct FormErrorStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.caption)
+            .foregroundColor(.red)
+            .padding(.vertical, 2)
+            .padding(.horizontal, 4)
+    }
+}
+
 // MARK: コンテンツ用
 struct FormContentStyle: ViewModifier {
     func body(content: Content) -> some View {
@@ -51,16 +62,23 @@ struct FormInputFieldStyle: ViewModifier {
 }
 
 extension View {
-    func formLabelStyle() -> some View {
-        self.modifier(FormLabelStyle())
-    }
-    func formInputFieldStyle(borderColor: Color = .clear) -> some View {
-        self.modifier(FormInputFieldStyle(borderColor: borderColor))
-    }
     func formHeadlineStyle() -> some View {
         self.modifier(FormHeadlineStyle())
     }
+
+    func formLabelStyle() -> some View {
+        self.modifier(FormLabelStyle())
+    }
+
+    func formErrorStyle() -> some View {
+        self.modifier(FormErrorStyle())
+    }
+
     func formContentStyle() -> some View {
         self.modifier(FormContentStyle())
+    }
+
+    func formInputFieldStyle(borderColor: Color = .clear) -> some View {
+        self.modifier(FormInputFieldStyle(borderColor: borderColor))
     }
 }

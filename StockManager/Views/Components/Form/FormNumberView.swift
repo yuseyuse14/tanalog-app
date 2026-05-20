@@ -18,7 +18,7 @@ struct FormNumberView: View {
                     .formLabelStyle()
                 if let message = errorType.message {
                     Text(message)
-                        .formLabelStyle()
+                        .formErrorStyle()
                 }
             }
             TextField(placeholder, value: $num, format: .number)
