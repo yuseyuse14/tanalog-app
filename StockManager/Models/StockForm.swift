@@ -29,6 +29,7 @@ struct StockForm {
         name = stock.name
         num = stock.num
         minNum = stock.minNum
+        unit = stock.unit
         tags = Set(stock.tags)
         preStock = stock
         setStockNames(from: allStocks)
@@ -54,10 +55,7 @@ extension StockForm {
         var nameFilled: Bool { !form.saveName.isEmpty }
         var numFilled: Bool { form.num != nil }
         var minNumFilled: Bool { form.minNum != nil }
-        var unitFilled: Bool {
-            guard let unit = form.unit else { return false }
-            return !unit.name.trimming(for: .edge).isEmpty
-        }
+        var unitFilled: Bool { form.unit != nil }
         var allFilled: Bool { nameFilled && numFilled && minNumFilled && unitFilled }
 
         // ユニーク確認
@@ -123,7 +121,7 @@ extension StockForm {
 
         var name: ErrorType {
             if form.showError && !form.validation.nameFilled { return .emptyString }
-            else if form.showError && !form.validation.nameUnique { return .notUnique(form.saveName) }
+            else if form.showError && !form.validation.nameUnique { return .notUnique(form.name.trimming(for: .all)) }
             else { return .none }
         }
         var num: ErrorType {
@@ -155,7 +153,7 @@ extension StockForm {
         var name: String { preStock?.name ?? "例：チーズケーキ" }
         var num: String { preStock?.num.description ?? "例：10" }
         var minNum: String { preStock?.minNum.description ?? "例：4" }
-        var unit: String { preStock?.unit ?? "例：個" }
+        var unit: String { preStock?.unit?.name ?? "例：個" }
     }
 
     var placeholder: Placeholder {

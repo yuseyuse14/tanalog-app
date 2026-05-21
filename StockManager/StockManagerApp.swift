@@ -11,7 +11,7 @@ struct StockManagerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(.shared)
+                .modelContainer(.preview)
         }
     }
 }
