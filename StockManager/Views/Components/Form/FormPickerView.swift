@@ -7,10 +7,9 @@ import SwiftUI
 
 struct FormPickerView: View {
     let label: String
-    @Binding var selectedItem: String
+    let items: [StockUnit]
+    @Binding var selectedItem: StockUnit?
     var errorType: StockForm.FormError.ErrorType
-
-    let items = ["個", "本", "枚", "袋"]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -24,23 +23,23 @@ struct FormPickerView: View {
             }
             // Picker風
             Menu {
-                ForEach(items, id: \.self) { item in
-                    Button(item) {
+                ForEach(items) { item in
+                    Button(item.name) {
                         selectedItem = item
                     }
                 }
             } label: {
                 HStack {
-                    Text(selectedItem)
+                    Text(selectedItem?.name ?? "")
+                    Spacer()
+                    Image(systemName: "chevron.up.chevron.down")
                 }
-                Spacer()
-                Image(systemName: "chevron.up.chevron.down")
             }
         }
     }
 }
 
 #Preview {
-    @Previewable @State var previewItem: String = "初期値"
-    FormPickerView(label: "ラベル", selectedItem: $previewItem, errorType: .none)
+    @Previewable @State var previewItem: StockUnit?
+    FormPickerView(label: "ラベル", items: [StockUnit(name: "個"), StockUnit(name: "本")], selectedItem: $previewItem, errorType: .none)
 }

@@ -80,7 +80,7 @@ struct StockEditView: View {
         stock.name = form.saveName
         stock.num = form.num!
         stock.minNum = form.minNum!
-        stock.unit = form.unit
+        stock.unit = form.unit!.name
         stock.tags = Array(form.tags)
         try? context.save()
         dismiss()

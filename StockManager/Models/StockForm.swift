@@ -10,7 +10,7 @@ struct StockForm {
     var saveName: String { name.trimming(for: .edge) }
     var num: Int? = nil
     var minNum: Int? = nil
-    var unit: String = ""
+    var unit: StockUnit? = nil
     var tags: Set<Tag> = []
 
     // 数値の範囲
@@ -29,7 +29,6 @@ struct StockForm {
         name = stock.name
         num = stock.num
         minNum = stock.minNum
-        unit = stock.unit
         tags = Set(stock.tags)
         preStock = stock
         setStockNames(from: allStocks)
@@ -55,7 +54,10 @@ extension StockForm {
         var nameFilled: Bool { !form.saveName.isEmpty }
         var numFilled: Bool { form.num != nil }
         var minNumFilled: Bool { form.minNum != nil }
-        var unitFilled: Bool { !form.unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var unitFilled: Bool {
+            guard let unit = form.unit else { return false }
+            return !unit.name.trimming(for: .edge).isEmpty
+        }
         var allFilled: Bool { nameFilled && numFilled && minNumFilled && unitFilled }
 
         // ユニーク確認

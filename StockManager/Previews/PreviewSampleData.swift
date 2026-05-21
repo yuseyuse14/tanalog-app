@@ -11,9 +11,11 @@ extension ModelContainer {
         let context = container.mainContext
         // TODO: プレビュー用データを追加
         let stocks = Stock.samples
-        let tags = Tag.samples
         stocks.forEach { context.insert($0) }
+        let tags = Tag.samples
         tags.forEach { context.insert($0) }
+        let units = StockUnit.samples
+        units.forEach { context.insert($0) }
 
         // StockのRelation
         let stockRelationDict = Dictionary(uniqueKeysWithValues: Stock.relations.map { ($0.stockName, $0) } )
@@ -82,5 +84,12 @@ extension Tag {
         Tag(name: "ソフトドリンク"),
         Tag(name: "調味料"),
         Tag(name: "消耗品"),
+    ]
+}
+
+extension StockUnit {
+    static let samples: [StockUnit] = [
+        StockUnit(name: "個"),
+        StockUnit(name: "本"),
     ]
 }

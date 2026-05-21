@@ -8,6 +8,9 @@ import SwiftData
 import Flow
 
 struct StockFormView: View {
+    @Environment(\.modelContext) private var context
+    @Query private var units: [StockUnit]
+
     @Binding var form: StockForm
 
     var body: some View {
@@ -37,6 +40,7 @@ struct StockFormView: View {
                 }
                 FormPickerView(
                     label: "単位",
+                    items: units,
                     selectedItem: $form.unit,
                     errorType: form.error.unit
                 )

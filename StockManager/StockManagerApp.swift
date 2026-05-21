@@ -20,7 +20,8 @@ extension ModelContainer {
     // 共通スキーマ
     static let schema = Schema([
         Stock.self,
-        Tag.self
+        Tag.self,
+        StockUnit.self
     ])
 
     // 公開用コンテナ
