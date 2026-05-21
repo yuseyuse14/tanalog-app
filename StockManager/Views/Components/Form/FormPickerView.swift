@@ -24,8 +24,15 @@ struct FormPickerView: View {
             // Picker風
             Menu {
                 ForEach(items) { item in
-                    Button(item.name) {
+                    Button {
                         selectedItem = item
+                    } label: {
+                        HStack {
+                            if selectedItem == item {
+                                Image(systemName: "checkmark")
+                            }
+                            Text(item.name)
+                        }
                     }
                 }
             } label: {
