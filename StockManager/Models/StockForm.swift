@@ -7,16 +7,21 @@ import SwiftUI
 
 struct StockForm {
     var name: String = ""
+    var saveName: String { name.trimming(for: .edge) }
     var num: Int? = nil
     var minNum: Int? = nil
     var unit: String = ""
     var tags: Set<Tag> = []
 
+    // 数値の範囲
     let numMin: Int = 0
     let minNumMin: Int = 1
 
-    private var preStock: Stock? = nil
+    // UI状態
     var showError: Bool = false
+
+    // 関連データ
+    private var preStock: Stock? = nil
     private var stockNames: Set<String> = []
 
     // Stockで初期化
@@ -32,7 +37,7 @@ struct StockForm {
 
     // 全在庫の在庫名Setを作成
     mutating func setStockNames(from allStocks: [Stock]) {
-        stockNames = Set(allStocks.map(\.name))
+        stockNames = Set(allStocks.map { $0.name.trimming(for: .all) })
     }
 
     func canSave(in allStocks: [Stock]) -> Bool {
@@ -46,21 +51,24 @@ extension StockForm {
         let form: StockForm
         let preStock: Stock?
 
-        var nameFilled: Bool { !form.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        // 入力確認
+        var nameFilled: Bool { !form.saveName.isEmpty }
         var numFilled: Bool { form.num != nil }
         var minNumFilled: Bool { form.minNum != nil }
         var unitFilled: Bool { !form.unit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
         var allFilled: Bool { nameFilled && numFilled && minNumFilled && unitFilled }
 
+        // ユニーク確認
         var nameUnique: Bool {
             guard nameFilled else { return true }
 
-            if let preStock, preStock.name == form.name {
+            if let preStock, preStock.name.trimming(for: .all) == form.name.trimming(for: .all) {
                 return true
             }
-            return !form.stockNames.contains(form.name)
+            return !form.stockNames.contains(form.name.trimming(for: .all))
         }
 
+        // 数値範囲確認
         var numValid: Bool {
             guard numFilled else { return true }
             return form.num! >= form.numMin
@@ -113,7 +121,7 @@ extension StockForm {
 
         var name: ErrorType {
             if form.showError && !form.validation.nameFilled { return .emptyString }
-            else if form.showError && !form.validation.nameUnique { return .notUnique(form.name) }
+            else if form.showError && !form.validation.nameUnique { return .notUnique(form.saveName) }
             else { return .none }
         }
         var num: ErrorType {

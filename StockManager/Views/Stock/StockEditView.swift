@@ -77,7 +77,7 @@ struct StockEditView: View {
     }
 
     private func updateStock() {
-        stock.name = form.name
+        stock.name = form.saveName
         stock.num = form.num!
         stock.minNum = form.minNum!
         stock.unit = form.unit
