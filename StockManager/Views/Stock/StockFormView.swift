@@ -40,6 +40,7 @@ struct StockFormView: View {
                 }
                 FormPickerView(
                     label: "単位",
+                    placeholder: form.placeholder.unit,
                     items: units,
                     selectedItem: $form.unit,
                     errorType: form.error.unit

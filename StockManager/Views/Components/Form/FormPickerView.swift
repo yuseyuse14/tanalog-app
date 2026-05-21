@@ -7,6 +7,7 @@ import SwiftUI
 
 struct FormPickerView: View {
     let label: String
+    let placeholder: String
     let items: [StockUnit]
     @Binding var selectedItem: StockUnit?
     var errorType: StockForm.FormError.ErrorType
@@ -37,11 +38,12 @@ struct FormPickerView: View {
                 }
             } label: {
                 HStack {
-                    Text(selectedItem?.name ?? "")
+                    Text(selectedItem?.name ?? placeholder)
+                        .foregroundStyle(selectedItem == nil ? Color(.systemGray2) : Color(.label))
                     Spacer()
                     Image(systemName: "chevron.up.chevron.down")
+                        .foregroundStyle(Color(.label))
                 }
-                .foregroundStyle(Color(.label))
                 .formInputFieldStyle(borderColor: errorType.color)
             }
         }
@@ -50,5 +52,5 @@ struct FormPickerView: View {
 
 #Preview {
     @Previewable @State var previewItem: StockUnit?
-    FormPickerView(label: "ラベル", items: [StockUnit(name: "個"), StockUnit(name: "本")], selectedItem: $previewItem, errorType: .none)
+    FormPickerView(label: "ラベル", placeholder: "プレースホルダー", items: [StockUnit(name: "個"), StockUnit(name: "本")], selectedItem: $previewItem, errorType: .none)
 }
