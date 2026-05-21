@@ -35,10 +35,9 @@ struct StockFormView: View {
                         errorType: form.error.minNum
                     )
                 }
-                FormTextView(
+                FormPickerView(
                     label: "単位",
-                    placeholder: form.placeholder.unit,
-                    text: $form.unit,
+                    selectedItem: $form.unit,
                     errorType: form.error.unit
                 )
             }
