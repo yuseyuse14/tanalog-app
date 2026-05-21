@@ -172,7 +172,7 @@ struct StockView: View {
                                 .fontWeight(.medium)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Text("単位：")
-                            Text(stock.unit)
+                            Text(stock.unit!.name)
                                 .fontWeight(.medium)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }

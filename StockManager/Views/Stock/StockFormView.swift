@@ -8,6 +8,9 @@ import SwiftData
 import Flow
 
 struct StockFormView: View {
+    @Environment(\.modelContext) private var context
+    @Query private var units: [StockUnit]
+
     @Binding var form: StockForm
 
     var body: some View {
@@ -19,27 +22,28 @@ struct StockFormView: View {
                     label: "在庫名",
                     placeholder: form.placeholder.name,
                     text: $form.name,
-                    borderColor: form.error.name.color
+                    errorType: form.error.name
                 )
                 HStack(spacing: 0) {
                     FormNumberView(
                         label: "個数",
                         placeholder: form.placeholder.num,
                         num: $form.num,
-                        borderColor: form.error.num.color
+                        errorType: form.error.num
                     )
                     FormNumberView(
                         label: "基準個数",
                         placeholder: form.placeholder.minNum,
                         num: $form.minNum,
-                        borderColor: form.error.minNum.color
+                        errorType: form.error.minNum
                     )
                 }
-                FormTextView(
+                FormPickerView(
                     label: "単位",
                     placeholder: form.placeholder.unit,
-                    text: $form.unit,
-                    borderColor: form.error.unit.color
+                    items: units,
+                    selectedItem: $form.unit,
+                    errorType: form.error.unit
                 )
             }
             Divider()
@@ -60,7 +64,6 @@ struct StockFormView: View {
             }
             Divider()
         }
-        .textFieldStyle(.roundedBorder)
     }
 }
 

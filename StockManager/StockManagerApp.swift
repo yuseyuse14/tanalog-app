@@ -11,7 +11,7 @@ struct StockManagerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(.shared)
+                .modelContainer(.preview)
         }
     }
 }
@@ -20,7 +20,8 @@ extension ModelContainer {
     // 共通スキーマ
     static let schema = Schema([
         Stock.self,
-        Tag.self
+        Tag.self,
+        StockUnit.self
     ])
 
     // 公開用コンテナ
