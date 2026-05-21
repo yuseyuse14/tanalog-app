@@ -41,6 +41,8 @@ struct FormPickerView: View {
                     Spacer()
                     Image(systemName: "chevron.up.chevron.down")
                 }
+                .foregroundStyle(Color(.label))
+                .formInputFieldStyle(borderColor: errorType.color)
             }
         }
     }

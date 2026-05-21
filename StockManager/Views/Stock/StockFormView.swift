@@ -63,7 +63,6 @@ struct StockFormView: View {
             }
             Divider()
         }
-        .textFieldStyle(.roundedBorder)
     }
 }
 

@@ -53,6 +53,12 @@ struct FormInputFieldStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .fontWeight(.medium)
+            .padding(6)
+            .background(
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color(.systemBackground))
+                    .stroke(Color(.systemGray2), lineWidth: 0.5)
+            )
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(borderColor, lineWidth: 1)
