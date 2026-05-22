@@ -40,7 +40,7 @@ struct TagView: View {
             }
         }
         .sheet(isPresented: $showCreate) {
-            Text("タグ追加画面")
+            TagCreateView()
         }
     }
 }

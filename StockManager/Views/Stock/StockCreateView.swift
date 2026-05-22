@@ -14,7 +14,6 @@ struct StockCreateView: View {
     @State private var form: StockForm = StockForm()
 
     var body: some View {
-        // 詳細情報(右側)
         ScrollView {
             VStack(alignment: .center, spacing: 12) {
                 // ヘッダー
