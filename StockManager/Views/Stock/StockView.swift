@@ -40,6 +40,16 @@ struct StockView: View {
                         TextField("在庫を検索", text: $searchText)
                             .font(.title3)
                             .frame(maxWidth: .infinity)
+
+                        if !searchText.isEmpty {
+                            Button {
+                                searchText = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundStyle(Color(.label))
+                                    .padding(.horizontal, 12)
+                            }
+                        }
                     }
                 }
                 .background(
