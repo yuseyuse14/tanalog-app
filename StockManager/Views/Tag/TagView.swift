@@ -50,19 +50,26 @@ struct TagView: View {
                                 .offset(x: -10, y: -10)
                             }
                         }
+                        // 震えるアニメーション
+                        .phaseAnimator([1.2, -1.2]) { content, value in
+                            content
+                                .rotationEffect(.degrees(isEditMode ? value : 0))
+                        } animation: { _ in
+                                .linear(duration: 0.08)
+                        }
                     }
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+            // 長押し
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 0.5)
+                    .onEnded { _ in
+                        isEditMode = true
+                    }
+            )
         }
-        // 長押し
-        .simultaneousGesture(
-            LongPressGesture(minimumDuration: 0.5)
-                .onEnded { _ in
-                    isEditMode = true
-                }
-        )
         .simultaneousGesture(
             TapGesture()
                 .onEnded {
