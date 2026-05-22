@@ -10,11 +10,13 @@ struct PageHeaderView<Content: View>: View {
     @ViewBuilder let items: () -> Content
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .bottom, spacing: 0) {
             Text(titleLabel)
                 .pageHeadlineStyle()
             Spacer()
-            items()
+            HStack(spacing: 8) {
+                items()
+            }
         }
         .padding(.vertical, 4)
         .padding(.horizontal, 16)

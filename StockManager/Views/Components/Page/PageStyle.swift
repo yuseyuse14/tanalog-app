@@ -15,6 +15,19 @@ struct PageHeadlineStyle: ViewModifier {
     }
 }
 
+// MARK: ヘッダーボタン用
+extension Image {
+    func pageHeaderButtonStyle() -> some View {
+        self
+            .resizable()
+            .scaledToFit()
+            .frame(width: 28, height: 28)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .foregroundStyle(.foreground)
+    }
+}
+
 extension View {
     func pageHeadlineStyle() -> some View {
         self.modifier(PageHeadlineStyle())

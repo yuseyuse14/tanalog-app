@@ -20,25 +20,22 @@ struct StockView: View {
         VStack(spacing: 0) {
             // ヘッダー
             PageHeaderView(titleLabel: "在庫一覧") {
-                // TODO: ソート機能
-                Image(systemName: "arrow.up.arrow.down")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
                 // TODO: 検索機能
-                Image(systemName: "magnifyingglass")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
+                Button { } label: {
+                    Image(systemName: "magnifyingglass")
+                        .pageHeaderButtonStyle()
+                }
+                // TODO: ソート機能
+                Button { } label: {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .pageHeaderButtonStyle()
+                }
                 // 新規追加
                 Button {
                     isCreate.toggle()
                 } label: {
                     Image(systemName: "plus")
-                        .resizable()
-                        .frame(width: 28, height: 28)
-                        .padding(.horizontal, 16)
-                        .foregroundStyle(.foreground)
+                        .pageHeaderButtonStyle()
                 }
             }
 
