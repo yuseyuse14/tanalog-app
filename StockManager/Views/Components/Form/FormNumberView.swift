@@ -9,7 +9,7 @@ struct FormNumberView: View {
     let label: String
     let placeholder: String
     @Binding var num: Int?
-    let errorType: StockForm.FormError.ErrorType
+    let errorType: FormErrorType
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

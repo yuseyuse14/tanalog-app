@@ -64,33 +64,7 @@ extension TagForm {
     struct FormError {
         let form: TagForm
 
-        enum ErrorType {
-            case emptyString
-            case notUnique(String)
-            case none
-
-            var color: Color {
-                switch self {
-                case .emptyString:
-                    return .red
-                case .notUnique:
-                    return .yellow
-                default: return .clear
-                }
-            }
-
-            var message: String? {
-                switch self {
-                case .emptyString:
-                    return "必須項目です"
-                case .notUnique(let str):
-                    return "「\(str)」は既に使われています"
-                default: return nil
-                }
-            }
-        }
-
-        var name: ErrorType {
+        var name: FormErrorType {
             if form.showError && !form.validation.nameFilled { return .emptyString }
             else if form.showError && !form.validation.nameUnique { return .notUnique(form.name.trimming(for: .all)) }
             else { return .none }
