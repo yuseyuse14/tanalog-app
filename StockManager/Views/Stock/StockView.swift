@@ -19,9 +19,7 @@ struct StockView: View {
     var body: some View {
         VStack(spacing: 0) {
             // ヘッダー
-            HStack(spacing: 0) {
-                Text("在庫一覧")
-                    .pageHeadlineStyle()
+            PageHeaderView(titleLabel: "在庫一覧") {
                 // TODO: ソート機能
                 Image(systemName: "arrow.up.arrow.down")
                     .resizable()
@@ -43,8 +41,6 @@ struct StockView: View {
                         .foregroundStyle(.foreground)
                 }
             }
-            .padding(.horizontal, 16)
-            Divider()
 
             // タグ一覧
             HStack(spacing: 0) {
