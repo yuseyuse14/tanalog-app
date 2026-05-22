@@ -23,7 +23,7 @@ struct StockView: View {
         if searchText.isEmpty {
             return stocks
         } else {
-            return stocks.filter { $0.name.localizedStandardContains(searchText) }
+            return stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
     }
 
@@ -31,16 +31,16 @@ struct StockView: View {
         VStack(spacing: 0) {
             // ヘッダー
             PageHeaderView(titleLabel: "在庫一覧") {
-                // TODO: 検索機能
+                // 検索機能
                 HStack(spacing: 0) {
                     Image(systemName: "magnifyingglass")
                         .pageHeaderButtonStyle()
-
+                    // 検索フィールド
                     if isSearch {
                         TextField("在庫を検索", text: $searchText)
                             .font(.title3)
                             .frame(maxWidth: .infinity)
-
+                        // リセットボタン
                         if !searchText.isEmpty {
                             Button {
                                 searchText = ""
@@ -60,6 +60,7 @@ struct StockView: View {
                 .onTapGesture {
                         isSearch.toggle()
                 }
+
                 // TODO: ソート機能
                 Button { } label: {
                     Image(systemName: "arrow.up.arrow.down")
