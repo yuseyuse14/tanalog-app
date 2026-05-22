@@ -19,6 +19,14 @@ struct StockView: View {
     @State private var isSearch: Bool = false
     @State private var searchText: String = ""
 
+    var filteredStocks: [Stock] {
+        if searchText.isEmpty {
+            return stocks
+        } else {
+            return stocks.filter { $0.name.localizedStandardContains(searchText) }
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // ヘッダー
@@ -89,7 +97,7 @@ struct StockView: View {
                 // 在庫一覧(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(stocks) { stock in
+                        ForEach(filteredStocks) { stock in
                             HStack(spacing: 0) {
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(stock.status.color)
