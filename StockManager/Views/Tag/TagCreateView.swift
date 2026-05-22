@@ -4,9 +4,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TagCreateView: View {
+    @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query private var tags: [Tag]
 
     @State private var form: TagForm = TagForm()
 
@@ -19,7 +22,7 @@ struct TagCreateView: View {
                     leftLabel: "キャンセル",
                     rightLabel: "追加",
                     leftAction: { dismiss() },
-                    rightAction: { }
+                    rightAction: { validateSave() }
                 )
 
                 // タグ詳細
@@ -28,6 +31,24 @@ struct TagCreateView: View {
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
         }
+        .onAppear {
+            form.setTagNames(from: tags)
+        }
+    }
+
+    private func validateSave() {
+        if form.canSave(in: tags) {
+            createTag()
+        } else {
+            form.showError = true
+        }
+    }
+
+    private func createTag() {
+        let newTag = Tag(name: form.saveName)
+        context.insert(newTag)
+        try? context.save()
+        dismiss()
     }
 }
 
