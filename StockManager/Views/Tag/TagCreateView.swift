@@ -23,7 +23,7 @@ struct TagCreateView: View {
                 )
 
                 // タグ詳細
-                Text("タグの詳細")
+                TagFormView(form: $form)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
