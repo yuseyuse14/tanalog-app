@@ -70,22 +70,21 @@ struct TagView: View {
                     }
             )
         }
-        .simultaneousGesture(
-            TapGesture()
-                .onEnded {
-                    if isEditMode {
-                        isEditMode = false
-                    }
-                }
-        )
+        .onTapGesture {
+            if isEditMode {
+                isEditMode = false
+            }
+        }
         .sheet(isPresented: $showCreate) {
             TagCreateView()
         }
     }
 
     private func deleteTag(_ tag: Tag) {
-        context.delete(tag)
-        try? context.save()
+        withAnimation(.bouncy(duration: 0.8)) {
+            context.delete(tag)
+            try? context.save()
+        }
     }
 }
 
