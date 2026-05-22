@@ -8,10 +8,11 @@ import SwiftData
 import Flow
 
 struct TagView: View {
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext) private var context
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State var showCreate: Bool = false
+    @State var isEditMode: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,24 +25,60 @@ struct TagView: View {
                         .pageHeaderButtonStyle()
                 }
             }
+
             ScrollView {
                 HFlow(alignment: .center, spacing: 16) {
                     ForEach(tags) { tag in
-                        Text(tag.name)
-                            .font(.title)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 5)
-                            .background(Color.blue.opacity(0.1))
-                            .cornerRadius(15)
+                        ZStack(alignment: .topLeading) {
+                            // タグ
+                            Text(tag.name)
+                                .font(.title)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 5)
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(15)
+
+                            // 削除ボタン
+                            if isEditMode {
+                                Button {
+                                    deleteTag(tag)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title2)
+                                        .foregroundStyle(Color(.label), Color(.systemGray4))
+                                }
+                                .offset(x: -10, y: -10)
+                            }
+                        }
                     }
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        // 長押し
+        .simultaneousGesture(
+            LongPressGesture(minimumDuration: 0.5)
+                .onEnded { _ in
+                    isEditMode = true
+                }
+        )
+        .simultaneousGesture(
+            TapGesture()
+                .onEnded {
+                    if isEditMode {
+                        isEditMode = false
+                    }
+                }
+        )
         .sheet(isPresented: $showCreate) {
             TagCreateView()
         }
+    }
+
+    private func deleteTag(_ tag: Tag) {
+        context.delete(tag)
+        try? context.save()
     }
 }
 
