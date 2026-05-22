@@ -21,9 +21,7 @@ struct StockView: View {
             // ヘッダー
             HStack(spacing: 0) {
                 Text("在庫一覧")
-                    .font(.system(size: 36, weight: .semibold))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
+                    .pageHeadlineStyle()
                 // TODO: ソート機能
                 Image(systemName: "arrow.up.arrow.down")
                     .resizable()

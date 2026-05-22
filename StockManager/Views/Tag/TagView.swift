@@ -14,9 +14,7 @@ struct TagView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text("タグ一覧")
-                .font(.system(size: 40, weight: .semibold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
+                .pageHeadlineStyle()
             Divider()
             ScrollView {
                 HFlow(alignment: .center, spacing: 16) {
