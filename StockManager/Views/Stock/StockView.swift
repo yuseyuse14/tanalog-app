@@ -16,14 +16,31 @@ struct StockView: View {
     @State private var isEdit: Bool = false
     @State private var isCreate: Bool = false
 
+    @State private var isSearch: Bool = false
+    @State private var searchText: String = ""
+
     var body: some View {
         VStack(spacing: 0) {
             // ヘッダー
             PageHeaderView(titleLabel: "在庫一覧") {
                 // TODO: 検索機能
-                Button { } label: {
+                HStack(spacing: 0) {
                     Image(systemName: "magnifyingglass")
                         .pageHeaderButtonStyle()
+
+                    if isSearch {
+                        TextField("在庫を検索", text: $searchText)
+                            .font(.title3)
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 28)
+                        .fill(isSearch ? Color(.systemGray6) : .clear)
+                        .stroke(isSearch ? Color(.separator) : .clear)
+                )
+                .onTapGesture {
+                        isSearch.toggle()
                 }
                 // TODO: ソート機能
                 Button { } label: {

@@ -11,7 +11,7 @@ struct PageHeadlineStyle: ViewModifier {
         content
             .font(.system(size: 40, weight: .semibold))
             .padding(.horizontal, 16)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(alignment: .leading)
     }
 }
 
