@@ -18,8 +18,7 @@ struct PageHeaderView<Content: View>: View {
                 items()
             }
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal, 16)
+        .pageContentStyle()
 
         Divider()
     }

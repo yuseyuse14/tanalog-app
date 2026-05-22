@@ -28,8 +28,22 @@ extension Image {
     }
 }
 
+// MARK: コンテンツ用
+struct PageContentStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .padding(.vertical, 4)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity)
+    }
+}
+
 extension View {
     func pageHeadlineStyle() -> some View {
         self.modifier(PageHeadlineStyle())
+    }
+
+    func pageContentStyle() -> some View {
+        self.modifier(PageContentStyle())
     }
 }

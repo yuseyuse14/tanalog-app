@@ -64,8 +64,7 @@ struct StockView: View {
                     .padding(.horizontal, 4)
                 }
             }
-            .padding(.vertical, 4)
-            .padding(.horizontal, 16)
+            .pageContentStyle()
             Divider()
 
             // メイン画面
