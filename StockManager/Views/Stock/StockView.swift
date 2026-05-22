@@ -16,15 +16,51 @@ struct StockView: View {
     @State private var isEdit: Bool = false
     @State private var isCreate: Bool = false
 
+    @State private var isSearch: Bool = false
+    @State private var searchText: String = ""
+
+    var filteredStocks: [Stock] {
+        if searchText.isEmpty {
+            return stocks
+        } else {
+            return stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // ヘッダー
             PageHeaderView(titleLabel: "在庫一覧") {
-                // TODO: 検索機能
-                Button { } label: {
+                // 検索機能
+                HStack(spacing: 0) {
                     Image(systemName: "magnifyingglass")
                         .pageHeaderButtonStyle()
+                    // 検索フィールド
+                    if isSearch {
+                        TextField("在庫を検索", text: $searchText)
+                            .font(.title3)
+                            .frame(maxWidth: .infinity)
+                        // リセットボタン
+                        if !searchText.isEmpty {
+                            Button {
+                                searchText = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundStyle(Color(.label))
+                                    .padding(.horizontal, 12)
+                            }
+                        }
+                    }
                 }
+                .background(
+                    RoundedRectangle(cornerRadius: 28)
+                        .fill(isSearch ? Color(.systemGray6) : .clear)
+                        .stroke(isSearch ? Color(.separator) : .clear)
+                )
+                .onTapGesture {
+                        isSearch.toggle()
+                }
+
                 // TODO: ソート機能
                 Button { } label: {
                     Image(systemName: "arrow.up.arrow.down")
@@ -72,7 +108,7 @@ struct StockView: View {
                 // 在庫一覧(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(stocks) { stock in
+                        ForEach(filteredStocks) { stock in
                             HStack(spacing: 0) {
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(stock.status.color)

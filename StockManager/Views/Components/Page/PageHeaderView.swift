@@ -13,7 +13,7 @@ struct PageHeaderView<Content: View>: View {
         HStack(alignment: .bottom, spacing: 0) {
             Text(titleLabel)
                 .pageHeadlineStyle()
-            Spacer()
+            Spacer(minLength: 20)
             HStack(spacing: 8) {
                 items()
             }
