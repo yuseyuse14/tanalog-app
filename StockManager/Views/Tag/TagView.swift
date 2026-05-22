@@ -11,11 +11,19 @@ struct TagView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Tag.name) private var tags: [Tag]
 
+    @State var showCreate: Bool = false
+
     var body: some View {
         VStack(spacing: 0) {
-            Text("タグ一覧")
-                .pageHeadlineStyle()
-            Divider()
+            PageHeaderView(titleLabel: "タグ一覧") {
+                // 新規追加
+                Button {
+                    showCreate.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                        .pageHeaderButtonStyle()
+                }
+            }
             ScrollView {
                 HFlow(alignment: .center, spacing: 16) {
                     ForEach(tags) { tag in
@@ -30,6 +38,9 @@ struct TagView: View {
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+        }
+        .sheet(isPresented: $showCreate) {
+            Text("タグ追加画面")
         }
     }
 }
