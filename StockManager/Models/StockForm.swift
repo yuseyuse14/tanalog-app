@@ -90,51 +90,22 @@ extension StockForm {
     struct FormError {
         let form: StockForm
 
-        enum ErrorType {
-            case emptyString, emptyInt
-            case notUnique(String)
-            case outOfRange(Int)
-            case none
-
-            var color: Color {
-                switch self {
-                case .emptyString, .emptyInt, .outOfRange:
-                    return .red
-                case .notUnique:
-                    return .yellow
-                default: return .clear
-                }
-            }
-
-            var message: String? {
-                switch self {
-                case .emptyString, .emptyInt:
-                    return "必須項目です"
-                case .notUnique(let str):
-                    return "「\(str)」は既に使われています"
-                case .outOfRange(let int):
-                    return "\(int)以上の数値を入力してください"
-                default: return nil
-                }
-            }
-        }
-
-        var name: ErrorType {
+        var name: FormErrorType {
             if form.showError && !form.validation.nameFilled { return .emptyString }
             else if form.showError && !form.validation.nameUnique { return .notUnique(form.name.trimming(for: .all)) }
             else { return .none }
         }
-        var num: ErrorType {
+        var num: FormErrorType {
             if form.showError && !form.validation.numFilled { return .emptyInt }
             else if form.showError && !form.validation.numValid { return .outOfRange(form.numMin) }
             else { return .none }
         }
-        var minNum: ErrorType {
+        var minNum: FormErrorType {
             if form.showError && !form.validation.minNumFilled { return .emptyInt }
             else if form.showError && !form.validation.minNumValid { return .outOfRange(form.minNumMin) }
             else { return .none }
         }
-        var unit: ErrorType {
+        var unit: FormErrorType {
             if form.showError && !form.validation.unitFilled { return .emptyString }
             else { return .none }
         }

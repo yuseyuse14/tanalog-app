@@ -9,7 +9,7 @@ struct FormTextView: View {
     let label: String
     let placeholder: String
     @Binding var text: String
-    var errorType: StockForm.FormError.ErrorType
+    var errorType: FormErrorType
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

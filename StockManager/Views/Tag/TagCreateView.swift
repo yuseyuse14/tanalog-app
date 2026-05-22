@@ -1,59 +1,57 @@
 //
-//  StockCreateView.swift
+//  TagCreateView.swift
 //  StockManager
 //
 
 import SwiftUI
 import SwiftData
 
-struct StockCreateView: View {
+struct TagCreateView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    @Query private var stocks: [Stock]
+    @Query private var tags: [Tag]
 
-    @State private var form: StockForm = StockForm()
+    @State private var form: TagForm = TagForm()
 
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 12) {
                 // ヘッダー
                 SheetHeaderView(
-                    titleLabel: "在庫追加",
+                    titleLabel: "タグ追加",
                     leftLabel: "キャンセル",
                     rightLabel: "追加",
                     leftAction: { dismiss() },
                     rightAction: { validateSave() }
                 )
 
-                // 在庫詳細
-                StockFormView(form: $form)
+                // タグ詳細
+                TagFormView(form: $form)
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
         }
         .onAppear {
-            form.setStockNames(from: stocks)
+            form.setTagNames(from: tags)
         }
     }
 
     private func validateSave() {
-        if form.canSave(in: stocks) {
-            createStock()
+        if form.canSave(in: tags) {
+            createTag()
         } else {
             form.showError = true
         }
     }
 
-    private func createStock() {
-        let newStock = Stock(name: form.saveName, num: form.num!, minNum: form.minNum!, unit: form.unit!)
-        newStock.tags = Array(form.tags)
-        context.insert(newStock)
+    private func createTag() {
+        let newTag = Tag(name: form.saveName)
+        context.insert(newTag)
         try? context.save()
         dismiss()
     }
 }
 
 #Preview {
-    StockCreateView()
-        .modelContainer(.preview)
+    TagCreateView()
 }

@@ -10,7 +10,7 @@ struct FormPickerView: View {
     let placeholder: String
     let items: [StockUnit]
     @Binding var selectedItem: StockUnit?
-    var errorType: StockForm.FormError.ErrorType
+    var errorType: FormErrorType
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
