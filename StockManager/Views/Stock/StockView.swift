@@ -19,34 +19,25 @@ struct StockView: View {
     var body: some View {
         VStack(spacing: 0) {
             // ヘッダー
-            HStack(spacing: 0) {
-                Text("在庫一覧")
-                    .font(.system(size: 36, weight: .semibold))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
-                // TODO: ソート機能
-                Image(systemName: "arrow.up.arrow.down")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
+            PageHeaderView(titleLabel: "在庫一覧") {
                 // TODO: 検索機能
-                Image(systemName: "magnifyingglass")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
+                Button { } label: {
+                    Image(systemName: "magnifyingglass")
+                        .pageHeaderButtonStyle()
+                }
+                // TODO: ソート機能
+                Button { } label: {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .pageHeaderButtonStyle()
+                }
                 // 新規追加
                 Button {
                     isCreate.toggle()
                 } label: {
                     Image(systemName: "plus")
-                        .resizable()
-                        .frame(width: 28, height: 28)
-                        .padding(.horizontal, 16)
-                        .foregroundStyle(.foreground)
+                        .pageHeaderButtonStyle()
                 }
             }
-            .padding(.horizontal, 16)
-            Divider()
 
             // タグ一覧
             HStack(spacing: 0) {
@@ -73,8 +64,7 @@ struct StockView: View {
                     .padding(.horizontal, 4)
                 }
             }
-            .padding(.vertical, 4)
-            .padding(.horizontal, 16)
+            .pageContentStyle()
             Divider()
 
             // メイン画面

@@ -52,7 +52,7 @@ struct FormInputFieldStyle: ViewModifier {
     var borderColor: Color
     func body(content: Content) -> some View {
         content
-//            .fontWeight(.medium)
+            .fontWeight(.medium)
             .padding(6)
             .background(
                 RoundedRectangle(cornerRadius: 4)
