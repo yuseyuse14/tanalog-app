@@ -62,7 +62,22 @@ struct StockView: View {
                 }
 
                 // TODO: ソート機能
-                Button { } label: {
+                Menu {
+                    Button {
+                    } label: {
+                        HStack {
+                            Text("名前順")
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                    Button {
+                    } label: {
+                        HStack {
+                            Text("個数順")
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                } label: {
                     Image(systemName: "arrow.up.arrow.down")
                         .pageHeaderButtonStyle()
                 }
