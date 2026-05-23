@@ -19,12 +19,21 @@ struct StockView: View {
     @State private var isSearch: Bool = false
     @State private var searchText: String = ""
 
+    @State private var sortName: Bool = true
+    @State private var sortNum: Bool = false
+
     var filteredStocks: [Stock] {
+        var searchStock: [Stock]
+
         if searchText.isEmpty {
-            return stocks
+            searchStock = stocks
         } else {
-            return stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
+            searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
+
+        if sortName { return searchStock.sorted { $0.name < $1.name } }
+        else if sortNum { return searchStock.sorted { $0.num < $1.num } }
+        else { return searchStock }
     }
 
     var body: some View {
@@ -64,17 +73,21 @@ struct StockView: View {
                 // TODO: ソート機能
                 Menu {
                     Button {
+                        sortName = true
+                        sortNum = false
                     } label: {
                         HStack {
+                            if sortName { Image(systemName: "checkmark") }
                             Text("名前順")
-                            Image(systemName: "checkmark")
                         }
                     }
                     Button {
+                        sortName = false
+                        sortNum = true
                     } label: {
                         HStack {
+                            if sortNum { Image(systemName: "checkmark") }
                             Text("個数順")
-                            Image(systemName: "checkmark")
                         }
                     }
                 } label: {
