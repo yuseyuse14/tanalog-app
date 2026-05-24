@@ -21,12 +21,12 @@ struct FormTagView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 4)
                         .background(
-                            selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 15)
-                                .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 15)
+                            selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 16)
+                                .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 16)
                                 .fill(.blue.opacity(0.05))
                         )
                         .overlay(
-                            RoundedRectangle(cornerRadius: 15)
+                            RoundedRectangle(cornerRadius: 16)
                                 .stroke(.blue.opacity(0.4))
                         )
                         .onTapGesture {

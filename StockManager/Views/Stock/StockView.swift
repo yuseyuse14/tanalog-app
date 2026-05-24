@@ -20,6 +20,7 @@ struct StockView: View {
     @State private var searchText: String = ""
 
     @State private var query: StockQuery = StockQuery()
+    @State private var selectedTags: Set<Tag> = []
 
     var queryStocks: [Stock] {
         var searchStock: [Stock]
@@ -101,22 +102,31 @@ struct StockView: View {
                     LazyHStack(spacing: 8) {
                         ForEach(tags) { tag in
                             Text(tag.name)
-                                .padding(8)
+                                .font(.title3)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 4)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.blue.opacity(0.1))
+                                    selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 16)
+                                        .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 16)
+                                        .fill(.blue.opacity(0.05))
                                 )
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
+                                    RoundedRectangle(cornerRadius: 16)
                                         .stroke(.blue.opacity(0.4))
                                 )
+                                .onTapGesture {
+                                    if selectedTags.contains(tag) {
+                                        selectedTags.remove(tag)
+                                    } else {
+                                        selectedTags.insert(tag)
+                                    }
+                                }
                         }
                     }
-                    .frame(height: 50)
-                    .padding(.horizontal, 4)
+                    .padding(8)
                 }
+                .fixedSize(horizontal: false, vertical: true)
             }
-            .pageContentStyle()
             Divider()
 
             // メイン画面
