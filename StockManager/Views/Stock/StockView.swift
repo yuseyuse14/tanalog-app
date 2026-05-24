@@ -19,10 +19,9 @@ struct StockView: View {
     @State private var isSearch: Bool = false
     @State private var searchText: String = ""
 
-    @State private var sortName: Bool = true
-    @State private var sortNum: Bool = false
+    @State private var query: StockQuery = StockQuery()
 
-    var filteredStocks: [Stock] {
+    var queryStocks: [Stock] {
         var searchStock: [Stock]
 
         if searchText.isEmpty {
@@ -31,9 +30,7 @@ struct StockView: View {
             searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
 
-        if sortName { return searchStock.sorted { $0.name < $1.name } }
-        else if sortNum { return searchStock.sorted { $0.num < $1.num } }
-        else { return searchStock }
+        return query.sort(stocks: searchStock)
     }
 
     var body: some View {
@@ -73,20 +70,18 @@ struct StockView: View {
                 // TODO: ソート機能
                 Menu {
                     Button {
-                        sortName = true
-                        sortNum = false
+                        query.selectSortType(.name)
                     } label: {
                         HStack {
-                            if sortName { Image(systemName: "checkmark") }
+                            if query.sortType == .name { Image(systemName: "checkmark") }
                             Text("名前順")
                         }
                     }
                     Button {
-                        sortName = false
-                        sortNum = true
+                        query.selectSortType(.num)
                     } label: {
                         HStack {
-                            if sortNum { Image(systemName: "checkmark") }
+                            if query.sortType == .num { Image(systemName: "checkmark") }
                             Text("個数順")
                         }
                     }
@@ -94,6 +89,7 @@ struct StockView: View {
                     Image(systemName: "arrow.up.arrow.down")
                         .pageHeaderButtonStyle()
                 }
+
                 // 新規追加
                 Button {
                     isCreate.toggle()
@@ -136,7 +132,7 @@ struct StockView: View {
                 // 在庫一覧(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(filteredStocks) { stock in
+                        ForEach(queryStocks) { stock in
                             HStack(spacing: 0) {
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(stock.status.color)
