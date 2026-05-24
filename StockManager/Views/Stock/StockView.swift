@@ -31,7 +31,7 @@ struct StockView: View {
             searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
 
-        return query.sort(searchStock)
+        return query.apply(to: searchStock)
     }
 
     var body: some View {
@@ -106,19 +106,18 @@ struct StockView: View {
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 4)
                                 .background(
-                                    selectedTags.contains(tag) ? RoundedRectangle(cornerRadius: 16)
-                                        .fill(.blue.opacity(0.4)) : RoundedRectangle(cornerRadius: 16)
-                                        .fill(.blue.opacity(0.05))
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.blue.opacity(query.selectedTags.contains(tag) ? 0.4 : 0.05))
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16)
                                         .stroke(.blue.opacity(0.4))
                                 )
                                 .onTapGesture {
-                                    if selectedTags.contains(tag) {
-                                        selectedTags.remove(tag)
+                                    if query.selectedTags.contains(tag) {
+                                        query.selectedTags.remove(tag)
                                     } else {
-                                        selectedTags.insert(tag)
+                                        query.selectedTags.insert(tag)
                                     }
                                 }
                         }
