@@ -130,46 +130,54 @@ struct StockView: View {
 
             // メイン画面
             HStack(spacing: 0) {
-                // 在庫一覧(左側)
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(queryStocks) { stock in
-                            HStack(spacing: 0) {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(stock.status.color)
-                                    .frame(width: 8, height: 30)
-                                Text(stock.name)
-                                    .font(.title)
-                                    .frame(maxWidth: .infinity)
-                                Button {
-                                    stock.decrement()
-                                } label: {
-                                    Image(systemName: "minus.square")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
+                if !queryStocks.isEmpty {
+                    // 在庫一覧(左側)
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            ForEach(queryStocks) { stock in
+                                HStack(spacing: 0) {
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(stock.status.color)
+                                        .frame(width: 8, height: 30)
+                                    Text(stock.name)
+                                        .font(.title)
+                                        .frame(maxWidth: .infinity)
+                                    Button {
+                                        stock.decrement()
+                                    } label: {
+                                        Image(systemName: "minus.square")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                    }
+                                    Text("\(stock.num)")
+                                        .font(.title)
+                                        .monospacedDigit()
+                                        .frame(width: 55)
+                                    Button {
+                                        stock.increment()
+                                    } label: {
+                                        Image(systemName: "plus.square")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                    }
                                 }
-                                Text("\(stock.num)")
-                                    .font(.title)
-                                    .monospacedDigit()
-                                    .frame(width: 55)
-                                Button {
-                                    stock.increment()
-                                } label: {
-                                    Image(systemName: "plus.square")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    selectedStock = stock
                                 }
+                                Divider()
                             }
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                selectedStock = stock
-                            }
-                            Divider()
                         }
                     }
+                    .padding(16)
+                    .frame(maxWidth: .infinity)
+                } else {
+                    ContentUnavailableView(
+                        "該当する在庫はありません",
+                        systemImage: "archivebox",
+                        description: Text("検索ワードや選択中のタグを見直してください。")
+                    )
                 }
-                .padding(16)
-                .frame(maxWidth: .infinity)
                 Divider()
 
                 // 詳細情報(右側)
