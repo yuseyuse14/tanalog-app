@@ -107,17 +107,17 @@ struct StockView: View {
                                 .padding(.vertical, 4)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .fill(.blue.opacity(query.selectedTags.contains(tag) ? 0.4 : 0.05))
+                                        .fill(.blue.opacity(query.filter.tags.contains(tag) ? 0.4 : 0.05))
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16)
                                         .stroke(.blue.opacity(0.4))
                                 )
                                 .onTapGesture {
-                                    if query.selectedTags.contains(tag) {
-                                        query.selectedTags.remove(tag)
+                                    if query.filter.tags.contains(tag) {
+                                        query.filter.tags.remove(tag)
                                     } else {
-                                        query.selectedTags.insert(tag)
+                                        query.filter.tags.insert(tag)
                                     }
                                 }
                         }

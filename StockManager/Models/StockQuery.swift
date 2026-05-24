@@ -7,12 +7,12 @@ import Foundation
 
 struct StockQuery {
     var sort: SortQuery = SortQuery()
-    var selectedTags: Set<Tag> = []
+    var filter: FilterQuery = FilterQuery()
 
     func filter(_ stocks: [Stock]) -> [Stock] {
-        if selectedTags.isEmpty { return stocks }
+        if filter.tags.isEmpty { return stocks }
         return stocks.filter { stock in
-            selectedTags.isSubset(of: stock.tags)
+            filter.tags.isSubset(of: stock.tags)
         }
     }
 
