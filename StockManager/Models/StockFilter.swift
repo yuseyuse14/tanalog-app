@@ -33,6 +33,18 @@ struct StockQuery {
     }
 }
 
+// MARK: ここからUIロジック
+extension StockQuery {
+    func subTitle(for buttonType: SortType) -> String {
+        guard sortType == buttonType else { return "" }
+        switch sortType {
+        case .name:
+            return sortOrder == .forward ? "昇順" : "降順"
+        case .num:
+            return sortOrder == .forward ? "小さい順" : "大きい順"
+        }
+    }
+}
 enum SortType {
     case name, num
 }

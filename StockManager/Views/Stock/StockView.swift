@@ -72,18 +72,14 @@ struct StockView: View {
                     Button {
                         query.selectSortType(.name)
                     } label: {
-                        HStack {
-                            if query.sortType == .name { Image(systemName: "checkmark") }
-                            Text("名前順")
-                        }
+                        Label("名前順", systemImage: query.sortType == .name ? "checkmark" :"")
+                        Text(query.subTitle(for: .name))
                     }
                     Button {
                         query.selectSortType(.num)
                     } label: {
-                        HStack {
-                            if query.sortType == .num { Image(systemName: "checkmark") }
-                            Text("個数順")
-                        }
+                        Label("個数順", systemImage: query.sortType == .num ? "checkmark" :"")
+                        Text(query.subTitle(for: .num))
                     }
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
