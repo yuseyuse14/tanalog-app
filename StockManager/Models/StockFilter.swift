@@ -31,20 +31,29 @@ struct StockQuery {
         case .reverse: sortedStock.reversed()
         }
     }
-}
 
-// MARK: ここからUIロジック
-extension StockQuery {
-    func subTitle(for buttonType: SortType) -> String {
-        guard sortType == buttonType else { return "" }
-        switch sortType {
-        case .name:
-            return sortOrder == .forward ? "昇順" : "降順"
-        case .num:
-            return sortOrder == .forward ? "小さい順" : "大きい順"
-        }
+    func selected(as buttonType: SortType) -> Bool {
+        sortType == buttonType
     }
 }
+
 enum SortType {
     case name, num
+
+    var title: String {
+        switch self {
+        case .name: return "名前"
+        case .num: return "個数"
+        }
+    }
+
+    func subTitle(in query: StockQuery) -> String {
+        guard self == query.sortType else { return "" }
+        switch self {
+        case .name:
+            return query.sortOrder == .forward ? "昇順" : "降順"
+        case .num:
+            return query.sortOrder == .forward ? "小さい順" : "大きい順"
+        }
+    }
 }
