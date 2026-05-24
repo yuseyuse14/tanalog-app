@@ -30,7 +30,7 @@ struct StockView: View {
             searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
 
-        return query.sort(stocks: searchStock)
+        return query.sort(searchStock)
     }
 
     var body: some View {
@@ -70,16 +70,16 @@ struct StockView: View {
                 // TODO: ソート機能
                 Menu {
                     Button {
-                        query.selectSortType(.name)
+                        query.sort.selectType(.name)
                     } label: {
-                        Label(SortType.name.title, systemImage: query.selected(as: .name) ? "checkmark" :"")
-                        Text(SortType.name.subTitle(in: query))
+                        Label(SortType.name.title, systemImage: query.sort.selected(as: .name) ? "checkmark" :"")
+                        Text(SortType.name.subTitle(in: query.sort))
                     }
                     Button {
-                        query.selectSortType(.num)
+                        query.sort.selectType(.num)
                     } label: {
-                        Label(SortType.num.title, systemImage: query.selected(as: .num) ? "checkmark" :"")
-                        Text(SortType.num.subTitle(in: query))
+                        Label(SortType.num.title, systemImage: query.sort.selected(as: .num) ? "checkmark" :"")
+                        Text(SortType.num.subTitle(in: query.sort))
                     }
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
