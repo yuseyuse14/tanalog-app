@@ -69,17 +69,13 @@ struct StockView: View {
 
                 // TODO: ソート機能
                 Menu {
-                    Button {
-                        query.sort.selectType(.name)
-                    } label: {
-                        Label(SortType.name.title, systemImage: query.sort.selected(as: .name) ? "checkmark" :"")
-                        Text(SortType.name.subTitle(in: query.sort))
-                    }
-                    Button {
-                        query.sort.selectType(.num)
-                    } label: {
-                        Label(SortType.num.title, systemImage: query.sort.selected(as: .num) ? "checkmark" :"")
-                        Text(SortType.num.subTitle(in: query.sort))
+                    ForEach(SortType.allCases, id: \.self) { type in
+                        Button {
+                            query.sort.selectType(type)
+                        } label: {
+                            Label(type.title, systemImage: query.sort.selected(as: type) ? "checkmark" :"")
+                            Text(type.subTitle(in: query.sort))
+                        }
                     }
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
@@ -272,3 +268,4 @@ struct StockView: View {
     StockView()
         .modelContainer(.preview)
 }
+

@@ -23,7 +23,7 @@ struct SortQuery {
     }
 }
 
-enum SortType {
+enum SortType: CaseIterable {
     case name, num
 
     var title: String {
