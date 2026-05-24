@@ -19,12 +19,18 @@ struct StockView: View {
     @State private var isSearch: Bool = false
     @State private var searchText: String = ""
 
-    var filteredStocks: [Stock] {
+    @State private var query: StockQuery = StockQuery()
+
+    var queryStocks: [Stock] {
+        var searchStock: [Stock]
+
         if searchText.isEmpty {
-            return stocks
+            searchStock = stocks
         } else {
-            return stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
+            searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
+
+        return query.sort(searchStock)
     }
 
     var body: some View {
@@ -62,10 +68,20 @@ struct StockView: View {
                 }
 
                 // TODO: ソート機能
-                Button { } label: {
+                Menu {
+                    ForEach(SortType.allCases, id: \.self) { type in
+                        Button {
+                            query.sort.selectType(type)
+                        } label: {
+                            Label(type.title, systemImage: query.sort.selected(as: type) ? "checkmark" :"")
+                            Text(type.subTitle(in: query.sort))
+                        }
+                    }
+                } label: {
                     Image(systemName: "arrow.up.arrow.down")
                         .pageHeaderButtonStyle()
                 }
+
                 // 新規追加
                 Button {
                     isCreate.toggle()
@@ -108,7 +124,7 @@ struct StockView: View {
                 // 在庫一覧(左側)
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(filteredStocks) { stock in
+                        ForEach(queryStocks) { stock in
                             HStack(spacing: 0) {
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(stock.status.color)
@@ -252,3 +268,4 @@ struct StockView: View {
     StockView()
         .modelContainer(.preview)
 }
+
