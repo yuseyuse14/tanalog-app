@@ -20,6 +20,7 @@ struct StockView: View {
     @State private var searchText: String = ""
 
     @State private var query: StockQuery = StockQuery()
+    @State private var selectedTags: Set<Tag> = []
 
     var queryStocks: [Stock] {
         var searchStock: [Stock]
@@ -30,7 +31,7 @@ struct StockView: View {
             searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
         }
 
-        return query.sort(searchStock)
+        return query.apply(to: searchStock)
     }
 
     var body: some View {
@@ -101,66 +102,82 @@ struct StockView: View {
                     LazyHStack(spacing: 8) {
                         ForEach(tags) { tag in
                             Text(tag.name)
-                                .padding(8)
+                                .font(.title3)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 4)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.blue.opacity(0.1))
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.blue.opacity(query.filter.tags.contains(tag) ? 0.4 : 0.05))
                                 )
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
+                                    RoundedRectangle(cornerRadius: 16)
                                         .stroke(.blue.opacity(0.4))
                                 )
+                                .onTapGesture {
+                                    if query.filter.tags.contains(tag) {
+                                        query.filter.tags.remove(tag)
+                                    } else {
+                                        query.filter.tags.insert(tag)
+                                    }
+                                }
                         }
                     }
-                    .frame(height: 50)
-                    .padding(.horizontal, 4)
+                    .padding(8)
                 }
+                .fixedSize(horizontal: false, vertical: true)
             }
-            .pageContentStyle()
             Divider()
 
             // メイン画面
             HStack(spacing: 0) {
-                // 在庫一覧(左側)
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(queryStocks) { stock in
-                            HStack(spacing: 0) {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(stock.status.color)
-                                    .frame(width: 8, height: 30)
-                                Text(stock.name)
-                                    .font(.title)
-                                    .frame(maxWidth: .infinity)
-                                Button {
-                                    stock.decrement()
-                                } label: {
-                                    Image(systemName: "minus.square")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
+                if !queryStocks.isEmpty {
+                    // 在庫一覧(左側)
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            ForEach(queryStocks) { stock in
+                                HStack(spacing: 0) {
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(stock.status.color)
+                                        .frame(width: 8, height: 30)
+                                    Text(stock.name)
+                                        .font(.title)
+                                        .frame(maxWidth: .infinity)
+                                    Button {
+                                        stock.decrement()
+                                    } label: {
+                                        Image(systemName: "minus.square")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                    }
+                                    Text("\(stock.num)")
+                                        .font(.title)
+                                        .monospacedDigit()
+                                        .frame(width: 55)
+                                    Button {
+                                        stock.increment()
+                                    } label: {
+                                        Image(systemName: "plus.square")
+                                            .resizable()
+                                            .frame(width: 24, height: 24)
+                                    }
                                 }
-                                Text("\(stock.num)")
-                                    .font(.title)
-                                    .monospacedDigit()
-                                    .frame(width: 55)
-                                Button {
-                                    stock.increment()
-                                } label: {
-                                    Image(systemName: "plus.square")
-                                        .resizable()
-                                        .frame(width: 24, height: 24)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    selectedStock = stock
                                 }
+                                Divider()
                             }
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                selectedStock = stock
-                            }
-                            Divider()
                         }
                     }
+                    .padding(16)
+                    .frame(maxWidth: .infinity)
+                } else {
+                    ContentUnavailableView(
+                        "該当する在庫はありません",
+                        systemImage: "archivebox",
+                        description: Text("検索ワードや選択中のタグを見直してください。")
+                    )
                 }
-                .padding(16)
-                .frame(maxWidth: .infinity)
                 Divider()
 
                 // 詳細情報(右側)

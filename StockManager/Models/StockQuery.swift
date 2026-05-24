@@ -7,6 +7,14 @@ import Foundation
 
 struct StockQuery {
     var sort: SortQuery = SortQuery()
+    var filter: FilterQuery = FilterQuery()
+
+    func filter(_ stocks: [Stock]) -> [Stock] {
+        if filter.tags.isEmpty { return stocks }
+        return stocks.filter { stock in
+            filter.tags.isSubset(of: stock.tags)
+        }
+    }
 
     func sort(_ stocks: [Stock]) -> [Stock] {
         let sortedStock = switch sort.type {
@@ -20,5 +28,11 @@ struct StockQuery {
         case .forward: sortedStock
         case .reverse: sortedStock.reversed()
         }
+    }
+
+    func apply(to stocks: [Stock]) -> [Stock] {
+        let filteredStocks = filter(stocks)
+        let sortedStocks = sort(filteredStocks)
+        return sortedStocks
     }
 }
