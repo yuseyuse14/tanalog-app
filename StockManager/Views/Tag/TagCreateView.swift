@@ -45,7 +45,7 @@ struct TagCreateView: View {
     }
 
     private func createTag() {
-        let newTag = Tag(name: form.saveName)
+        let newTag = Tag(name: form.saveName, order: Tag.nextOrder(tag: tags))
         context.insert(newTag)
         try? context.save()
         dismiss()

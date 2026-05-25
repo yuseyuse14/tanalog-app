@@ -55,17 +55,17 @@ extension Stock {
 // MARK: ここからTagのサンプルデータ
 extension Tag {
     enum Sample {
-        static let food = Tag(name: "食べ物")
-        static let vegetable = Tag(name: "野菜")
-        static let meat = Tag(name: "肉")
-        static let fish = Tag(name: "魚介類")
-        static let drink = Tag(name: "飲み物")
-        static let dessert = Tag(name: "デザート")
-        static let alcohol = Tag(name: "アルコール飲料")
-        static let softDrink = Tag(name: "ソフトドリンク")
-        static let seasoning = Tag(name: "調味料")
-        static let consumable = Tag(name: "消耗品")
-        static let other = Tag(name: "その他")
+        static let food = Tag(name: "食べ物", order: 1)
+        static let vegetable = Tag(name: "野菜", order: 2)
+        static let meat = Tag(name: "肉", order: 3)
+        static let fish = Tag(name: "魚介類", order: 4)
+        static let drink = Tag(name: "飲み物", order: 5)
+        static let dessert = Tag(name: "デザート", order: 6)
+        static let alcohol = Tag(name: "アルコール", order: 7)
+        static let softDrink = Tag(name: "ソフトドリンク", order: 8)
+        static let seasoning = Tag(name: "調味料", order: 9)
+        static let consumable = Tag(name: "消耗品", order: 10)
+        static let other = Tag(name: "その他", order: 11)
         static let all = [food, vegetable, meat, fish, drink, dessert, alcohol, softDrink, seasoning, consumable, other]
     }
 }

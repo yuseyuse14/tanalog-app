@@ -10,7 +10,7 @@ import Flow
 struct StockView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Stock.order) private var stocks: [Stock]
-    @Query(sort: \Tag.name) private var tags: [Tag]
+    @Query(sort: \Tag.order) private var tags: [Tag]
 
     @State private var selectedStock: Stock? = nil
     @State private var selectedTags: Set<Tag> = []
@@ -209,7 +209,7 @@ struct StockView: View {
                         // TODO: 在庫別のタグ一覧
                         if !stock.tags.isEmpty {
                             HFlow(alignment: .center, spacing: 16) {
-                                ForEach(stock.tags) { tag in
+                                ForEach(stock.tags.sorted(by: {$0.order < $1.order })) { tag in
                                     Text(tag.name)
                                         .font(.title3)
                                         .padding(.horizontal, 12)
