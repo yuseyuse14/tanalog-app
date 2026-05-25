@@ -121,7 +121,7 @@ extension StockForm {
     struct Placeholder {
         let preStock: Stock?
 
-        var name: String { preStock?.name ?? "例：チーズケーキ" }
+        var name: String { preStock?.name ?? "例：トマト" }
         var num: String { preStock?.num.description ?? "例：10" }
         var minNum: String { preStock?.minNum.description ?? "例：4" }
         var unit: String { preStock?.unit?.name ?? "未選択" }

@@ -29,6 +29,8 @@ struct StockQuery {
 
     func sort(_ stocks: [Stock]) -> [Stock] {
         let sortedStock = switch sort.type {
+        case .order:
+            stocks.sorted { $0.order < $1.order}
         case .name:
             stocks.sorted { $0.name < $1.name }
         case .num:

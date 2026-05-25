@@ -13,7 +13,7 @@ enum StockFormFocus {
 
 struct StockFormView: View {
     @Environment(\.modelContext) private var context
-    @Query private var units: [StockUnit]
+    @Query(sort: \StockUnit.order) private var units: [StockUnit]
 
     @Binding var form: StockForm
     @FocusState var focus: StockFormFocus?

@@ -9,7 +9,7 @@ import Flow
 
 struct TagView: View {
     @Environment(\.modelContext) private var context
-    @Query(sort: \Tag.name) private var tags: [Tag]
+    @Query(sort: \Tag.order) private var tags: [Tag]
 
     @State var showCreate: Bool = false
     @State var isEditMode: Bool = false

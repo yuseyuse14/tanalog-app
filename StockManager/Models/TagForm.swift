@@ -81,7 +81,7 @@ extension TagForm {
     struct Placeholder {
         let preTag: Tag?
 
-        var name: String { preTag?.name ?? "例：日本酒" }
+        var name: String { preTag?.name ?? "例：冷凍食品" }
     }
 
     var placeholder: Placeholder {

@@ -45,7 +45,7 @@ struct StockCreateView: View {
     }
 
     private func createStock() {
-        let newStock = Stock(name: form.saveName, num: form.num!, minNum: form.minNum!, unit: form.unit!)
+        let newStock = Stock(name: form.saveName, num: form.num!, minNum: form.minNum!, unit: form.unit!, order: Stock.nextOrder(stocks: stocks))
         newStock.tags = Array(form.tags)
         context.insert(newStock)
         try? context.save()

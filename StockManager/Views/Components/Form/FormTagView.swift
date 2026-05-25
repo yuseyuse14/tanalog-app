@@ -8,7 +8,7 @@ import SwiftData
 import Flow
 
 struct FormTagView: View {
-    @Query(sort: \Tag.name) private var tags: [Tag]
+    @Query(sort: \Tag.order) private var tags: [Tag]
 
     @Binding var selectedTags: Set<Tag>
 
