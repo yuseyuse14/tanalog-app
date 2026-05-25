@@ -42,7 +42,7 @@ enum SortType: CaseIterable {
         case .name:
             return sort.order == .forward ? "昇順" : "降順"
         case .num:
-            return sort.order == .forward ? "小さい順" : "大きい順"
+            return sort.order == .forward ? "少ない順" : "多い順"
         }
     }
 }
