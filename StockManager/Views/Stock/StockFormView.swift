@@ -78,12 +78,12 @@ struct StockFormView: View {
             Divider()
 
             // 仕入れ先編集
-            VStack(alignment: .leading, spacing: 4) {
-                Label("仕入れ先", systemImage: "building.2")
-                    .formHeadlineStyle()
+//            VStack(alignment: .leading, spacing: 4) {
+//                Label("仕入れ先", systemImage: "building.2")
+//                    .formHeadlineStyle()
                 // TODO: 仕入れ先編集機能
-            }
-            Divider()
+//            }
+//            Divider()
         }
         .onAppear {
             focus = .name

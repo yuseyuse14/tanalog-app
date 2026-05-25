@@ -43,7 +43,7 @@ struct FormContentStyle: ViewModifier {
         content
             .padding(.vertical, 2)
             .padding(.horizontal, 4)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

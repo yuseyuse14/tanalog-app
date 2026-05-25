@@ -11,6 +11,7 @@ struct FormTagView: View {
     @Query(sort: \Tag.order) private var tags: [Tag]
 
     @Binding var selectedTags: Set<Tag>
+    @State var isTagCreate: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -39,8 +40,18 @@ struct FormTagView: View {
                             }
                         }
                 }
+                Button{
+                    isTagCreate.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.title3)
+                        .padding(.vertical, 4)
+                }
             }
             .formContentStyle()
+        }
+        .sheet(isPresented: $isTagCreate) {
+            TagCreateView()
         }
     }
 }

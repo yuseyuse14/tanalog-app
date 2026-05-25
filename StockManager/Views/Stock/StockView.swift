@@ -16,6 +16,7 @@ struct StockView: View {
     @State private var selectedTags: Set<Tag> = []
     @State private var isEdit: Bool = false
     @State private var isCreate: Bool = false
+    @State private var isTagCreate: Bool = false
     @FocusState var isSearchFocused: Bool
     @State private var query: StockQuery = StockQuery()
     private var queryStocks: [Stock] {
@@ -90,46 +91,67 @@ struct StockView: View {
             }
 
             // タグ一覧
-            HStack(spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
                 Image(systemName: "tag")
                     .resizable()
                     .frame(width: 24, height: 24)
                     .padding(.horizontal, 16)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 8) {
-                        ForEach(tags) { tag in
-                            Text(tag.name)
-                                .font(.title3)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(.blue.opacity(query.filter.tags.contains(tag) ? 0.4 : 0.05))
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(.blue.opacity(0.4))
-                                )
-                                .onTapGesture {
-                                    withAnimation(.spring(duration: 0.3)) {
-                                        if query.filter.tags.contains(tag) {
-                                            query.filter.tags.remove(tag)
-                                        } else {
-                                            query.filter.tags.insert(tag)
+                if !tags.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 8) {
+                            ForEach(tags) { tag in
+                                Text(tag.name)
+                                    .font(.title3)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 4)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(.blue.opacity(query.filter.tags.contains(tag) ? 0.4 : 0.05))
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(.blue.opacity(0.4))
+                                    )
+                                    .onTapGesture {
+                                        withAnimation(.spring(duration: 0.3)) {
+                                            if query.filter.tags.contains(tag) {
+                                                query.filter.tags.remove(tag)
+                                            } else {
+                                                query.filter.tags.insert(tag)
+                                            }
                                         }
                                     }
-                                }
+                            }
                         }
+                        .padding(8)
                     }
-                    .padding(8)
+                    .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Button {
+                        isTagCreate.toggle()
+                    } label: {
+                        Label("タグを追加しましょう", systemImage: "plus")
+                            .font(.title3)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .padding(8)
+                    }
+                    Spacer()
                 }
-                .fixedSize(horizontal: false, vertical: true)
             }
             Divider()
 
             // メイン画面
             HStack(spacing: 0) {
-                if !queryStocks.isEmpty {
+                if stocks.isEmpty {
+                    ContentUnavailableView {
+                        Button {
+                            isCreate.toggle()
+                        } label: {
+                            Label("在庫を登録しましょう", systemImage: "plus")
+                        }
+                    }
+                } else if !queryStocks.isEmpty {
                     // 在庫一覧(左側)
                     ScrollView {
                         LazyVStack(spacing: 0) {
@@ -143,7 +165,7 @@ struct StockView: View {
                 } else {
                     ContentUnavailableView(
                         "該当する在庫はありません",
-                        systemImage: "archivebox",
+                        systemImage: "magnifyingglass",
                         description: Text("検索ワードや選択中のタグを見直してください。")
                     )
                 }
@@ -227,12 +249,13 @@ struct StockView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         Divider()
-                        Label("仕入れ先", systemImage: "building.2")
                         // TODO: 在庫別の仕入れ先一覧
-                        Divider()
-                        Label("発注履歴", systemImage: "cart")
+//                        Label("仕入れ先", systemImage: "building.2")
+                        // TODO: 在庫別の発注履歴一覧
+//                        Divider()
+//                        Label("発注履歴", systemImage: "cart")
                     } else {
-                        ContentUnavailableView("在庫を選択してください", systemImage: "hand.tap")
+                        ContentUnavailableView("在庫を選択してください", systemImage: "archivebox")
                     }
                 }
                 .padding(16)
@@ -259,6 +282,9 @@ struct StockView: View {
             if let stock = selectedStock {
                 StockEditView(stock: stock, selectedStock: $selectedStock)
             }
+        }
+        .sheet(isPresented: $isTagCreate) {
+            TagCreateView()
         }
     }
 }
