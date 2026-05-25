@@ -13,12 +13,14 @@ struct StockView: View {
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State private var selectedStock: Stock? = nil
+    @State private var selectedTags: Set<Tag> = []
     @State private var isEdit: Bool = false
     @State private var isCreate: Bool = false
     @FocusState var isSearchFocused: Bool
-
     @State private var query: StockQuery = StockQuery()
-    @State private var selectedTags: Set<Tag> = []
+    private var queryStocks: [Stock] {
+        query.apply(to: stocks)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -127,48 +129,65 @@ struct StockView: View {
 
             // メイン画面
             HStack(spacing: 0) {
-                if !query.apply(to: stocks).isEmpty {
+                if !queryStocks.isEmpty {
                     // 在庫一覧(左側)
                     ScrollView {
-                        LazyVStack(spacing: 8) {
-                            ForEach(query.apply(to: stocks)) { stock in
-                                HStack(spacing: 0) {
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .fill(stock.status.color)
-                                        .frame(width: 8, height: 30)
-                                    Text(stock.name)
-                                        .font(.title)
-                                        .frame(maxWidth: .infinity)
-                                    Button {
-                                        stock.decrement()
-                                    } label: {
-                                        Image(systemName: "minus.square")
-                                            .resizable()
-                                            .frame(width: 24, height: 24)
+                        LazyVStack(spacing: 0) {
+                            ForEach(queryStocks) { stock in
+                                VStack(spacing: 0) {
+                                    HStack(spacing: 0) {
+                                        // 在庫状態
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(stock.status.color)
+                                            .frame(width: 8, height: 30)
+                                        // 在庫名
+                                        Text(stock.name)
+                                            .font(.title)
+                                            .frame(maxWidth: .infinity)
+                                        // マイナス
+                                        Button {
+                                            stock.decrement()
+                                        } label: {
+                                            Image(systemName: "minus.square")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                        }
+                                        // 個数
+                                        Text("\(stock.num)")
+                                            .font(.title)
+                                            .monospacedDigit()
+                                            .frame(width: 55)
+                                        // プラス
+                                        Button {
+                                            stock.increment()
+                                        } label: {
+                                            Image(systemName: "plus.square")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                        }
                                     }
-                                    Text("\(stock.num)")
-                                        .font(.title)
-                                        .monospacedDigit()
-                                        .frame(width: 55)
-                                    Button {
-                                        stock.increment()
-                                    } label: {
-                                        Image(systemName: "plus.square")
-                                            .resizable()
-                                            .frame(width: 24, height: 24)
+                                    .padding(.vertical, 8)
+                                    .padding(.horizontal, 16)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(selectedStock == stock ? Color(.systemGray).opacity(0.28) : Color.clear)
+                                    )
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        withAnimation(.linear(duration: 0.16)) {
+                                            selectedStock = stock
+                                        }
+                                    }
+
+                                    if selectedStock != stock {
+                                        Divider()
+                                            .padding(.horizontal, 28)
                                     }
                                 }
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    withAnimation(.linear(duration: 0.16)) {
-                                        selectedStock = stock
-                                    }
-                                }
-                                Divider()
                             }
                         }
                     }
-                    .padding(16)
+                    .padding(8)
                     .frame(maxWidth: .infinity)
                 } else {
                     ContentUnavailableView(
@@ -279,7 +298,7 @@ struct StockView: View {
         }
         .onAppear {
             if selectedStock == nil {
-                selectedStock = query.apply(to: stocks).first
+                selectedStock = queryStocks.first
             }
         }
         .sheet(isPresented: $isCreate) {
