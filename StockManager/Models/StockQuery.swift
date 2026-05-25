@@ -6,8 +6,19 @@
 import Foundation
 
 struct StockQuery {
+    var search: SearchQuery = SearchQuery()
     var sort: SortQuery = SortQuery()
     var filter: FilterQuery = FilterQuery()
+
+    func search(_ stocks: [Stock]) -> [Stock] {
+        if search.text.isEmpty { return stocks }
+        return stocks.filter { stock in
+            stock.name.localizedStandardContains(search.text) ||
+            stock.tags.contains { tag in
+                tag.name.localizedStandardContains(search.text)
+            }
+        }
+    }
 
     func filter(_ stocks: [Stock]) -> [Stock] {
         if filter.tags.isEmpty { return stocks }
@@ -31,7 +42,8 @@ struct StockQuery {
     }
 
     func apply(to stocks: [Stock]) -> [Stock] {
-        let filteredStocks = filter(stocks)
+        let searchedStocks = search(stocks)
+        let filteredStocks = filter(searchedStocks)
         let sortedStocks = sort(filteredStocks)
         return sortedStocks
     }

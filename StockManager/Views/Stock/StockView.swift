@@ -17,22 +17,9 @@ struct StockView: View {
     @State private var isCreate: Bool = false
 
     @State private var isSearch: Bool = false
-    @State private var searchText: String = ""
 
     @State private var query: StockQuery = StockQuery()
     @State private var selectedTags: Set<Tag> = []
-
-    var queryStocks: [Stock] {
-        var searchStock: [Stock]
-
-        if searchText.isEmpty {
-            searchStock = stocks
-        } else {
-            searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
-        }
-
-        return query.apply(to: searchStock)
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -44,14 +31,14 @@ struct StockView: View {
                         .pageHeaderButtonStyle()
                     // 検索フィールド
                     if isSearch {
-                        TextField("在庫を検索", text: $searchText)
+                        TextField("在庫を検索", text: $query.search.text)
                             .font(.title3)
                             .frame(maxWidth: .infinity)
                         // リセットボタン
-                        if !searchText.isEmpty {
+                        if !query.search.text.isEmpty {
                             Button {
                                 withAnimation(.linear(duration: 0.2)) {
-                                    searchText = ""
+                                    query.search.text = ""
                                 }
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
@@ -138,11 +125,11 @@ struct StockView: View {
 
             // メイン画面
             HStack(spacing: 0) {
-                if !queryStocks.isEmpty {
+                if !query.apply(to: stocks).isEmpty {
                     // 在庫一覧(左側)
                     ScrollView {
                         LazyVStack(spacing: 8) {
-                            ForEach(queryStocks) { stock in
+                            ForEach(query.apply(to: stocks)) { stock in
                                 HStack(spacing: 0) {
                                     RoundedRectangle(cornerRadius: 4)
                                         .fill(stock.status.color)
