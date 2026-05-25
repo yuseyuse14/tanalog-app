@@ -20,7 +20,7 @@ final class Stock {
 
     var order: Int
 
-    init(name: String, num: Int, minNum: Int, unit: StockUnit? = nil, order: Int = 0) {
+    init(name: String, num: Int, minNum: Int, unit: StockUnit? = nil, order: Int) {
         self.name = name
         self.num = num
         self.minNum = minNum

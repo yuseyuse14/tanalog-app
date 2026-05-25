@@ -9,7 +9,7 @@ import SwiftData
 final class StockUnit {
     #Unique<StockUnit>([\.name])
     var name: String
-    var order: Int = 0
+    var order: Int
 
     init(name: String, order: Int) {
         self.name = name

@@ -39,9 +39,8 @@ extension ModelContainer {
         // プレビュー用データを追加
         Tag.Sample.all.forEach { context.insert($0) }
         StockUnit.Sample.all.forEach { context.insert($0) }
-        Stock.relations.enumerated().forEach { i, relation in
+        Stock.relations.forEach { relation in
             let stock = relation.stock
-            stock.order = i + 1
             context.insert(stock)
             stock.tags = relation.tags
             stock.unit = relation.unit
