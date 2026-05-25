@@ -18,12 +18,15 @@ final class Stock {
     @Relationship(deleteRule: .nullify, inverse: \Tag.stocks)
     var tags: [Tag]
 
-    init(name: String, num: Int, minNum: Int, unit: StockUnit? = nil) {
+    var order: Int
+
+    init(name: String, num: Int, minNum: Int, unit: StockUnit? = nil, order: Int = 0) {
         self.name = name
         self.num = num
         self.minNum = minNum
         self.unit = unit
         self.tags = []
+        self.order = order
     }
 }
 
@@ -38,7 +41,10 @@ extension Stock {
     func increment() {
         self.num += 1
     }
+}
 
+// MARK: ここから状態
+extension Stock {
     enum Status {
         case empty, low, sufficient
 
@@ -63,5 +69,13 @@ extension Stock {
         if num == 0 { return .empty }
         if num <= minNum { return .low }
         return .sufficient
+    }
+}
+
+// MARK: ここからソート用ロジック
+extension Stock {
+    static func nextOrder(stocks: [Stock]) -> Int {
+        let maxOrder = stocks.max(by: { $0.order < $1.order })?.order ?? 0
+        return maxOrder + 1
     }
 }

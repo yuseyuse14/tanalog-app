@@ -8,12 +8,12 @@ import Foundation
 // MARK: - ここからStockのサンプルデータ
 extension Stock {
     enum Sample {
-        static let whisky = Stock(name: "ウイスキー", num: 3, minNum: 1)
+        static let whisky = Stock(name: "ビール", num: 3, minNum: 1)
         static let beef = Stock(name: "ローストビーフ", num: 8, minNum: 4)
         static let katsuo = Stock(name: "鰹", num: 14, minNum: 6)
         static let onion = Stock(name: "玉ねぎ", num: 4, minNum: 2)
         static let egg = Stock(name: "卵", num: 12, minNum: 6)
-        static let ChocoCake = Stock(name: "ガトーショコラ", num: 12, minNum: 4)
+        static let ChocoCake = Stock(name: "バニラアイス", num: 12, minNum: 4)
         static let rap = Stock(name: "ラップ", num: 10, minNum: 3)
         static let all = [whisky, beef, katsuo, onion, egg, ChocoCake, rap]
     }

@@ -9,7 +9,7 @@ import Flow
 
 struct StockView: View {
     @Environment(\.modelContext) private var context
-    @Query(sort: \Stock.name) private var stocks: [Stock]
+    @Query(sort: \Stock.order) private var stocks: [Stock]
     @Query(sort: \Tag.name) private var tags: [Tag]
 
     @State private var selectedStock: Stock? = nil
