@@ -15,8 +15,7 @@ struct StockView: View {
     @State private var selectedStock: Stock? = nil
     @State private var isEdit: Bool = false
     @State private var isCreate: Bool = false
-
-    @State private var isSearch: Bool = false
+    @FocusState var isSearchFocused: Bool
 
     @State private var query: StockQuery = StockQuery()
     @State private var selectedTags: Set<Tag> = []
@@ -27,13 +26,21 @@ struct StockView: View {
             PageHeaderView(titleLabel: "在庫一覧") {
                 // 検索機能
                 HStack(spacing: 0) {
-                    Image(systemName: "magnifyingglass")
-                        .pageHeaderButtonStyle()
+                    Button {
+                        withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
+                            query.search.isActive.toggle()
+                            isSearchFocused = query.search.isActive
+                        }
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .pageHeaderButtonStyle()
+                    }
                     // 検索フィールド
-                    if isSearch {
+                    if query.search.isActive {
                         TextField("在庫を検索", text: $query.search.text)
                             .font(.title3)
                             .frame(maxWidth: .infinity)
+                            .focused($isSearchFocused)
                         // リセットボタン
                         if !query.search.text.isEmpty {
                             Button {
@@ -50,14 +57,9 @@ struct StockView: View {
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 28)
-                        .fill(isSearch ? Color(.systemGray6) : .clear)
-                        .stroke(isSearch ? Color(.separator) : .clear)
+                        .fill(query.search.isActive ? Color(.systemGray6) : .clear)
+                        .stroke(query.search.isActive ? Color(.separator) : .clear)
                 )
-                .onTapGesture {
-                    withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
-                        isSearch.toggle()
-                    }
-                }
 
                 // TODO: ソート機能
                 Menu {
