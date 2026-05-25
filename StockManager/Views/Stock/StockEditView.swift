@@ -94,6 +94,6 @@ struct StockEditView: View {
 }
 
 #Preview {
-    StockEditView(stock: Stock.samples[0])
+    StockEditView(stock: Stock.Sample.beef)
         .modelContainer(.preview)
 }

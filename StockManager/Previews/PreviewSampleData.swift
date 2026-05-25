@@ -9,95 +9,90 @@ extension ModelContainer {
     @MainActor
     static func setupPreviewData(for container: ModelContainer){
         let context = container.mainContext
-        // TODO: プレビュー用データを追加
-        let stocks = Stock.samples
-        stocks.forEach { context.insert($0) }
-        let tags = Tag.samples
-        tags.forEach { context.insert($0) }
-        let units = StockUnit.samples
-        units.forEach { context.insert($0) }
 
-        // StockのRelation
-        let stockRelationDict = Dictionary(uniqueKeysWithValues: Stock.relations.map { ($0.stockName, $0) })
-        let tagDict = Dictionary(uniqueKeysWithValues: Tag.samples.map { ($0.name, $0) })
-        let unitDict = Dictionary(uniqueKeysWithValues: StockUnit.samples.map { ($0.name, $0) })
-        stocks.forEach { stock in
-            // Tag
-            if let tagNames = stockRelationDict[stock.name]?.tagNames {
-                tagNames.forEach { tagName in
-                    if let tag = tagDict[tagName] {
-                        stock.tags.append(tag)
-                    }
-                }
-            }
-            // Unit
-            if let unitName = stockRelationDict[stock.name]?.unitName, let unit = unitDict[unitName] {
-                stock.unit = unit
-            }
+        // プレビュー用データを追加
+        Tag.Sample.all.forEach { context.insert($0) }
+        StockUnit.Sample.all.forEach { context.insert($0) }
+        Stock.relations.forEach { relation in
+            let stock = relation.stock
+            context.insert(stock)
+            stock.tags = relation.tags
+            stock.unit = relation.unit
         }
     }
 }
 
-// MARK: - 各モデルのサンプルデータ定義
+// MARK: - ここからStockのサンプルデータ
 extension Stock {
-    static let samples: [Stock] = [
-        Stock(name: "ウイスキー", num: 3, minNum: 1),
-        Stock(name: "ガトーショコラ", num: 12, minNum: 4),
-        Stock(name: "鰹", num: 14, minNum: 6),
-        Stock(name: "ローストビーフ", num: 8, minNum: 4),
-        Stock(name: "玉ねぎ", num: 4, minNum: 2),
-        Stock(name: "卵", num: 12, minNum: 6),
-        Stock(name: "ラップ", num: 10, minNum: 3),
-    ]
+    enum Sample {
+        static let whisky = Stock(name: "ウイスキー", num: 3, minNum: 1)
+        static let beef = Stock(name: "ローストビーフ", num: 8, minNum: 4)
+        static let katsuo = Stock(name: "鰹", num: 14, minNum: 6)
+        static let onion = Stock(name: "玉ねぎ", num: 4, minNum: 2)
+        static let egg = Stock(name: "卵", num: 12, minNum: 6)
+        static let ChocoCake = Stock(name: "ガトーショコラ", num: 12, minNum: 4)
+        static let rap = Stock(name: "ラップ", num: 10, minNum: 3)
+        static let all = [whisky, beef, katsuo, onion, egg, ChocoCake, rap]
+    }
+}
 
+// MARK: ここからStockのリレーション
+extension Stock {
     struct Relation {
-        let stockName: String
-        let tagNames: [String]
-        let unitName: String
-        init(_ stockName: String, tagNames: [String], unitName: String) {
-            self.stockName = stockName
-            self.tagNames = tagNames
-            self.unitName = unitName
-        }
+        let stock: Stock
+        let tags: [Tag]
+        let unit: StockUnit
     }
 
     static let relations: [Relation]  = [
-        Relation("ウイスキー", tagNames: ["飲み物", "ウイスキー"], unitName: "本"),
-        Relation("ガトーショコラ", tagNames: ["食べ物", "デザート"], unitName: "個"),
-        Relation("鰹", tagNames: ["食べ物"], unitName: "本"),
-        Relation("ローストビーフ", tagNames: ["食べ物", "肉"], unitName: "個"),
-        Relation("玉ねぎ", tagNames: ["食べ物"], unitName: "個"),
-        Relation("卵", tagNames: ["食べ物"], unitName: "個"),
-        Relation("ラップ", tagNames: ["消耗品"], unitName: "本")
+        Relation(stock: .Sample.whisky,
+                 tags: [.Sample.drink, .Sample.alcohol],
+                 unit: .Sample.bottle),
+        Relation(stock: .Sample.beef,
+                 tags: [.Sample.food, .Sample.meat],
+                 unit: .Sample.piece),
+        Relation(stock: .Sample.katsuo,
+                 tags: [.Sample.food, .Sample.fish],
+                 unit: .Sample.bottle),
+        Relation(stock: .Sample.onion,
+                 tags: [.Sample.food, .Sample.vegetable],
+                 unit: .Sample.piece),
+        Relation(stock: .Sample.egg,
+                 tags: [.Sample.food],
+                 unit: .Sample.piece),
+        Relation(stock: .Sample.ChocoCake,
+                 tags: [.Sample.food, .Sample.dessert],
+                 unit: .Sample.piece),
+        Relation(stock: .Sample.rap,
+                 tags: [.Sample.consumable, .Sample.other],
+                 unit: .Sample.bottle),
     ]
 }
 
+// MARK: ここからTagのサンプルデータ
 extension Tag {
-    static let samples: [Tag] = [
-        Tag(name: "食べ物"),
-        Tag(name: "スピード"),
-        Tag(name: "揚げ物"),
-        Tag(name: "肉"),
-        Tag(name: "ご飯もの"),
-        Tag(name: "パスタ"),
-        Tag(name: "パン"),
-        Tag(name: "デザート"),
-        Tag(name: "飲み物"),
-        Tag(name: "ビール"),
-        Tag(name: "ウイスキー"),
-        Tag(name: "スピリッツ"),
-        Tag(name: "日本酒"),
-        Tag(name: "ワイン"),
-        Tag(name: "ソフトドリンク"),
-        Tag(name: "調味料"),
-        Tag(name: "消耗品"),
-    ]
+    enum Sample {
+        static let food = Tag(name: "食べ物")
+        static let vegetable = Tag(name: "野菜")
+        static let meat = Tag(name: "肉")
+        static let fish = Tag(name: "魚介類")
+        static let drink = Tag(name: "飲み物")
+        static let dessert = Tag(name: "デザート")
+        static let alcohol = Tag(name: "アルコール飲料")
+        static let softDrink = Tag(name: "ソフトドリンク")
+        static let seasoning = Tag(name: "調味料")
+        static let consumable = Tag(name: "消耗品")
+        static let other = Tag(name: "その他")
+        static let all = [food, vegetable, meat, fish, drink, dessert, alcohol, softDrink, seasoning, consumable, other]
+    }
 }
 
+// MARK: ここからStockUnitのサンプルデータ
 extension StockUnit {
-    static let samples: [StockUnit] = [
-        StockUnit(name: "個"),
-        StockUnit(name: "本"),
-        StockUnit(name: "枚")
-    ]
+    enum Sample {
+        static let piece = StockUnit(name: "個")
+        static let bottle = StockUnit(name: "本")
+        static let sheet = StockUnit(name: "枚")
+        static let all = [piece, bottle, sheet]
+    }
 }
