@@ -269,6 +269,11 @@ struct StockView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
         }
+        .onAppear {
+            if selectedStock == nil {
+                selectedStock = query.apply(to: stocks).first
+            }
+        }
         .simultaneousGesture(
             TapGesture().onEnded {
                 withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
