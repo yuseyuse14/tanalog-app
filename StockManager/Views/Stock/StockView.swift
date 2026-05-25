@@ -15,24 +15,10 @@ struct StockView: View {
     @State private var selectedStock: Stock? = nil
     @State private var isEdit: Bool = false
     @State private var isCreate: Bool = false
-
-    @State private var isSearch: Bool = false
-    @State private var searchText: String = ""
+    @FocusState var isSearchFocused: Bool
 
     @State private var query: StockQuery = StockQuery()
     @State private var selectedTags: Set<Tag> = []
-
-    var queryStocks: [Stock] {
-        var searchStock: [Stock]
-
-        if searchText.isEmpty {
-            searchStock = stocks
-        } else {
-            searchStock = stocks.filter { $0.name.localizedStandardContains(searchText) || $0.tags.contains { $0.name.localizedStandardContains(searchText)} }
-        }
-
-        return query.apply(to: searchStock)
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -40,18 +26,26 @@ struct StockView: View {
             PageHeaderView(titleLabel: "在庫一覧") {
                 // 検索機能
                 HStack(spacing: 0) {
-                    Image(systemName: "magnifyingglass")
-                        .pageHeaderButtonStyle()
+                    Button {
+                        withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
+                            query.search.isActive.toggle()
+                            isSearchFocused = query.search.isActive
+                        }
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .pageHeaderButtonStyle()
+                    }
                     // 検索フィールド
-                    if isSearch {
-                        TextField("在庫を検索", text: $searchText)
+                    if query.search.isActive {
+                        TextField("在庫を検索", text: $query.search.text)
                             .font(.title3)
                             .frame(maxWidth: .infinity)
+                            .focused($isSearchFocused)
                         // リセットボタン
-                        if !searchText.isEmpty {
+                        if !query.search.text.isEmpty {
                             Button {
                                 withAnimation(.linear(duration: 0.2)) {
-                                    searchText = ""
+                                    query.search.text = ""
                                 }
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
@@ -63,14 +57,9 @@ struct StockView: View {
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 28)
-                        .fill(isSearch ? Color(.systemGray6) : .clear)
-                        .stroke(isSearch ? Color(.separator) : .clear)
+                        .fill(query.search.isActive ? Color(.systemGray6) : .clear)
+                        .stroke(query.search.isActive ? Color(.separator) : .clear)
                 )
-                .onTapGesture {
-                    withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
-                        isSearch.toggle()
-                    }
-                }
 
                 // TODO: ソート機能
                 Menu {
@@ -138,11 +127,11 @@ struct StockView: View {
 
             // メイン画面
             HStack(spacing: 0) {
-                if !queryStocks.isEmpty {
+                if !query.apply(to: stocks).isEmpty {
                     // 在庫一覧(左側)
                     ScrollView {
                         LazyVStack(spacing: 8) {
-                            ForEach(queryStocks) { stock in
+                            ForEach(query.apply(to: stocks)) { stock in
                                 HStack(spacing: 0) {
                                     RoundedRectangle(cornerRadius: 4)
                                         .fill(stock.status.color)
@@ -279,13 +268,26 @@ struct StockView: View {
                 .padding(16)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
+            .contentShape(Rectangle())
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
+                        isSearchFocused = false
+                    }
+                }
+            )
+        }
+        .onAppear {
+            if selectedStock == nil {
+                selectedStock = query.apply(to: stocks).first
+            }
         }
         .sheet(isPresented: $isCreate) {
             StockCreateView()
         }
         .sheet(isPresented: $isEdit) {
             if let stock = selectedStock {
-                StockEditView(stock: stock)
+                StockEditView(stock: stock, selectedStock: $selectedStock)
             }
         }
     }

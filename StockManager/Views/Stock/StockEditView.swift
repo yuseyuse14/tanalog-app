@@ -12,6 +12,7 @@ struct StockEditView: View {
     @Query private var stocks: [Stock]
 
     @Bindable var stock: Stock
+    @Binding var selectedStock: Stock?
 
     @State private var form: StockForm = StockForm()
     @State private var isDeleteAlert: Bool = false
@@ -87,6 +88,8 @@ struct StockEditView: View {
     }
 
     private func deleteStock() {
+        selectedStock = nil
+
         context.delete(stock)
         try? context.save()
         dismiss()
@@ -94,6 +97,7 @@ struct StockEditView: View {
 }
 
 #Preview {
-    StockEditView(stock: Stock.Sample.beef)
+    @Previewable @State var previewSelected: Stock? = nil
+    StockEditView(stock: Stock.Sample.beef, selectedStock: $previewSelected)
         .modelContainer(.preview)
 }
