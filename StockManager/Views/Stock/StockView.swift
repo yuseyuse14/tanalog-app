@@ -286,7 +286,7 @@ struct StockView: View {
         }
         .sheet(isPresented: $isEdit) {
             if let stock = selectedStock {
-                StockEditView(stock: stock)
+                StockEditView(stock: stock, selectedStock: $selectedStock)
             }
         }
     }
