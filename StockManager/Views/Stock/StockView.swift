@@ -129,7 +129,15 @@ struct StockView: View {
 
             // メイン画面
             HStack(spacing: 0) {
-                if !queryStocks.isEmpty {
+                if stocks.isEmpty {
+                    ContentUnavailableView {
+                        Button {
+                            isCreate.toggle()
+                        } label: {
+                            Label("在庫を登録しましょう", systemImage: "plus")
+                        }
+                    }
+                } else if !queryStocks.isEmpty {
                     // 在庫一覧(左側)
                     ScrollView {
                         LazyVStack(spacing: 0) {
@@ -143,7 +151,7 @@ struct StockView: View {
                 } else {
                     ContentUnavailableView(
                         "該当する在庫はありません",
-                        systemImage: "archivebox",
+                        systemImage: "magnifyingglass",
                         description: Text("検索ワードや選択中のタグを見直してください。")
                     )
                 }
@@ -233,7 +241,7 @@ struct StockView: View {
 //                        Divider()
 //                        Label("発注履歴", systemImage: "cart")
                     } else {
-                        ContentUnavailableView("在庫を選択してください", systemImage: "hand.tap")
+                        ContentUnavailableView("在庫を選択してください", systemImage: "archivebox")
                     }
                 }
                 .padding(16)
