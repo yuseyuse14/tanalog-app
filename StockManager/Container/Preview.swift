@@ -12,7 +12,7 @@ extension ModelContainer {
 
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
-            setupPreviewData(for: container)
+            try setupPreviewData(for: container.mainContext)
             return container
         } catch {
             fatalError("Could not create PreviewContainer: \(error)")
@@ -20,9 +20,7 @@ extension ModelContainer {
     }()
     
     @MainActor
-    static func setupPreviewData(for container: ModelContainer){
-        let context = container.mainContext
-
+    static func setupPreviewData(for context: ModelContext) throws {
         // プレビュー用データを追加
         Tag.Sample.all.forEach { context.insert($0) }
         StockUnit.Sample.all.forEach { context.insert($0) }
@@ -31,6 +29,12 @@ extension ModelContainer {
             context.insert(stock)
             stock.tags = relation.tags
             stock.unit = relation.unit
+        }
+
+        do {
+            try context.save()
+        } catch {
+            print("プレビューデータ追加に失敗しました: \(error)")
         }
     }
 }

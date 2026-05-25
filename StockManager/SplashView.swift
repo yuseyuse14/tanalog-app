@@ -7,6 +7,7 @@ import SwiftUI
 import SwiftData
 
 struct SplashView: View {
+    @Environment(\.modelContext) private var context
     @State private var isActive: Bool = false
     @State private var size = 0.1
 
@@ -21,17 +22,23 @@ struct SplashView: View {
                 Image("AppIcon")
                     .scaleEffect(size)
             }
-            .onAppear {
+            .task {
                 withAnimation(.bouncy(duration: 0.5, extraBounce: 0.4)) {
-                    self.size = 0.24
+                    size = 0.24
                 }
-            }
-            .onAppear {
-                // とりあえず時間経過で表示
-                DispatchQueue.main.asyncAfter(deadline: .now()+1.2) {
-                    withAnimation {
-                        self.isActive = true
-                    }
+
+                async let timer = Task.sleep(for: .seconds(1.2))
+
+                do {
+                    try ModelContainer.setupInitialData(for: context)
+                } catch {
+                    print("初期データの設定に失敗しました: \(error)")
+                }
+
+                try? await timer
+
+                withAnimation {
+                    isActive = true
                 }
             }
         }
@@ -40,4 +47,5 @@ struct SplashView: View {
 
 #Preview {
     SplashView()
+        .modelContainer(.preview)
 }
