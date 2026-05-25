@@ -11,7 +11,7 @@ struct TagView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Tag.order) private var tags: [Tag]
 
-    @State var showCreate: Bool = false
+    @State var isCreate: Bool = false
     @State var isEditMode: Bool = false
 
     var body: some View {
@@ -19,58 +19,68 @@ struct TagView: View {
             PageHeaderView(titleLabel: "タグ一覧") {
                 // 新規追加
                 Button {
-                    showCreate.toggle()
+                    isCreate.toggle()
                 } label: {
                     Image(systemName: "plus")
                         .pageHeaderButtonStyle()
                 }
             }
 
-            ScrollView {
-                HFlow(alignment: .center, spacing: 16) {
-                    ForEach(tags) { tag in
-                        ZStack(alignment: .topLeading) {
-                            // タグ
-                            Text(tag.name)
-                                .font(.title)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 5)
-                                .background(Color.blue.opacity(0.1))
-                                .cornerRadius(15)
+            if !tags.isEmpty {
+                ScrollView {
+                    HFlow(alignment: .center, spacing: 16) {
+                        ForEach(tags) { tag in
+                            ZStack(alignment: .topLeading) {
+                                // タグ
+                                Text(tag.name)
+                                    .font(.title)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 5)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(15)
 
-                            // 削除ボタン
-                            if isEditMode {
-                                Button {
-                                    withAnimation(.bouncy(duration: 0.8)) {
-                                        deleteTag(tag)
+                                // 削除ボタン
+                                if isEditMode {
+                                    Button {
+                                        withAnimation(.bouncy(duration: 0.8)) {
+                                            deleteTag(tag)
+                                        }
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(Color(.label), Color(.systemGray4))
                                     }
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .font(.title2)
-                                        .foregroundStyle(Color(.label), Color(.systemGray4))
+                                    .offset(x: -10, y: -10)
                                 }
-                                .offset(x: -10, y: -10)
+                            }
+                            // 震えるアニメーション
+                            .phaseAnimator([1.2, -1.2]) { content, value in
+                                content
+                                    .rotationEffect(.degrees(isEditMode ? value : 0))
+                            } animation: { _ in
+                                    .linear(duration: 0.08)
                             }
                         }
-                        // 震えるアニメーション
-                        .phaseAnimator([1.2, -1.2]) { content, value in
-                            content
-                                .rotationEffect(.degrees(isEditMode ? value : 0))
-                        } animation: { _ in
-                                .linear(duration: 0.08)
+                    }
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                // 長押し
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.5)
+                        .onEnded { _ in
+                            isEditMode = true
                         }
+                )
+            } else {
+                ContentUnavailableView {
+                    Button {
+                        isCreate.toggle()
+                    } label: {
+                        Label("タグを追加しましょう", systemImage: "plus")
                     }
                 }
-                .padding(16)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            // 長押し
-            .simultaneousGesture(
-                LongPressGesture(minimumDuration: 0.5)
-                    .onEnded { _ in
-                        isEditMode = true
-                    }
-            )
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -80,7 +90,7 @@ struct TagView: View {
                 }
             }
         }
-        .sheet(isPresented: $showCreate) {
+        .sheet(isPresented: $isCreate) {
             TagCreateView()
         }
     }
