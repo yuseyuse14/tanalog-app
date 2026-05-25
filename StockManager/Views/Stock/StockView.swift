@@ -269,6 +269,13 @@ struct StockView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
         }
+        .simultaneousGesture(
+            TapGesture().onEnded {
+                withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
+                    isSearchFocused = false
+                }
+            }
+        )
         .sheet(isPresented: $isCreate) {
             StockCreateView()
         }
