@@ -73,9 +73,9 @@ extension Tag {
 // MARK: ここからStockUnitのサンプルデータ
 extension StockUnit {
     enum Sample {
-        static let piece = StockUnit(name: "個")
-        static let bottle = StockUnit(name: "本")
-        static let sheet = StockUnit(name: "枚")
+        static let piece = StockUnit(name: "個", order: 1)
+        static let bottle = StockUnit(name: "本", order: 2)
+        static let sheet = StockUnit(name: "枚", order: 3)
         static let all = [piece, bottle, sheet]
     }
 }

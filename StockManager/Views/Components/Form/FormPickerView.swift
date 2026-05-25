@@ -52,5 +52,5 @@ struct FormPickerView: View {
 
 #Preview {
     @Previewable @State var previewItem: StockUnit?
-    FormPickerView(label: "ラベル", placeholder: "プレースホルダー", items: [StockUnit(name: "個"), StockUnit(name: "本")], selectedItem: $previewItem, errorType: .none)
+    FormPickerView(label: "ラベル", placeholder: "プレースホルダー", items: StockUnit.Sample.all, selectedItem: $previewItem, errorType: .none)
 }
