@@ -23,6 +23,7 @@ struct FormNumberView: View {
             }
             TextField(placeholder, value: $num, format: .number)
                 .formInputFieldStyle(borderColor: errorType.color)
+                .keyboardType(.numbersAndPunctuation)
         }
     }
 }
