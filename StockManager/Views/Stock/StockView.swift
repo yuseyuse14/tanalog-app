@@ -227,10 +227,11 @@ struct StockView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         Divider()
-                        Label("仕入れ先", systemImage: "building.2")
                         // TODO: 在庫別の仕入れ先一覧
-                        Divider()
-                        Label("発注履歴", systemImage: "cart")
+//                        Label("仕入れ先", systemImage: "building.2")
+                        // TODO: 在庫別の発注履歴一覧
+//                        Divider()
+//                        Label("発注履歴", systemImage: "cart")
                     } else {
                         ContentUnavailableView("在庫を選択してください", systemImage: "hand.tap")
                     }
