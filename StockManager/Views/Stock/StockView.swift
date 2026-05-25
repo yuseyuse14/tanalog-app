@@ -50,7 +50,9 @@ struct StockView: View {
                         // リセットボタン
                         if !searchText.isEmpty {
                             Button {
-                                searchText = ""
+                                withAnimation(.linear(duration: 0.2)) {
+                                    searchText = ""
+                                }
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundStyle(Color(.label))
@@ -65,14 +67,18 @@ struct StockView: View {
                         .stroke(isSearch ? Color(.separator) : .clear)
                 )
                 .onTapGesture {
+                    withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
                         isSearch.toggle()
+                    }
                 }
 
                 // TODO: ソート機能
                 Menu {
                     ForEach(SortType.allCases, id: \.self) { type in
                         Button {
-                            query.sort.selectType(type)
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                query.sort.selectType(type)
+                            }
                         } label: {
                             Label(type.title, systemImage: query.sort.selected(as: type) ? "checkmark" :"")
                             Text(type.subTitle(in: query.sort))
@@ -114,10 +120,12 @@ struct StockView: View {
                                         .stroke(.blue.opacity(0.4))
                                 )
                                 .onTapGesture {
-                                    if query.filter.tags.contains(tag) {
-                                        query.filter.tags.remove(tag)
-                                    } else {
-                                        query.filter.tags.insert(tag)
+                                    withAnimation(.spring(duration: 0.3)) {
+                                        if query.filter.tags.contains(tag) {
+                                            query.filter.tags.remove(tag)
+                                        } else {
+                                            query.filter.tags.insert(tag)
+                                        }
                                     }
                                 }
                         }
@@ -163,7 +171,9 @@ struct StockView: View {
                                 }
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    selectedStock = stock
+                                    withAnimation(.linear(duration: 0.16)) {
+                                        selectedStock = stock
+                                    }
                                 }
                                 Divider()
                             }

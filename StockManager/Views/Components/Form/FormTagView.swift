@@ -30,10 +30,12 @@ struct FormTagView: View {
                                 .stroke(.blue.opacity(0.4))
                         )
                         .onTapGesture {
-                            if selectedTags.contains(tag) {
-                                selectedTags.remove(tag)
-                            } else {
-                                selectedTags.insert(tag)
+                            withAnimation(.easeIn(duration: 0.1)) {
+                                if selectedTags.contains(tag) {
+                                    selectedTags.remove(tag)
+                                } else {
+                                    selectedTags.insert(tag)
+                                }
                             }
                         }
                 }
