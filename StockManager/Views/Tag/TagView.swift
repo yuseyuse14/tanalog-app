@@ -41,7 +41,9 @@ struct TagView: View {
                             // 削除ボタン
                             if isEditMode {
                                 Button {
-                                    deleteTag(tag)
+                                    withAnimation(.bouncy(duration: 0.8)) {
+                                        deleteTag(tag)
+                                    }
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
                                         .font(.title2)
@@ -72,7 +74,9 @@ struct TagView: View {
         }
         .onTapGesture {
             if isEditMode {
-                isEditMode = false
+                withAnimation(.easeOut(duration: 0.24)) {
+                    isEditMode = false
+                }
             }
         }
         .sheet(isPresented: $showCreate) {
@@ -81,10 +85,8 @@ struct TagView: View {
     }
 
     private func deleteTag(_ tag: Tag) {
-        withAnimation(.bouncy(duration: 0.8)) {
-            context.delete(tag)
-            try? context.save()
-        }
+        context.delete(tag)
+        try? context.save()
     }
 }
 
