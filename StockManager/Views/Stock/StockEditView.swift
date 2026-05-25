@@ -33,8 +33,6 @@ struct StockEditView: View {
                 // 在庫詳細
                 StockFormView(form: $form)
 
-                Spacer()
-                    .frame(minHeight: 40)
                 // 削除ボタン
                 Button(role: .destructive) {
                     isDeleteAlert = true
