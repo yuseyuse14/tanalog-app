@@ -72,6 +72,7 @@ struct TagView: View {
                     }
             )
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             if isEditMode {
                 withAnimation(.easeOut(duration: 0.24)) {

@@ -268,19 +268,20 @@ struct StockView: View {
                 .padding(16)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
+            .contentShape(Rectangle())
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
+                        isSearchFocused = false
+                    }
+                }
+            )
         }
         .onAppear {
             if selectedStock == nil {
                 selectedStock = query.apply(to: stocks).first
             }
         }
-        .simultaneousGesture(
-            TapGesture().onEnded {
-                withAnimation(.spring(duration: 0.6, bounce: 0.24)) {
-                    isSearchFocused = false
-                }
-            }
-        )
         .sheet(isPresented: $isCreate) {
             StockCreateView()
         }
