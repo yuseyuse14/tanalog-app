@@ -4,12 +4,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct StockManagerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashView()
+                .modelContainer(.shared)
         }
     }
 }
