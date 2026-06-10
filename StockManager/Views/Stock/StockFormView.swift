@@ -8,7 +8,7 @@ import SwiftData
 import Flow
 
 enum StockFormFocus {
-    case name, num, minNum
+    case name, yomi, num, minNum
 }
 
 struct StockFormView: View {
@@ -31,6 +31,21 @@ struct StockFormView: View {
                     errorType: form.error.name
                 )
                 .focused($focus, equals: .name)
+                .submitLabel(.next)
+                .onSubmit {
+                    focus = .num
+                }
+                .onChange(of: form.name) { _, newValue in
+                    form.yomi = YomiganaUtils.getYomiganaOf(newValue)
+                }
+
+                FormTextView(
+                    label: "読み",
+                    placeholder: form.placeholder.yomi,
+                    text: $form.yomi,
+                    errorType: .none
+                )
+                .focused($focus, equals: .yomi)
                 .submitLabel(.next)
                 .onSubmit {
                     focus = .num

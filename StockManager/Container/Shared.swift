@@ -36,12 +36,13 @@ extension ModelContainer {
             return
         }
 
-        // プレビュー用データを追加
+        // 初期データを追加
         Tag.Sample.all.forEach { context.insert($0) }
         StockUnit.Sample.all.forEach { context.insert($0) }
         Stock.relations.forEach { relation in
             let stock = relation.stock
             context.insert(stock)
+            stock.yomi = YomiganaUtils.getYomiganaOf(stock.name)
             stock.tags = relation.tags
             stock.unit = relation.unit
         }
