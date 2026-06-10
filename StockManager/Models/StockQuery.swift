@@ -13,7 +13,7 @@ struct StockQuery {
     func search(_ stocks: [Stock]) -> [Stock] {
         if search.text.isEmpty { return stocks }
         return stocks.filter { stock in
-            search.matches(stock.name) ||
+            search.matches(stock.searchKey) ||
             stock.tags.contains { tag in
                 search.matches(tag.name)
             }
