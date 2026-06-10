@@ -22,5 +22,5 @@
 
 ## インストールはこちら
 <a href="https://apple.co/3SyCs9e">
-    <img src="fig/リンクカードプレビュー画像 - 1200x628.png" width="300">
+    <img src="fig/app-linkcard-preview.png" width="300">
 </a>
