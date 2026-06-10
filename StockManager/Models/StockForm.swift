@@ -8,6 +8,7 @@ import SwiftUI
 struct StockForm {
     var name: String = ""
     var saveName: String { name.trimming(for: .edge) }
+    var yomi: String = ""
     var num: Int? = nil
     var minNum: Int? = nil
     var unit: StockUnit? = nil
@@ -122,6 +123,7 @@ extension StockForm {
         let preStock: Stock?
 
         var name: String { preStock?.name ?? "例：トマト" }
+        var yomi: String = ""
         var num: String { preStock?.num.description ?? "例：10" }
         var minNum: String { preStock?.minNum.description ?? "例：4" }
         var unit: String { preStock?.unit?.name ?? "未選択" }

@@ -10,6 +10,7 @@ final class Stock {
     #Unique<Stock>([\.name])
 
     var name: String
+    var yomi: String = ""
     var num: Int
     var minNum: Int
     var unit: StockUnit?
@@ -19,9 +20,13 @@ final class Stock {
     var tags: [Tag]
 
     var order: Int
+    var searchKey: String {
+        name + yomi
+    }
 
-    init(name: String, num: Int, minNum: Int, unit: StockUnit? = nil, order: Int) {
+    init(name: String, yomi: String = "", num: Int, minNum: Int, unit: StockUnit? = nil, order: Int) {
         self.name = name
+        self.yomi = yomi
         self.num = num
         self.minNum = minNum
         self.unit = unit

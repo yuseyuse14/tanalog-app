@@ -1,10 +1,10 @@
 //
-//  FilterQuery.swift
+//  QueryFilter.swift
 //  StockManager
 //
 
 import Foundation
 
-struct FilterQuery {
+struct QueryFilter {
     var tags: Set<Tag> = []
 }

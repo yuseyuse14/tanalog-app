@@ -1,11 +1,11 @@
 //
-//  SortQuery.swift
+//  QuerySort.swift
 //  StockManager
 //
 
 import Foundation
 
-struct SortQuery {
+struct QuerySort {
     var type: SortType = .order
     var order: SortOrder = .forward
 
@@ -34,7 +34,7 @@ enum SortType: CaseIterable {
         }
     }
 
-    func subTitle(in sort: SortQuery) -> String {
+    func subTitle(in sort: QuerySort) -> String {
         guard self == sort.type else { return "" }
         switch self {
         case .order:

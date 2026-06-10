@@ -34,6 +34,11 @@ struct SplashView: View {
                 } catch {
                     print("初期データの設定に失敗しました: \(error)")
                 }
+                do {
+                    try AppMigration.migrateIfNeeded(for: context)
+                } catch {
+                    print("データ移行に失敗しました: \(error)")
+                }
 
                 try? await timer
 
